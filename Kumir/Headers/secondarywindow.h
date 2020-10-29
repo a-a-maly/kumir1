@@ -6,7 +6,7 @@
 #include "secondarywindow_win32.h"
 #endif
 
-#ifdef Q_WS_X11
+#ifdef Q_OS_UNIX
 #include "secondarywindow_x11.h"
 #endif
 

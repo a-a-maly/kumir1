@@ -15,9 +15,10 @@
 #include "application.h"
 #include "textedit.h"
 #include "mainwindow.h"
+#include <QPrinter>
 
-TextTab::TextTab ( QWidget* parent, Qt::WFlags fl )
-	: QWidget ( parent, fl )
+TextTab::TextTab ( QWidget* parent, Qt::WindowFlags fl ) :
+	QWidget ( parent, fl )
 {
 	m_editor = new TextEdit(this);
 	QVBoxLayout *layout = new QVBoxLayout;

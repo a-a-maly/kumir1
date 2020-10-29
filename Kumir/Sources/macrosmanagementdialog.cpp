@@ -19,9 +19,11 @@
 #include "macro.h"
 #include "newmacrodialog.h"
 
-#include <QtXml>
+#include <QtGlobal>
+#include <QMessageBox>
+#include <QDomDocument>
 
-MacrosManagementDialog::MacrosManagementDialog ( QWidget* parent, Qt::WFlags fl )
+MacrosManagementDialog::MacrosManagementDialog ( QWidget* parent, Qt::WindowFlags fl )
 		: QDialog ( parent, fl ), Ui::Dialog()
 {
 	setupUi ( this );
@@ -113,7 +115,7 @@ void MacrosManagementDialog::editMacro(QListWidgetItem * item)
 		if ( item == NULL )
 			return;
 	}
-	Macro *m;
+	Macro *m = 0;
 	foreach ( Macro *mm, app()->macros )
 	{
 		if ( mm->name() == item->text() )

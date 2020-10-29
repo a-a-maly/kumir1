@@ -17,15 +17,14 @@
 
 /* ExternalModulesDialog
 Подключение сетевых исполнителей
-*/ 
+*/
 #ifndef KUM_EXTISP_H
 #define KUM_EXTISP_H
 #include "ui_externalIsp.h"
 #include "kum_instrument.h"
 #include "text_analiz.h"
-#include <QWidget>
-#include <QtCore>
-#include <QtGui>
+
+#include <QDialog>
 
 
 
@@ -33,39 +32,56 @@ class externalIspDialog : public QDialog, Ui::externalIspDialog
 {
 	Q_OBJECT
 
-	public:
-		externalIspDialog ( QWidget* parent = 0, Qt::WFlags fl = 0 );
-		~externalIspDialog(){};
-	bool network(){return NetworkSW->isChecked();};
-	QString file(){return FileLine->text();};
+public:
+	externalIspDialog(QWidget *parent = 0, Qt::WindowFlags fl = 0);
+	~externalIspDialog() {};
+
+	bool network()
+	{
+		return NetworkSW->isChecked();
+	}
+
+	QString file()
+	{
+		return FileLine->text();
+	}
+
 	bool bachWaitFlag;
-	
-	signals:
+
+signals:
 	void ispStateChanged();
-	public slots:
-	void connectIsp(QString Url,int port);
-	void connectIsp(){connectIsp(UrlLine->text(),PortLine->text().toInt());};
+
+public slots:
+	void connectIsp(QString Url, int port);
+
+	void connectIsp()
+	{
+		connectIsp(UrlLine->text(), PortLine->text().toInt());
+	}
+
 	void appendIspToList()
-		{
-		int port=PortLine->text().toInt();
-		if((port<1025)||(port>65535))return;
-		 QStringList currentIsps=app()->ExtIspsList();
-   		 if(currentIsps.indexOf(UrlLine->text()+","+QString::number(port))<0)
-		{
-		app()->AppendExtIspsToList(UrlLine->text(),port);
-		};
-		
-		};
+	{
+		int port = PortLine->text().toInt();
+		if ((port < 1025) || (port > 65535)) {
+			return;
+		}
+		QStringList currentIsps = app()->ExtIspsList();
+		if (currentIsps.indexOf(UrlLine->text() + "," + QString::number(port)) < 0) {
+			app()->AppendExtIspsToList(UrlLine->text(), port);
+		}
+
+	}
+
 	void ispReady();
 	void ispError(QString error);
 	void tableUpdateReg();
-	void listClicked(int row,int col);
+	void listClicked(int row, int col);
 	void openFile();
 	void switchM();
 
-	private:
-	QString checkIsp(QString name,int port);
-	QWidget*  parentDialog;
-	
+private:
+	QString checkIsp(QString name, int port);
+	QWidget  *parentDialog;
+
 };
 #endif

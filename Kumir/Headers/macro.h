@@ -16,110 +16,110 @@
 #ifndef MACRO_H
 #define MACRO_H
 
-#include <QtCore>
-#include <QtGui>
-#include <QtXml>
+#include <QObject>
+#include <QKeyEvent>
+class QAction;
+class QDomDocument;
+class QDomNode;
 
 /** Макрос */
 class Macro : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    /**
-		 * Конструктор
-		 * @param parent сслыка на объект-владелец
-		 */
-    Macro ( QObject *parent = 0 );
+	/**
+	     * Конструктор
+	     * @param parent сслыка на объект-владелец
+	     */
+	Macro(QObject *parent = 0);
 
-    /**
-		 * Устанавливает имя макроса
-		 * @param name имя макроса
-		 */
-    void setName ( QString name );
-    /**
-		 *  Возвращает имя макроса
-		 * @return имя макроса
-		 */
-    QString name();
-    /**
-		 * Устанавливает сочетание клавиш для вызова макроса
-		 * @param ks сочетание клавиш
-		 */
-    void setKeySequence ( const QString &ks );
-    /**
-		 * Возвращает сочетание клавиш для вызова макроса
-		 * @return сочетание клавиш
-		 */
-    QString keySequence();
-    /**
-		 * Добавляет событие к макросу
-		 * @param event сслыка на событие
-		 */
-    void addCommand(QKeyEvent *event);
-    /**
-		 * Возвращает список событий макроса
-		 * @return список событий
-		 */
-    QList<QKeyEvent> commands();
-    /**
-		 * Устанавливает объект меню приложения для вызова макроса
-		 * @param action ссылка на QAction
-		 */
-    void setAction(QAction *action);
-    /**
-		 * Возвращает объект меню приложения для вызова макроса
-		 * @return ссылка на QAction
-		 */
-    QAction *action();
-    /**
-		 * Сохраняет макрос в XML-структуре
-		 * @param parent узел родительского XML-дерева
-		 */
-    void save(QDomDocument& parent);
-    /**
-		 * Восстанавливает макрос из XML-структуры
-		 * @param tree узел XML-структуры
-		 * @return true, если успешно или false в противном случае
-		 */
-    bool load(const QDomNode & tree);
-    /**
-		 * Возращает флаг "редактируемый"
-		 * @return значение флага
-		 */
-    bool isEditable();
-    /**
-		 * Устанавливает флаг "редактируемый"
-		 * @param v значение флага
-		 */
-    void setEditable(bool v);
-    /**
-		 * Устанавливает имя файла, в котором сохранен макрос
-		 * @param name имя файла
-		 */
-    void setFileName(const QString & name);
-    /**
-		 * Возвращает имя файла, в котором сохранен макрос
-		 * @return имя файла
-		 */
-    QString fileName();
-    /** Деструктор */
-    ~Macro();
+	/**
+	     * Устанавливает имя макроса
+	     * @param name имя макроса
+	     */
+	void setName(QString name);
+	/**
+	     *  Возвращает имя макроса
+	     * @return имя макроса
+	     */
+	QString name();
+	/**
+	     * Устанавливает сочетание клавиш для вызова макроса
+	     * @param ks сочетание клавиш
+	     */
+	void setKeySequence(const QString &ks);
+	/**
+	     * Возвращает сочетание клавиш для вызова макроса
+	     * @return сочетание клавиш
+	     */
+	QString keySequence();
+	/**
+	     * Добавляет событие к макросу
+	     * @param event сслыка на событие
+	     */
+	void addCommand(QKeyEvent *event);
+	/**
+	     * Возвращает список событий макроса
+	     * @return список событий
+	     */
+	QList<QKeyEvent> commands();
+	/**
+	     * Устанавливает объект меню приложения для вызова макроса
+	     * @param action ссылка на QAction
+	     */
+	void setAction(QAction *action);
+	/**
+	     * Возвращает объект меню приложения для вызова макроса
+	     * @return ссылка на QAction
+	     */
+	QAction *action();
+	/**
+	     * Сохраняет макрос в XML-структуре
+	     * @param parent узел родительского XML-дерева
+	     */
+	void save(QDomDocument &parent);
+	/**
+	     * Восстанавливает макрос из XML-структуры
+	     * @param tree узел XML-структуры
+	     * @return true, если успешно или false в противном случае
+	     */
+	bool load(const QDomNode &tree);
+	/**
+	     * Возращает флаг "редактируемый"
+	     * @return значение флага
+	     */
+	bool isEditable();
+	/**
+	     * Устанавливает флаг "редактируемый"
+	     * @param v значение флага
+	     */
+	void setEditable(bool v);
+	/**
+	     * Устанавливает имя файла, в котором сохранен макрос
+	     * @param name имя файла
+	     */
+	void setFileName(const QString &name);
+	/**
+	     * Возвращает имя файла, в котором сохранен макрос
+	     * @return имя файла
+	     */
+	QString fileName();
+	/** Деструктор */
+	~Macro();
 protected:
-    /** Имя макроса */
-    QString m_name;
-    /** Последовательность клавиш */
-    QString m_keySequence;
-    QString m_nativeKeySequence;
-    /** Список событий */
-    QList<QKeyEvent> events;
-    /** Ссылка на QAction */
-    QAction *m_action;
-    /** Флаг редактируемости */
-    bool editable;
-    /** Имя связанного файла */
-    QString m_fileName;
-
-
+	/** Имя макроса */
+	QString m_name;
+	/** Последовательность клавиш */
+	QString m_keySequence;
+	QString m_nativeKeySequence;
+	/** Список событий */
+	QList<QKeyEvent> events;
+	/** Ссылка на QAction */
+	QAction *m_action;
+	/** Флаг редактируемости */
+	bool editable;
+	/** Имя связанного файла */
+	QString m_fileName;
 };
 
 #endif

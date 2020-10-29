@@ -14,6 +14,9 @@
 **
 ****************************************************************************/
 #include "kumfiledialog.h"
+#include <QLabel>
+#include <QComboBox>
+#include <QLayout>
 
 
 KumFileDialog::KumFileDialog

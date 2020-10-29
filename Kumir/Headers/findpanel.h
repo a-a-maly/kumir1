@@ -20,7 +20,6 @@
 #include <QToolBar>
 #include <QTextDocument>
 
-class QTextDocument;
 class QComboBox;
 class QLineEdit;
 class QCheckBox;
@@ -31,41 +30,41 @@ class FindPanel : public QToolBar
 {
 	Q_OBJECT
 
-	public:
-		FindPanel (const QString &title, QWidget *parent = 0);
-		~FindPanel();
-		QTextDocument::FindFlags getOptions();
-		QString getText();
-		QString getNewText();
-		Qt::CaseSensitivity isCaseSensitivity();
-		
-	protected:
-		QToolButton *closeButton;
-		QLineEdit *textToFind;
-		QCheckBox *caseSensitive;
-		QTextDocument::FindFlags options;
-		QAction *actionPrevButton;
-		QToolButton *prevButton;
-		QToolButton *nextButton;
-		void showEvent (QShowEvent *event);
-		QLineEdit *textToReplace;
-		QToolButton *replaceButton;
-		QToolButton *replacePrevAllButton;
-		QToolButton *replaceNextAllButton;
-		
-	protected slots:
-		void setButtonsEnable(const QString&);
-		void findBack();
-	
-	signals:
-		void findModeChanged();
-		void findTextPressed();
-		void findNewTextPressed();
-		void showed();
-		void replacePressed();
-		void replacePrevAllPressed();
-		void replaceNextAllPressed();
-		void keyPressed();
+public:
+	FindPanel(const QString &title, QWidget *parent = 0);
+	~FindPanel();
+	QTextDocument::FindFlags getOptions();
+	QString getText();
+	QString getNewText();
+	Qt::CaseSensitivity isCaseSensitivity();
+
+protected:
+	QToolButton *closeButton;
+	QLineEdit *textToFind;
+	QCheckBox *caseSensitive;
+	QTextDocument::FindFlags options;
+	QAction *actionPrevButton;
+	QToolButton *prevButton;
+	QToolButton *nextButton;
+	void showEvent(QShowEvent *event);
+	QLineEdit *textToReplace;
+	QToolButton *replaceButton;
+	QToolButton *replacePrevAllButton;
+	QToolButton *replaceNextAllButton;
+
+protected slots:
+	void setButtonsEnable(const QString &);
+	void findBack();
+
+signals:
+	void findModeChanged();
+	void findTextPressed();
+	void findNewTextPressed();
+	void showed();
+	void replacePressed();
+	void replacePrevAllPressed();
+	void replaceNextAllPressed();
+	void keyPressed();
 };
 
 #endif

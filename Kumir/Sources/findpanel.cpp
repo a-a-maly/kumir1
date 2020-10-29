@@ -14,11 +14,14 @@
 **
 ****************************************************************************/
 
-#include <QtGui>
-
 #include "findpanel.h"
+#include <QToolButton>
+#include <QLabel>
+#include <QLineEdit>
+#include <QCheckBox>
+#include <QShowEvent>
 
-FindPanel::FindPanel (const QString &title, QWidget *parent) : QToolBar (title, parent)
+FindPanel::FindPanel(const QString &title, QWidget *parent) : QToolBar(title, parent)
 {
 	options = 0;
 	closeButton = new QToolButton(this);
@@ -39,49 +42,49 @@ FindPanel::FindPanel (const QString &title, QWidget *parent) : QToolBar (title, 
 	nextButton->setEnabled(false);
 	addWidget(nextButton);
 	addSeparator();
-	
+
 	addWidget(new QLabel(tr("Replace with:")));//
 	textToReplace = new QLineEdit(this);//
 	addWidget(textToReplace);//
-	
+
 	replacePrevAllButton = new QToolButton(this);
 	replacePrevAllButton->setToolTip(tr("Replace all previous"));
 	replacePrevAllButton->setIcon(QIcon(QString::fromUtf8(":/icons/go-previous.png")));
 	replacePrevAllButton->setEnabled(false);
 	addWidget(replacePrevAllButton);
-	
+
 	replaceButton = new QToolButton(this);//
 	replaceButton->setToolTip(tr("Replace here"));//
 	replaceButton->setIcon(QIcon(QString::fromUtf8(":/icons/go-jump-locationbar.png")));//
 	replaceButton->setEnabled(false);
 	addWidget(replaceButton);//
-	
+
 	replaceNextAllButton = new QToolButton(this);
 	replaceNextAllButton->setToolTip(tr("Replace all next"));
 	replaceNextAllButton->setIcon(QIcon(QString::fromUtf8(":/icons/go-next.png")));
 	replaceNextAllButton->setEnabled(false);
 	addWidget(replaceNextAllButton);
-	
+
 	addSeparator();
-	
+
 	caseSensitive = new QCheckBox(tr("Case sensitive"), this);
 	addWidget(caseSensitive);
-	
-	connect( closeButton, SIGNAL(clicked()), this, SIGNAL(keyPressed()) );
-	connect( textToFind, SIGNAL(textEdited(QString)), this, SIGNAL(keyPressed()) );
-	connect( textToReplace, SIGNAL(textEdited(QString)), this, SIGNAL(keyPressed()) );
-	connect( closeButton, SIGNAL(clicked()), this, SLOT(hide()) );
-	connect( textToFind, SIGNAL(returnPressed()), this, SIGNAL(findTextPressed()) );
-	connect( textToFind, SIGNAL(textChanged(QString)), this, SLOT(setButtonsEnable(QString)) );
-	connect( prevButton, SIGNAL(clicked()), this, SLOT(findBack()) );
-	connect( nextButton, SIGNAL(clicked()), this, SIGNAL(findTextPressed()) );
-	connect( replaceButton, SIGNAL(clicked()), this, SIGNAL(replacePressed()) );//
-	connect( textToReplace, SIGNAL(returnPressed()), this, SIGNAL(replacePressed()) );
-	connect( replacePrevAllButton, SIGNAL(clicked()), this, SIGNAL(replacePrevAllPressed()) );
-	connect( replaceNextAllButton, SIGNAL(clicked()), this, SIGNAL(replaceNextAllPressed()) );
+
+	connect(closeButton, SIGNAL(clicked()), this, SIGNAL(keyPressed()));
+	connect(textToFind, SIGNAL(textEdited(QString)), this, SIGNAL(keyPressed()));
+	connect(textToReplace, SIGNAL(textEdited(QString)), this, SIGNAL(keyPressed()));
+	connect(closeButton, SIGNAL(clicked()), this, SLOT(hide()));
+	connect(textToFind, SIGNAL(returnPressed()), this, SIGNAL(findTextPressed()));
+	connect(textToFind, SIGNAL(textChanged(QString)), this, SLOT(setButtonsEnable(QString)));
+	connect(prevButton, SIGNAL(clicked()), this, SLOT(findBack()));
+	connect(nextButton, SIGNAL(clicked()), this, SIGNAL(findTextPressed()));
+	connect(replaceButton, SIGNAL(clicked()), this, SIGNAL(replacePressed()));  //
+	connect(textToReplace, SIGNAL(returnPressed()), this, SIGNAL(replacePressed()));
+	connect(replacePrevAllButton, SIGNAL(clicked()), this, SIGNAL(replacePrevAllPressed()));
+	connect(replaceNextAllButton, SIGNAL(clicked()), this, SIGNAL(replaceNextAllPressed()));
 }
 
-void FindPanel::showEvent (QShowEvent *event)
+void FindPanel::showEvent(QShowEvent *event)
 {
 	textToFind->setFocus();
 	emit showed();
@@ -98,19 +101,21 @@ void FindPanel::findBack()
 QTextDocument::FindFlags FindPanel::getOptions()
 {
 	QTextDocument::FindFlags cs;
-	if (caseSensitive->checkState()==Qt::Checked)
+	if (caseSensitive->checkState() == Qt::Checked) {
 		cs = QTextDocument::FindCaseSensitively;
-	else
+	} else {
 		cs = 0x0;
-	return options|cs;
+	}
+	return options | cs;
 }
 
 Qt::CaseSensitivity FindPanel::isCaseSensitivity()
 {
-	if (caseSensitive->checkState()==Qt::Checked)
+	if (caseSensitive->checkState() == Qt::Checked) {
 		return Qt::CaseSensitive;
-	else
+	} else {
 		return Qt::CaseInsensitive;
+	}
 }
 
 FindPanel::~FindPanel()

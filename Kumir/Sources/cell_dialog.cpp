@@ -15,19 +15,19 @@
 ****************************************************************************/
 
 #include "cell_dialog.h"
-#include "application.h"
+#include <QDebug>
 
 
-CellDialog::CellDialog ( QWidget* parent, Qt::WFlags fl )
-		: QDialog ( parent, fl ), Ui::CellDialog()
+CellDialog::CellDialog(QWidget *parent, Qt::WindowFlags fl) :
+	QDialog(parent, fl), Ui::CellDialog()
 {
-	setupUi ( this );
-	connect(RadSlider,SIGNAL(sliderMoved(int)),this,SLOT(radSliderChanged(int)));
-        connect(TempSlider,SIGNAL(sliderMoved(int)),this,SLOT(tempSliderChanged(int)));
-        connect(RadSpinBox,SIGNAL(valueChanged(double)),this,SLOT(refresh(void)));
-	connect(TempSpinBox,SIGNAL(valueChanged(double)),this,SLOT(refresh(void)));
-};
-;
+	setupUi(this);
+	connect(RadSlider, SIGNAL(sliderMoved(int)), this, SLOT(radSliderChanged(int)));
+	connect(TempSlider, SIGNAL(sliderMoved(int)), this, SLOT(tempSliderChanged(int)));
+	connect(RadSpinBox, SIGNAL(valueChanged(double)), this, SLOT(refresh(void)));
+	connect(TempSpinBox, SIGNAL(valueChanged(double)), this, SLOT(refresh(void)));
+}
+
 CellDialog::~CellDialog()
 {
 }
@@ -35,25 +35,28 @@ CellDialog::~CellDialog()
 
 void CellDialog::radSliderChanged(int pos)
 {
-RadSpinBox->setValue(pos);
-};
+	RadSpinBox->setValue(pos);
+}
+
 void CellDialog::tempSliderChanged(int pos)
 {
-TempSpinBox->setValue(pos);
-};
+	TempSpinBox->setValue(pos);
+}
+
 void CellDialog::refresh()
 {
-RadSlider->setValue(RadSpinBox->value());
-TempSlider->setValue(TempSpinBox->value());
-};
+	RadSlider->setValue(RadSpinBox->value());
+	TempSlider->setValue(TempSpinBox->value());
+}
 
-CellDialog* CellDialog::m_instance = 0;
+CellDialog *CellDialog::m_instance = 0;
 
-CellDialog* CellDialog::instance()
+CellDialog *CellDialog::instance()
 {
-	if (m_instance==0) {
-		qDebug()<<"CELL DIALOG RECREATE!!!!!!!";
+	if (m_instance == 0) {
+		qDebug() << "CELL DIALOG RECREATE!!!!!!!";
 		m_instance = new CellDialog();
 	}
 	return m_instance;
 }
+

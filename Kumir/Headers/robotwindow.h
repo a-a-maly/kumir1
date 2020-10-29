@@ -19,27 +19,24 @@
 #include <QWidget>
 #include "ui_RoboWindow.h"
 
-#include <QtCore>
-#include <QtGui>
 
-
-class RobotWindow : 
-		public QWidget,
-		public Ui::RobotWindow
+class RobotWindow :
+	public QWidget,
+	public Ui::RobotWindow
 {
 	Q_OBJECT
-	public:
-		/**
-		 * Конструктор
-		 * @param parent ссыка на объект-владелец
-		 * @param fl флаги окна
-		 */
-		RobotWindow ( QWidget* parent = 0, Qt::WFlags fl = 0 );
-		/**
-		 * Деструктор
-		 */
-		~RobotWindow();
+public:
+	/**
+	 * Конструктор
+	 * @param parent ссыка на объект-владелец
+	 * @param fl флаги окна
+	 */
+	RobotWindow(QWidget *parent = 0, Qt::WindowFlags fl = 0);
+	/**
+	 * Деструктор
+	 */
+	~RobotWindow();
 
-	
+
 };
 #endif

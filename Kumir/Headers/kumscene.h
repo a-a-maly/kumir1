@@ -1,27 +1,26 @@
 #ifndef KUMSCENE_H
 #define KUMSCENE_H
 
-#include <QtCore>
-#include <QtGui>
+#include <QGraphicsScene>
 
 class KumScene: public QGraphicsScene
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    KumScene(QWidget *parent = 0);
+	KumScene(QWidget *parent = 0);
 
 public:
 signals:
-    void MousePress(qreal x,qreal y, bool Flag, qreal xScene,qreal yScene);
-    void MouseRelease(qreal x,qreal y, bool Flag);
-    void MouseMove(qreal x,qreal y, bool Flag);
-    void MouseWheel(int Delta);
-    //void MousePress1(qreal x,qreal y, bool Flag);
+	void MousePress(qreal x, qreal y, bool Flag, qreal xScene, qreal yScene);
+	void MouseRelease(qreal x, qreal y, bool Flag);
+	void MouseMove(qreal x, qreal y, bool Flag);
+	void MouseWheel(int Delta);
+	//void MousePress1(qreal x,qreal y, bool Flag);
 private:
-    void mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent );
-    void mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent );
-    void mouseMoveEvent ( QGraphicsSceneMouseEvent * mouseEvent );
-    void wheelEvent ( QGraphicsSceneWheelEvent * wheelEvent );
+	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
+	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
 
 
 

@@ -13,11 +13,12 @@
 ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 **
 ****************************************************************************/
-#include <QWidget>
 
 #include "ui_pult.h"
-#include <QtCore>
-#include <QtGui>
+#include <QWidget>
+#include <QLabel>
+class QFrame;
+
 #define SCROLL_STEP 10
 #define RESP_PANEL 50
 #define LOGGER_BUTTONS 140
@@ -35,25 +36,28 @@ class  linkLight : public QWidget
 	Q_OBJECT
 public:
 	/**
-		 * Конструктор
-		 * @param parent ссыка на объект-владелец
-		 * 
-		 */
-	linkLight ( QWidget* parent =0);
+	     * Конструктор
+	     * @param parent ссыка на объект-владелец
+	     *
+	     */
+	linkLight(QWidget *parent = 0);
 	/**
-		 * Деструктор
-		 */
-	~linkLight(){};
-	void setLink(bool b){onLine=b;};
+	     * Деструктор
+	     */
+	~linkLight() {};
+	void setLink(bool b)
+	{
+		onLine = b;
+	}
 	QString text;
 signals:
 	//void pressed();
 protected:
-	void paintEvent ( QPaintEvent * event );
+	void paintEvent(QPaintEvent *event);
 	// void mousePressEvent ( QMouseEvent * event );
 	//void mouseReleaseEvent ( QMouseEvent * event );
 private:
-	int posX,posY;
+	int posX, posY;
 	bool onLine;
 };
 
@@ -63,23 +67,37 @@ class  MainButton : public QWidget
 	Q_OBJECT
 public:
 	/**
-		 * Конструктор
-		 * @param parent ссыка на объект-владелец
-		 * 
-		 */
-	MainButton ( QWidget* parent =0);
+	     * Конструктор
+	     * @param parent ссыка на объект-владелец
+	     *
+	     */
+	MainButton(QWidget *parent = 0);
 	/**
-		 * Деструктор
-		 */
-	~MainButton(){};
-	void setDirection(int d){direction=d;};
-	void setText(QString t){text=t;direction=TEXT;};
-	bool isChecked(){return checked;};
-	void setCheckable(bool flag){Q_UNUSED(flag);checkable=true;};
+	     * Деструктор
+	     */
+	~MainButton() {};
+	void setDirection(int d)
+	{
+		direction = d;
+	};
+	void setText(QString t)
+	{
+		text = t;
+		direction = TEXT;
+	};
+	bool isChecked()
+	{
+		return checked;
+	};
+	void setCheckable(bool flag)
+	{
+		Q_UNUSED(flag);
+		checkable = true;
+	};
 	void setChecked(bool flag)
 	{
-		checked=flag;
-		downFlag=flag;
+		checked = flag;
+		downFlag = flag;
 		repaint();
 	};
 	bool loadIcon(QString icon);
@@ -88,21 +106,21 @@ signals:
 	void pressed();
 	void clicked();
 protected:
-    void paintEvent ( QPaintEvent * event );
-    void mousePressEvent ( QMouseEvent * event );
-    void mouseReleaseEvent ( QMouseEvent * event );
-    void enterEvent ( QEvent * event );
-    void leaveEvent ( QEvent * event );
+	void paintEvent(QPaintEvent *event);
+	void mousePressEvent(QMouseEvent *event);
+	void mouseReleaseEvent(QMouseEvent *event);
+	void enterEvent(QEvent *event);
+	void leaveEvent(QEvent *event);
 
 private:
-    void drawAddons(QPainter* painter);
-    int posX,posY;
-    uint direction;
-    QImage buttonImageUp,buttonImageDown,buttonIcon;
-    bool downFlag,checked,checkable,mouseOver,icon;
-    QWidget* Parent;
-    QVector<QLine> upArrow,downArrow,leftArrow,rightArrow;
-    QString text;
+	void drawAddons(QPainter *painter);
+	int posX, posY;
+	uint direction;
+	QImage buttonImageUp, buttonImageDown, buttonIcon;
+	bool downFlag, checked, checkable, mouseOver, icon;
+	QWidget *Parent;
+	QVector<QLine> upArrow, downArrow, leftArrow, rightArrow;
+	QString text;
 };
 
 
@@ -112,29 +130,32 @@ class  loggerButton : public QWidget
 	Q_OBJECT
 public:
 	/**
-		 * Конструктор
-		 * @param parent ссыка на объект-владелец
-		 * 
-		 */
-	loggerButton ( QWidget* parent =0);
+	     * Конструктор
+	     * @param parent ссыка на объект-владелец
+	     *
+	     */
+	loggerButton(QWidget *parent = 0);
 	/**
-		 * Деструктор
-		 */
-	~loggerButton(){};
-	void upArrowType(bool b){isUpArrow=b;};
+	     * Деструктор
+	     */
+	~loggerButton() {};
+	void upArrowType(bool b)
+	{
+		isUpArrow = b;
+	};
 signals:
 	void pressed();
 protected:
-    void paintEvent ( QPaintEvent * event );
-    void mousePressEvent ( QMouseEvent * event );
-    void mouseReleaseEvent ( QMouseEvent * event );
+	void paintEvent(QPaintEvent *event);
+	void mousePressEvent(QMouseEvent *event);
+	void mouseReleaseEvent(QMouseEvent *event);
 private:
-    int posX,posY;
-    bool isUpArrow;
-    QImage buttonImageUp,buttonImageDown;
-    bool downFlag;
-    QWidget* Parent;
-    QVector<QLine> upArrow,downArrow;
+	int posX, posY;
+	bool isUpArrow;
+	QImage buttonImageUp, buttonImageDown;
+	bool downFlag;
+	QWidget *Parent;
+	QVector<QLine> upArrow, downArrow;
 };
 
 
@@ -142,33 +163,33 @@ class logLine
 {
 public:
 	logLine(QString KumCommand,
-			QString LogCommand,
-			QString React,QFrame* frame,QFrame* respFrame,uint pos)
+		QString LogCommand,
+		QString React, QFrame *frame, QFrame *respFrame, uint pos)
 	{
-		kumCommand=KumCommand;
-		logCommand=LogCommand;
-		react=React;
-		textLabel=new QLabel(frame);
+		kumCommand = KumCommand;
+		logCommand = LogCommand;
+		react = React;
+		textLabel = new QLabel(frame);
 		textLabel->setText(logCommand);
-		textLabel->move(4,pos);
-		textLabel->resize(120,20);
+		textLabel->move(4, pos);
+		textLabel->resize(120, 20);
 		textLabel->show();
 
-		respLabel=new QLabel(respFrame);
+		respLabel = new QLabel(respFrame);
 		respLabel->setText(React);
-		respLabel->move(4,pos);
-		respLabel->resize(RESP_PANEL,20);
+		respLabel->move(4, pos);
+		respLabel->resize(RESP_PANEL, 20);
 		respLabel->show();
 	};
 	void moveUp()
 	{
-        textLabel->move(textLabel->x(),textLabel->y()-SCROLL_STEP);
-        respLabel->move(respLabel->x(),respLabel->y()-SCROLL_STEP);
+		textLabel->move(textLabel->x(), textLabel->y() - SCROLL_STEP);
+		respLabel->move(respLabel->x(), respLabel->y() - SCROLL_STEP);
 	};
 	void moveDown()
 	{
-        textLabel->move(textLabel->x(),textLabel->y()+SCROLL_STEP);
-        respLabel->move(respLabel->x(),respLabel->y()+SCROLL_STEP);
+		textLabel->move(textLabel->x(), textLabel->y() + SCROLL_STEP);
+		respLabel->move(respLabel->x(), respLabel->y() + SCROLL_STEP);
 	};
 	int pos()
 	{
@@ -176,46 +197,53 @@ public:
 	};
 	int removeLabels()
 	{
-		if(textLabel)delete textLabel;
-		if(respLabel)delete respLabel;
+		if (textLabel) {
+			delete textLabel;
+		}
+		if (respLabel) {
+			delete respLabel;
+		}
 		return 0;
 	};
-    QString KumCommand(){return kumCommand;};
+	QString KumCommand()
+	{
+		return kumCommand;
+	};
 private:
-    QString kumCommand;
-    QString logCommand;
-    QString react;
-    QLabel * textLabel;
-    QLabel * respLabel;
+	QString kumCommand;
+	QString logCommand;
+	QString react;
+	QLabel *textLabel;
+	QLabel *respLabel;
 };
 class pultLogger : public QWidget
 {
 	Q_OBJECT
 public:
 	/**
-		 * Конструктор
-		 * @param parent ссыка на объект-владелец
-		 * @param fl флаги окна
-		 */
-	pultLogger ( QWidget* parent = 0);
+	     * Конструктор
+	     * @param parent ссыка на объект-владелец
+	     * @param fl флаги окна
+	     */
+	pultLogger(QWidget *parent = 0);
 	/**
-		 * Деструктор
-		 */
+	     * Деструктор
+	     */
 	~pultLogger();
-	void setSizes(uint w,uint h);
-	void Move(uint x,uint y);
+	void setSizes(uint w, uint h);
+	void Move(uint x, uint y);
 
 
 
 
 	void Show()
 	{
-        //mainFrame->show();
-        //downButton->show();
-        //upButton->show();
-        //show();
+		//mainFrame->show();
+		//downButton->show();
+		//upButton->show();
+		//show();
 	}
-	void appendText(QString kumCommand,QString text,QString replay);
+	void appendText(QString kumCommand, QString text, QString replay);
 
 public slots:
 	void upBtnPressed();
@@ -223,40 +251,47 @@ public slots:
 	void ClearLog();
 	void CopyLog();
 private:
-	QFrame * mainFrame;
-	QFrame * dummyFrame;
-	QFrame * respFrame;
-	int W,H;
+	QFrame *mainFrame;
+	QFrame *dummyFrame;
+	QFrame *respFrame;
+	int W, H;
 	int pos;
 	//QLabel * testLabel;
 	//QFrame * mainFrame;
 	QList<logLine> lines;
 	int buttonSize;
-	loggerButton* downButton;
-	loggerButton* upButton;
+	loggerButton *downButton;
+	loggerButton *upButton;
 };
 
-class RoboPult : public QWidget, public Ui::RoboPult 
+class RoboPult : public QWidget, public Ui::RoboPult
 {
 	Q_OBJECT
 public:
 	/**
-		 * Конструктор
-		 * @param parent ссыка на объект-владелец
-		 * @param fl флаги окна
-		 */
-	RoboPult ( QWidget* parent = 0, Qt::WFlags fl = 0 );
+	     * Конструктор
+	     * @param parent ссыка на объект-владелец
+	     * @param fl флаги окна
+	     */
+	RoboPult(QWidget *parent = 0, Qt::WindowFlags fl = 0);
 	/**
-		 * Деструктор
-		 */
-	~RoboPult(){};
-    
-    bool Link(){return link;};
-    pultLogger * Logger;
-	pultLogger * pltLogger(){return Logger;};
+	     * Деструктор
+	     */
+	~RoboPult() {};
+
+	bool Link()
+	{
+		return link;
+	}
+
+	pultLogger *Logger;
+	pultLogger *pltLogger()
+	{
+		return Logger;
+	};
 	public
-			slots:
-			void noLink();
+slots:
+	void noLink();
 	void LinkOK();
 
 	void Up();
@@ -300,7 +335,7 @@ signals:
 private:
 	bool link;
 	void paintEvent(QPaintEvent *);
-	linkLight * greenLight;
-	MainButton* buttUp,*buttDown,*buttLeft,*buttRight;
-	MainButton* askStena,*askFree,*buttRad,*buttTemp;
+	linkLight *greenLight;
+	MainButton *buttUp, *buttDown, *buttLeft, *buttRight;
+	MainButton *askStena, *askFree, *buttRad, *buttTemp;
 };

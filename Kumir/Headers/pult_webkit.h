@@ -1,20 +1,20 @@
 #ifndef PULT_WEBKIT_H
 #define PULT_WEBKIT_H
 
-#include <QtCore>
-#include <QtGui>
-#include <QtWebKit>
+#include <QWebView>
 
-class RobotPultWK:
-        public QWebView
+class RobotPultWK: public QWebView
 {
-    Q_OBJECT;
+	Q_OBJECT;
 public:
-    explicit RobotPultWK(QWidget *parent);
+	explicit RobotPultWK(QWidget *parent);
 public slots:
-    void setHasLink(bool hasLink);
-    inline bool isHasLink() { return b_hasLink; }
-    void setCommandResult(const QString &text);
+	void setHasLink(bool hasLink);
+	inline bool isHasLink()
+	{
+		return b_hasLink;
+	}
+	void setCommandResult(const QString &text);
 signals:
 	void goUp();
 	void goDown();
@@ -39,13 +39,13 @@ signals:
 	void Rad();
 	void Temp();
 protected slots:
-    void setJavaScriptObjects();
-    void evaluateCommand(const QString &text);
-    void setWindowSize(int w, int h);
-    void copyToClipboard(const QString &data);
+	void setJavaScriptObjects();
+	void evaluateCommand(const QString &text);
+	void setWindowSize(int w, int h);
+	void copyToClipboard(const QString &data);
 protected:
-    QString s_lastCommand;
-    bool b_hasLink;
+	QString s_lastCommand;
+	bool b_hasLink;
 };
 
 #endif // PULT_WEBKIT_H

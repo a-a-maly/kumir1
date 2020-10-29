@@ -19,30 +19,30 @@
 #include "assistant.h"
 #include "application.h"
 
-ToolTip::ToolTip ( QWidget* parent, Qt::WFlags fl )
-	: QWidget ( parent, fl ), Ui::ToolTip()
+ToolTip::ToolTip(QWidget *parent, Qt::WindowFlags fl)
+	: QWidget(parent, fl), Ui::ToolTip()
 {
-	setupUi ( this );
+	setupUi(this);
 	setVisible(false);
-	connect ( list, SIGNAL (itemSelectionChanged () ), this, SLOT( setButtonsEnabled() ) );
-	connect ( list, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(mouseClick(QListWidgetItem*)));
-	connect ( list, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(activated(QListWidgetItem*)));
-	connect ( btnEnter, SIGNAL (clicked()), this, SLOT(enter()) );
-	connect ( btnInfo, SIGNAL( clicked()), this , SLOT(help()) );
+	connect(list, SIGNAL(itemSelectionChanged()), this, SLOT(setButtonsEnabled()));
+	connect(list, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(mouseClick(QListWidgetItem *)));
+	connect(list, SIGNAL(itemActivated(QListWidgetItem *)), this, SLOT(activated(QListWidgetItem *)));
+	connect(btnEnter, SIGNAL(clicked()), this, SLOT(enter()));
+	connect(btnInfo, SIGNAL(clicked()), this, SLOT(help()));
 	m_closed = true;
 	setWindowFlags(Qt::Popup);
 }
 
 void ToolTip::closeEvent(QCloseEvent *event)
 {
-    QWidget::closeEvent(event);
-    emit closed();
+	QWidget::closeEvent(event);
+	emit closed();
 }
 
 void ToolTip::hideEvent(QHideEvent *event)
 {
-    QWidget::hideEvent(event);
-    emit closed();
+	QWidget::hideEvent(event);
+	emit closed();
 }
 
 ToolTip::~ToolTip()
@@ -51,8 +51,8 @@ ToolTip::~ToolTip()
 
 void ToolTip::init()
 {
-    m_closed = false;
-    m_activatedByMouse = false;
+	m_closed = false;
+	m_activatedByMouse = false;
 }
 
 void ToolTip::hide()
@@ -64,41 +64,41 @@ void ToolTip::hide()
 
 void ToolTip::setButtonsEnabled()
 {
-	if ( !list->currentItem()->text().isEmpty() ) {
-		// 		qDebug("aaa: %s",list->currentItem()->text().toUtf8().data());
+	if (!list->currentItem()->text().isEmpty()) {
+		//      qDebug("aaa: %s",list->currentItem()->text().toUtf8().data());
 		btnInfo->setEnabled(true);
 		btnEnter->setEnabled(true);
-	}
-	else {
-		// 		qDebug("bbb");
+	} else {
+		//      qDebug("bbb");
 		btnInfo->setEnabled(false);
 		btnEnter->setEnabled(false);
 	}
 }
 
-void ToolTip::enter() 
+void ToolTip::enter()
 {
 	emit itemSelected(list->currentItem(), "button");
 }
 
 void ToolTip::mouseClick(QListWidgetItem *item)
 {
-    Q_UNUSED(item);
-    m_activatedByMouse = true;
+	Q_UNUSED(item);
+	m_activatedByMouse = true;
 }
 
 void ToolTip::activated(QListWidgetItem *item)
 {
-    QString reason;
-    if (m_activatedByMouse)
-        reason = "click";
-    else
-        reason = "key";
-    emit itemSelected(item, reason);
-    m_activatedByMouse = false;
+	QString reason;
+	if (m_activatedByMouse) {
+		reason = "click";
+	} else {
+		reason = "key";
+	}
+	emit itemSelected(item, reason);
+	m_activatedByMouse = false;
 }
 
 void ToolTip::help()
 {
-    //	app()->assistant->showTip(list->currentItem()->text());
+	//  app()->assistant->showTip(list->currentItem()->text());
 }

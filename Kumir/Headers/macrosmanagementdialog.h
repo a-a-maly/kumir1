@@ -17,46 +17,44 @@
 #define MACROSMANAGEMENTDIALOG_H
 
 #include <QDialog>
-#include <QtCore>
-#include <QtGui>
 #include "ui_MacrosManagementDialog.h"
 
 /** Диалог управления макросами */
 class MacrosManagementDialog : public QDialog, private Ui::Dialog
 {
-		Q_OBJECT
+	Q_OBJECT
 
-	public:
-		/**
-		 * Конструктор
-		 * @param parent ссылка на объект-владелец
-		 * @param fl флаги окна
-		 */
-		MacrosManagementDialog ( QWidget* parent = 0, Qt::WFlags fl = 0 );
-		~MacrosManagementDialog();
-	
-	public slots:
-		/*$PUBLIC_SLOTS$*/
+public:
+	/**
+	 * Конструктор
+	 * @param parent ссылка на объект-владелец
+	 * @param fl флаги окна
+	 */
+	MacrosManagementDialog(QWidget *parent = 0, Qt::WindowFlags fl = 0);
+	~MacrosManagementDialog();
 
-	protected:
-		/*$PROTECTED_FUNCTIONS$*/
+public slots:
+	/*$PUBLIC_SLOTS$*/
 
-	protected slots:
-		/**
-		 * Выбор макроса из списка. Проверяет его редактируемость
-		 * @param item ссылка на элемент списка
-		 */
-		void selectMacro(QListWidgetItem * item = NULL);
-		/**
-		 * Удаляет макрос, если это возможно
-		 * @param item ссылка на элемент списка
-		 */
-		void deleteMacro(QListWidgetItem * item = 0);
-		/**
-		 * Вызывает диалог редактирования макроса, если он редактируемый
-		 * @param item ссылка на элемент списка
-		 */
-		void editMacro(QListWidgetItem * item = 0);
+protected:
+	/*$PROTECTED_FUNCTIONS$*/
+
+protected slots:
+	/**
+	 * Выбор макроса из списка. Проверяет его редактируемость
+	 * @param item ссылка на элемент списка
+	 */
+	void selectMacro(QListWidgetItem *item = NULL);
+	/**
+	 * Удаляет макрос, если это возможно
+	 * @param item ссылка на элемент списка
+	 */
+	void deleteMacro(QListWidgetItem *item = 0);
+	/**
+	 * Вызывает диалог редактирования макроса, если он редактируемый
+	 * @param item ссылка на элемент списка
+	 */
+	void editMacro(QListWidgetItem *item = 0);
 
 };
 

@@ -15,27 +15,23 @@
 //****************************************************************************/
 
 
-        /* Kum_Instrument
+/* Kum_Instrument
 Класс встроенных функций кумир
-*/ 
+*/
 
 #ifndef KUM_INSTR_H
 #define KUM_INSTR_H
 #include "int_proga.h"
 #include "kum_tables.h"
 #include "cell_dialog.h"
-//#include "pult.h"
 #include "printDialog.h"
-        //#include <Qt3Support/Q3Canvas>
-#include <QtCore>
-#include <QtGui>
-#include <QGraphicsScene>
 #include "robotwindow.h"
+#include <QObject>
 
-#define LEFT_WALL 	0x1
-#define RIGHT_WALL 	0x2
-#define DOWN_WALL 	0x4
-#define UP_WALL   	0x8
+#define LEFT_WALL   0x1
+#define RIGHT_WALL  0x2
+#define DOWN_WALL   0x4
+#define UP_WALL     0x8
 #define MAX_CLICK_DELTA 7
 
 #define NO_CRASH 0
@@ -44,18 +40,12 @@
 #define LEFT_CRASH 3
 #define RIGHT_CRASH 4
 
-        class function_table;
+class function_table;
 //class symbol_table;
 class KumValueStackElem;
 // class RobotWindow;
 
 class PrintDialog;
-
-
-
-
-
-
 
 
 class KumInstrument : public QObject
@@ -64,9 +54,9 @@ class KumInstrument : public QObject
 	Q_OBJECT
 public:
 	/**
-		 * Конструктор
-		 * @param parent сслыка на объект-владелец
-		 */
+	     * Конструктор
+	     * @param parent сслыка на объект-владелец
+	     */
 	KumInstrument(QWidget *parent = 0)
 	{
 		Q_UNUSED(parent);
@@ -77,45 +67,45 @@ public:
 		Q_UNUSED(EditMode);
 	};
 
-	virtual void runFunc(QString name,QList<KumValueStackElem>* aruments,int*err)
+	virtual void runFunc(QString name, QList<KumValueStackElem> *aruments, int *err)
 	{
 		Q_UNUSED(name);
 		Q_UNUSED(aruments);
 		Q_UNUSED(err);
-		qDebug()<<"BUG:Use Of prototype!!!!";
+		qDebug() << "BUG:Use Of prototype!!!!";
 	};//Преопределяется классом выполнения  функцийp
 public slots:
-    virtual void lockControls(void)
-    {
-    };//Преопределяется классом выполнения  функций
-    virtual void unLockControls(void)
-    {
-    };//Преопределяется классом выполнения  функций
-    virtual void CloseInst(void)
-    {
-    };//Преопределяется классом выполнения  функций
-    virtual void reset(void)
-    {
-    };//Преопределяется классом выполнения  функций
-    virtual void showHideWindow(bool)
-    {
-    };
-    virtual void setWindowPos(int x,int y)
-    {
-        Q_UNUSED(x);
-        Q_UNUSED(y);
-    };
-    virtual void getWindowPos(int* x,int* y)
-    {
-        Q_UNUSED(x);
-        Q_UNUSED(y);
-    };
-	//Преопределяется классом выполнения  функций   
+	virtual void lockControls(void)
+	{
+	};//Преопределяется классом выполнения  функций
+	virtual void unLockControls(void)
+	{
+	};//Преопределяется классом выполнения  функций
+	virtual void CloseInst(void)
+	{
+	};//Преопределяется классом выполнения  функций
+	virtual void reset(void)
+	{
+	};//Преопределяется классом выполнения  функций
+	virtual void showHideWindow(bool)
+	{
+	};
+	virtual void setWindowPos(int x, int y)
+	{
+		Q_UNUSED(x);
+		Q_UNUSED(y);
+	};
+	virtual void getWindowPos(int *x, int *y)
+	{
+		Q_UNUSED(x);
+		Q_UNUSED(y);
+	};
+	//Преопределяется классом выполнения  функций
 	virtual void SwitchMode(int x)
 	{
 		Q_UNUSED(x);
 		emit sync(); //!После переключения режима небходима синхронизация
-                qDebug("Sync from virual KumInstrument");
+		qDebug("Sync from virual KumInstrument");
 	};
 	virtual void close() = 0;
 	virtual QRect getWindowGeometry()
@@ -124,16 +114,18 @@ public slots:
 	};
 
 	//ZAPLATKI
-	virtual void setRobotStartField(class RoboField * startField)
-	{Q_UNUSED(startField);};
+	virtual void setRobotStartField(class RoboField *startField)
+	{
+		Q_UNUSED(startField);
+	};
 	virtual void restoreRobotStartField()
 	{};
-      signals:
-    void sync();
-    void FieldEdit();
-    void pultCommand(QString text);
+signals:
+	void sync();
+	void FieldEdit();
+	void pultCommand(QString text);
 public:
-    virtual int getFunctionList(function_table* Functions,symbol_table* Symbols);
+	virtual int getFunctionList(function_table *Functions, symbol_table *Symbols);
 
 };
 
@@ -141,29 +133,28 @@ public:
 class KumModules;
 
 //Стандартные функции
-class KumStandartFunctions
-	: public KumInstrument
-	
+class KumStandartFunctions : public KumInstrument
+
 {
 	Q_OBJECT
 public:
 	/**
-		 * Конструктор
-		 * @param parent сслыка на объект-владелец
-		 */
+	     * Конструктор
+	     * @param parent сслыка на объект-владелец
+	     */
 	KumStandartFunctions(KumModules *modules, QWidget *parent = 0);
 public:
-    int getFunctionList(function_table* Functions,symbol_table* Symbols);
-      public slots:
-    void runFunc(QString name,QList<KumValueStackElem>* aruments,int *err);
-    void close () {}
-      signals:
-    void sync();
-      private:
-    function_table* functions;
-    symbol_table* symbols;
-    QTextCodec* codec;
-    KumModules *m_modules;
+	int getFunctionList(function_table *Functions, symbol_table *Symbols);
+public slots:
+	void runFunc(QString name, QList<KumValueStackElem> *aruments, int *err);
+	void close() {}
+signals:
+	void sync();
+private:
+	function_table *functions;
+	symbol_table *symbols;
+	QTextCodec *codec;
+	KumModules *m_modules;
 };
 
 
@@ -187,7 +178,7 @@ public:
 #define MAX_SIZE 256
 #define MIN_SIZE 3
 // NEW V.K. 05-10
-#define MIN_TEMP -273 
+#define MIN_TEMP -273
 #define DPANEL_HIGTH 0
 //#define PANEL_HIGTH 0
 #define BTNXSDVIG 0

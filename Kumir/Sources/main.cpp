@@ -17,7 +17,8 @@
 #include "application.h"
 #include "compiler.h"
 #include <iostream>
-#include <QtGui>
+#include <QMessageBox>
+#include <QSplashScreen>
 
 #include "tools.h"
 int main(int argc, char *argv[])
@@ -36,7 +37,7 @@ int main(int argc, char *argv[])
 	QString msgLoadingMacros = QString::fromUtf8("Загрузка макросов...");
 	QString msgLoadKumirModules = QString::fromUtf8("Загрузка исполнителей учителя...");
 	QString msgStartingEmergencyRestore = QString::fromUtf8("Подготовка аварийного восстановления...");
-	if (QLocale::system().language()!=QLocale::Russian) {
+	if (QLocale::system().language() != QLocale::Russian) {
 		msgLoadingSettings = "Loading settings...";
 		msgSettingLanguage = "Selecting language...";
 		msgPreparingCompiler = "Preparing compiler...";
@@ -53,12 +54,11 @@ int main(int argc, char *argv[])
 	bool headless = false;
 	bool showHelpAndExit = false;
 	QString message;
-	for ( int i=0; i<argc; i++ ) {
+	for (int i = 0; i < argc; i++) {
 		QString param = QString(argv[i]);
-		if (param=="-batch" || param=="--batch" || param=="-b") {
+		if (param == "-batch" || param == "--batch" || param == "-b") {
 			headless = true;
-		}
-		else if (param=="-h" || param=="--help") {
+		} else if (param == "-h" || param == "--help") {
 			message += QString::fromUtf8("Система программирования КуМир\n");
 			message += QString::fromUtf8("\n");
 			message += QString::fromUtf8("Использование: kumir [-h] [--config=путь_к_файлу] [--workdir=путь_к_каталогу]\n");
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 			message += QString::fromUtf8("\n");
 			message += QString::fromUtf8("--config=путь_к_файлу\tХранить настройки в файле \"путь_к_файлу\"\n");
 			message += QString::fromUtf8("--workdir=путь_к_каталогу\tиспользовать каталог \"путь_к_каталогу\" в качестве рабочего\n");
-			std::cout<<message.toUtf8().data();
+			std::cout << message.toUtf8().data();
 #ifndef Q_OS_WIN32
 			exit(0);
 #endif
@@ -79,68 +79,94 @@ int main(int argc, char *argv[])
 	if (headless) {
 		// TODO: Make QCoreApplication instead of QApplication!!!!!
 		application = new QApplication(argc, argv);
-		//		application = new QCoreApplication(argc, argv);
-	}
-	else {
+		//      application = new QCoreApplication(argc, argv);
+	} else {
 		application = new QApplication(argc, argv);
 	}
 	if (showHelpAndExit) {
 		QMessageBox *w_usage = new QMessageBox(QMessageBox::Information, "Kumir", message);
 		w_usage->setMinimumWidth(900);
-		QObject::connect (w_usage, SIGNAL(buttonClicked(QAbstractButton*)), application, SLOT(quit()));
+		QObject::connect(w_usage, SIGNAL(buttonClicked(QAbstractButton *)), application, SLOT(quit()));
 		w_usage->show();
 		return application->exec();
 	}
 	if (!headless) {
 #ifndef Q_OS_MAC
-		splash = new QSplashScreen(QCoreApplication::applicationDirPath()+"/Kumir/Images/splashscreen.png");
+		splash = new QSplashScreen(QCoreApplication::applicationDirPath() + "/Kumir/Images/splashscreen.png");
 #endif
 #ifdef Q_OS_MAC
-		splash = new QSplashScreen(QCoreApplication::applicationDirPath()+"/../Resources/Images/splashscreen.png");
+		splash = new QSplashScreen(QCoreApplication::applicationDirPath() + "/../Resources/Images/splashscreen.png");
 #endif
 		splash->show();
 	}
 	QCoreApplication::setOrganizationName(QString::fromUtf8("НИИСИ РАН"));
 	QCoreApplication::setApplicationName(QString::fromUtf8("Кумир"));
-        QCoreApplication::setApplicationVersion("1.8.1");
+	QCoreApplication::setApplicationVersion("1.8.1");
 	Application::createInstance();
-	if (splash) splash->showMessage(msgLoadingSettings,Qt::AlignBottom|Qt::AlignHCenter);
+	if (splash) {
+		splash->showMessage(msgLoadingSettings, Qt::AlignBottom | Qt::AlignHCenter);
+	}
 	Application::instance()->createSettings();
-	if (splash) splash->showMessage(msgSettingLanguage,Qt::AlignBottom|Qt::AlignHCenter);
+	if (splash) {
+		splash->showMessage(msgSettingLanguage, Qt::AlignBottom | Qt::AlignHCenter);
+	}
 	Application::instance()->createMessagesProvider();
 	Application::instance()->setLanguage();
-	if (splash) splash->showMessage(msgPreparingCompiler,Qt::AlignBottom|Qt::AlignHCenter);
+	if (splash) {
+		splash->showMessage(msgPreparingCompiler, Qt::AlignBottom | Qt::AlignHCenter);
+	}
 	Application::instance()->createCompiler();
-	if (splash) splash->showMessage(msgPreparingRuntime,Qt::AlignBottom|Qt::AlignHCenter);
+	if (splash) {
+		splash->showMessage(msgPreparingRuntime, Qt::AlignBottom | Qt::AlignHCenter);
+	}
 	Application::instance()->createRuntime();
-	if (splash) splash->showMessage(msgLoadKumirModules, Qt::AlignBottom|Qt::AlignHCenter);
+	if (splash) {
+		splash->showMessage(msgLoadKumirModules, Qt::AlignBottom | Qt::AlignHCenter);
+	}
 	Application::instance()->compiler->loadKumirModules();
 //	Application::instance()->compiler->updateMainId();
-	if (splash) splash->showMessage(msgPreparingMainWindow,Qt::AlignBottom|Qt::AlignHCenter);
+	if (splash) {
+		splash->showMessage(msgPreparingMainWindow, Qt::AlignBottom | Qt::AlignHCenter);
+	}
 	Application::instance()->loadTaskControlPlugin();
 	Application::instance()->createMainWindow();
-	if (splash) splash->showMessage(msgPreparingChildWindows,Qt::AlignBottom|Qt::AlignHCenter);
+	if (splash) {
+		splash->showMessage(msgPreparingChildWindows, Qt::AlignBottom | Qt::AlignHCenter);
+	}
 	Application::instance()->createSecondaryWindows();
-	if (splash) splash->showMessage(msgLoadingModules,Qt::AlignBottom|Qt::AlignHCenter);
+	if (splash) {
+		splash->showMessage(msgLoadingModules, Qt::AlignBottom | Qt::AlignHCenter);
+	}
 	Application::instance()->loadModules();
 //	Application::instance()->compiler->updateMainId();
-	if (splash) splash->showMessage(msgPreparingNetwork,Qt::AlignBottom|Qt::AlignHCenter);
+	if (splash) {
+		splash->showMessage(msgPreparingNetwork, Qt::AlignBottom | Qt::AlignHCenter);
+	}
 	Application::instance()->createNetworkUtilites();
-	if (splash) splash->showMessage(msgSettingInterconnections,Qt::AlignBottom|Qt::AlignHCenter);
+	if (splash) {
+		splash->showMessage(msgSettingInterconnections, Qt::AlignBottom | Qt::AlignHCenter);
+	}
 	Application::instance()->createConnections();
 
-	if ( headless ) {
+	if (headless) {
 		Application::instance()->prepareBatch();
 		Application::instance()->finishBatchInitialization();
-	}
-	else {
-		if (splash) splash->showMessage(msgLoadingMacros,Qt::AlignBottom|Qt::AlignHCenter);
+	} else {
+		if (splash) {
+			splash->showMessage(msgLoadingMacros, Qt::AlignBottom | Qt::AlignHCenter);
+		}
 		Application::instance()->createMacros();
-		if (splash) splash->showMessage(msgStartingEmergencyRestore,Qt::AlignBottom|Qt::AlignHCenter);
+		if (splash) {
+			splash->showMessage(msgStartingEmergencyRestore, Qt::AlignBottom | Qt::AlignHCenter);
+		}
 		Application::instance()->createCrashHelper();
-		if (splash) splash->clearMessage();
+		if (splash) {
+			splash->clearMessage();
+		}
 		Application::instance()->finishGUIInitialization();
-		if (splash) splash->hide();
+		if (splash) {
+			splash->hide();
+		}
 	}
 	return application->exec();
 }

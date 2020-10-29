@@ -17,7 +17,7 @@
 
 #include "gotolinedialog.h"
 
-GoToLineDialog::GoToLineDialog ( QWidget* parent, Qt::WFlags fl )
+GoToLineDialog::GoToLineDialog ( QWidget* parent, Qt::WindowFlags fl )
 		: QDialog ( parent, fl ), Ui::GoToLineDialog()
 {
 	setupUi ( this );

@@ -16,8 +16,8 @@
 #ifndef TAB_H
 #define TAB_H
 
-#include <QtCore>
-#include <QtGui>
+#include <QFont>
+class QPrinter;
 
 class TextEdit;
 

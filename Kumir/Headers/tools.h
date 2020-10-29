@@ -24,9 +24,7 @@
 #include "lineprop.h"
 #include "enums.h"
 
-#include <QtCore>
-#include <QtGui>
-#include <QtNetwork>
+#include <QThread>
 
 
 enum InputError {

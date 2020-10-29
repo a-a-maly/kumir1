@@ -16,23 +16,20 @@
 #ifndef LINEPROP_H
 #define LINEPROP_H
 
-#include <QtCore>
-#include <QtGui>
-#include <QtXml>
-
-//#include "strtypes.h"
 #include "int_proga.h"
+#include <QTextBlockUserData>
 
 enum BlockState { SIMPLE = -1, HIDDEN = 0, PROTECTED = 1 };
 
-struct HyperLink 
-{
-	HyperLink(int start, int end, const QString & link) {
+struct HyperLink {
+	HyperLink(int start, int end, const QString &link)
+	{
 		this->start = start;
 		this->end = end;
 		this->link = link;
 	}
-	HyperLink() {
+	HyperLink()
+	{
 		start = -1;
 		end = -1;
 		link = "";
@@ -45,9 +42,7 @@ struct HyperLink
 /**
  * Структура данных нагрузки
  */
-struct LineProp
-	: QTextBlockUserData
-{
+struct LineProp : QTextBlockUserData {
 	/**
 	 *  Конструктор. Инициализирует пустую нагрузку
 	 */
@@ -55,17 +50,17 @@ struct LineProp
 	{
 		str_type = Kumir::Empty;
 
-// 		editable = true;
-// 		visible = true;
-// 		allow_insert_after = true;
-// 		allow_insert_before = true;
-// 		hiddenText = "";
-  
+//      editable = true;
+//      visible = true;
+//      allow_insert_after = true;
+//      allow_insert_before = true;
+//      hiddenText = "";
+
 		error = 0;
 		error_count = 0;
 		normalize_error = 0;
-// 		isBreak = false;
-	
+//      isBreak = false;
+
 		lineChanged = true;
 		indentRang = 0;
 		indentRangNext = 0;
@@ -74,36 +69,36 @@ struct LineProp
 	/** Тип строки */
 	Kumir::InstructionType str_type;
 	/** Отступ строки */
-// 	int indent_count;
+//  int indent_count;
 	/** Отступ следующей строки. Используется для вставки новой строки без перекомпиляции  */
-// 	int indent_next;
+//  int indent_next;
 	/** Флаг редактируемости */
-// 	bool editable;
+//  bool editable;
 	/** Флаг видимости */
-// 	bool visible;
+//  bool visible;
 	/** Флаг возможности вставлять строку после */
-// 	bool allow_insert_after;
+//  bool allow_insert_after;
 	/** Флаг возможности вставлять строку перед */
-// 	bool allow_insert_before;
+//  bool allow_insert_before;
 	/** Скрытый текст */
-// 	QString hiddenText;
-  
+//  QString hiddenText;
+
 	int error;
 	int error_count;
 
-// 	bool isBreak;
+//  bool isBreak;
 	int indentRang;
 	int indentRangNext;
-	
+
 	int indentCount;
 	int normalize_error;
-	
+
 	QList<HyperLink> hyperlinks;
 	QList<ProgaText> normalizedLines;
-// 	QList<QPoint> errorPositions;
+//  QList<QPoint> errorPositions;
 	QVector<bool> errorMask;
 	QPoint normalizeErrorPosition;
-	
+
 	bool lineChanged;
 };
 

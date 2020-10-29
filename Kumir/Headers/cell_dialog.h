@@ -16,50 +16,47 @@
 #ifndef CELLDIALOG_H
 #define CELLDIALOG_H
 
-#include <QWidget>
+#include <QDialog>
 #include "ui_cell_dialog.h"
 
-#include <QtCore>
-#include <QtGui>
 class CellDialog : public QDialog, public Ui::CellDialog
 {
 	Q_OBJECT
-	public:
-		/**
-		 * Конструктор
-		 * @param parent ссыка на объект-владелец
-		 * @param fl флаги окна
-		 */
-		CellDialog ( QWidget* parent = 0, Qt::WFlags fl = 0 );
-		static CellDialog *instance();
-		/**
-		 * Деструктор
-		 */
-		~CellDialog();
-void setRowCols(int rows,int columns)//Set text
- {
-  pole->setText("["+QString::number(rows)+","+QString::number(columns)+"]");
- };
+public:
+	/**
+	 * Конструктор
+	 * @param parent ссыка на объект-владелец
+	 * @param fl флаги окна
+	 */
+	CellDialog(QWidget *parent = 0, Qt::WindowFlags fl = 0);
+	static CellDialog *instance();
+	/**
+	 * Деструктор
+	 */
+	~CellDialog();
 
-void setPos(int row,int column)
- {
-  row_pos=row-1;
-  col_pos=column-1;
-  stolbec->setText(QString::number(column));
-  ryad->setText(QString::number(row) );
- };
+	void setRowCols(int rows, int columns) //Set text
+	{
+		pole->setText("[" + QString::number(rows) + "," + QString::number(columns) + "]");
+	}
 
-public:int row_pos,col_pos;	
+	void setPos(int row, int column)
+	{
+		row_pos = row - 1;
+		col_pos = column - 1;
+		stolbec->setText(QString::number(column));
+		ryad->setText(QString::number(row));
+	}
+
+public:
+	int row_pos, col_pos;
 public slots:
-void radSliderChanged(int pos);
-void tempSliderChanged(int pos);
-void refresh();
+	void radSliderChanged(int pos);
+	void tempSliderChanged(int pos);
+	void refresh();
 
 private:
-int rows,columns;
-static CellDialog *m_instance;
-
-
-	
+	int rows, columns;
+	static CellDialog *m_instance;
 };
 #endif

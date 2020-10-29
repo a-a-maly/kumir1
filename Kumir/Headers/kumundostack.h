@@ -16,24 +16,23 @@
 #ifndef KUMUNDOSTACK_H
 #define KUMUNDOSTACK_H
 
-#include <QtCore>
 #include "lineprop.h"
 
 /**
-	@author Victor Yacovlev <V.Yacovlev@gmail.com>
+    @author Victor Yacovlev <V.Yacovlev@gmail.com>
 */
 
 enum EditorCommand {
 	Undo,
 	Redo,
-	MacroCMD, 
-	Charect, 
-	Enter, 
-	Delete, 
-	Cut, 
+	MacroCMD,
+	Charect,
+	Enter,
+	Delete,
+	Cut,
 	Backspace,
-	Insert, 
-	Comment, 
+	Insert,
+	Comment,
 	Uncomment,
 	SetText,
 	InsertLine,
@@ -41,8 +40,7 @@ enum EditorCommand {
 	FastInsertText
 };
 
-struct KumUndoElement
-{
+struct KumUndoElement {
 	QList<LineProp> savedLineProps;
 	QString savedText;
 	EditorCommand command;
@@ -54,16 +52,14 @@ struct KumUndoElement
 	QList<int> savedBlockStates;
 };
 
-struct KumUndoStack
-{
+struct KumUndoStack {
 	QStack<KumUndoElement> stack; // стек
 	EditorCommand lastCommand; // последняя команда или None
 	QChar lastCommandCharect; // последний добавленный/удалённый символ (для Charect, Delete или Backspace), или \0
 	bool inMacro; // выполняется макрос
 };
 
-struct KumRedoStack
-{
+struct KumRedoStack {
 	QStack<KumUndoElement> stack;
 };
 

@@ -21,222 +21,263 @@
 class STFile
 {
 public:
-     STFile()
-     {
-      ready=false;
-      in_skobka=false;
-      in_kavichka=false;
-      in_comment=false;
-      file=NULL;
-      fileError=0;
-      byteRead=false;	
-      codec = QTextCodec::codecForName("KOI8-R");
-			i_handle = -1;
-     };
-     ~STFile()
-     {
-     if(ready)
-       {
-     CloseFile(); 
-     delete file;
-       }else return;     
-     };
-int OpenFile(QString fileName,bool readOrWrite); //true  - write false - read
-int OpenByteFile(QString fileName,bool readOrWrite); //true  - write false - read
-
-void CloseFile();
-bool SkipSpaces();//TODO impl.
-bool atEnd()
-     {
-      if(!ready)qDebug("STFile not ready!");
-	if(byteRead)return dataStream.device()->bytesAvailable()==0;
-			int pos=fileData.pos();
-			Q_UNUSED(pos);
-			bool dataEnd=fileData.atEnd() && cur_symb==QChar(0);
-			return (dataEnd);
-     };
-int bytesAv(){return dataStream.device()->bytesAvailable();};
-QString name()
-     {
-      if(!ready){return "NOFILE"; };
-      return file->fileName();
-     };
-		 int handle()
-		 {
-			 if(!ready){return -1; };
-#ifdef WIN32
-			 if ( i_handle == -1 )
-				 generateHandle();
-			 return i_handle;
-#else
-			 return file->handle();
-#endif
-		 };
-bool forWrite()
-     {
-      if(!ready){qDebug("forWrite? - STFile not ready!"); return false; };
-      return write;
-     };
-bool WriteData(QString data)
-     {
-      if(!ready){qDebug("forWrite? - STFile not ready!"); return false; };
-       fileData << data;
-      return true;
-     };
-bool Flush()
-     {
-      if(!ready){qDebug("forWrite? - STFile not ready!"); return false; };
-       fileData.flush();
-      return file->flush();
-     };
-int error()
-   {
-     return fileError;
-   };
-void ResetFile()
-   {
-     if(isByteRead()){
-	qDebug()<<"Reset Byte file";
-	file->setTextModeEnabled(false);
-	file->reset();
-	file->seek(0);
-	ready=true;
-	};
-     if(!ready)qDebug("STFile not ready!");
-		 prepareFile();
-   };
-bool isLexemBreak()
-  {
-  if(!ready)qDebug("STFile not ready!");
-  if((cur_symb==',')||(cur_symb.unicode ()==10)||(cur_symb.isSpace()))return true;//PRAVKA SEPT09
-  else return false;
-  };
-QString getIntLexem(int *err,int *pos);
-QString getStrLexem(int *err,int *pos);
-QString getRealLexem(int *err,int *pos);
-QString getBoolLexem(int *err,int *pos);
-QString getCharLexem(int *err,int *pos);   
-int readByte();
-int writeByte( quint8 data)
+	STFile()
 	{
-	qDebug()<<"TOREC:"<<data;
-//	if((data<0)||(data>255))return INTFUN_NOT_KOI8_RANGE;
-        dataStream<<data;
-	return 0;
+		ready = false;
+		in_skobka = false;
+		in_kavichka = false;
+		in_comment = false;
+		file = NULL;
+		fileError = 0;
+		byteRead = false;
+		codec = QTextCodec::codecForName("KOI8-R");
+		i_handle = -1;
 	};
-bool isByteRead(){return byteRead;};
-void setByteRead(bool br){byteRead=br;};
+	~STFile()
+	{
+		if (ready) {
+			CloseFile();
+			delete file;
+		} else {
+			return;
+		}
+	};
+	int OpenFile(QString fileName, bool readOrWrite); //true  - write false - read
+	int OpenByteFile(QString fileName, bool readOrWrite); //true  - write false - read
+
+	void CloseFile();
+	bool SkipSpaces();//TODO impl.
+	bool atEnd()
+	{
+		if (!ready) {
+			qDebug("STFile not ready!");
+		}
+		if (byteRead) {
+			return dataStream.device()->bytesAvailable() == 0;
+		}
+		int pos = fileData.pos();
+		Q_UNUSED(pos);
+		bool dataEnd = fileData.atEnd() && cur_symb == QChar(0);
+		return (dataEnd);
+	};
+	int bytesAv()
+	{
+		return dataStream.device()->bytesAvailable();
+	};
+	QString name()
+	{
+		if (!ready) {
+			return "NOFILE";
+		};
+		return file->fileName();
+	};
+	int handle()
+	{
+		if (!ready) {
+			return -1;
+		};
+#ifdef WIN32
+		if (i_handle == -1) {
+			generateHandle();
+		}
+		return i_handle;
+#else
+		return file->handle();
+#endif
+	};
+	bool forWrite()
+	{
+		if (!ready) {
+			qDebug("forWrite? - STFile not ready!");
+			return false;
+		};
+		return write;
+	};
+	bool WriteData(QString data)
+	{
+		if (!ready) {
+			qDebug("forWrite? - STFile not ready!");
+			return false;
+		};
+		fileData << data;
+		return true;
+	};
+	bool Flush()
+	{
+		if (!ready) {
+			qDebug("forWrite? - STFile not ready!");
+			return false;
+		};
+		fileData.flush();
+		return file->flush();
+	};
+	int error()
+	{
+		return fileError;
+	};
+	void ResetFile()
+	{
+		if (isByteRead()) {
+			qDebug() << "Reset Byte file";
+			file->setTextModeEnabled(false);
+			file->reset();
+			file->seek(0);
+			ready = true;
+		};
+		if (!ready) {
+			qDebug("STFile not ready!");
+		}
+		prepareFile();
+	};
+	bool isLexemBreak()
+	{
+		if (!ready) {
+			qDebug("STFile not ready!");
+		}
+		if ((cur_symb == ',') || (cur_symb.unicode() == 10) || (cur_symb.isSpace())) {
+			return true;    //PRAVKA SEPT09
+		} else {
+			return false;
+		}
+	};
+	QString getIntLexem(int *err, int *pos);
+	QString getStrLexem(int *err, int *pos);
+	QString getRealLexem(int *err, int *pos);
+	QString getBoolLexem(int *err, int *pos);
+	QString getCharLexem(int *err, int *pos);
+	int readByte();
+	int writeByte(quint8 data)
+	{
+		qDebug() << "TOREC:" << data;
+//	if((data<0)||(data>255))return INTFUN_NOT_KOI8_RANGE;
+		dataStream << data;
+		return 0;
+	};
+	bool isByteRead()
+	{
+		return byteRead;
+	};
+	void setByteRead(bool br)
+	{
+		byteRead = br;
+	};
 private:
-bool byteRead;//Читаем по байтам?
-int prepareFile();
-bool checkSymb(QChar symb);
-QFile* file;
-bool ready;
-bool write;
-bool in_skobka,in_kavichka,in_comment;
-QTextStream fileData;
-int fileError;
-QChar cur_symb;
-QTextCodec* codec;
-int i_handle;
-void generateHandle();
-void releaseHandle();
-static QList<int> usedHandles;
-QDataStream dataStream;
+	bool byteRead;//Читаем по байтам?
+	int prepareFile();
+	bool checkSymb(QChar symb);
+	QFile *file;
+	bool ready;
+	bool write;
+	bool in_skobka, in_kavichka, in_comment;
+	QTextStream fileData;
+	int fileError;
+	QChar cur_symb;
+	QTextCodec *codec;
+	int i_handle;
+	void generateHandle();
+	void releaseHandle();
+	static QList<int> usedHandles;
+	QDataStream dataStream;
 };
 //Работа с файлами
 class KumFiles
-      : public KumInstrument
-	
+	: public KumInstrument
+
 {
 	Q_OBJECT
-	public:
-		/**
-		 * Конструктор
-		 * @param parent сслыка на объект-владелец
-		 */
-		KumFiles(QWidget *parent = 0);
-              
-       bool isReady()
-            {
-            return ready; 
-            };
-      public:      
-        int getFunctionList(function_table* Functions,symbol_table* Symbols); 
-        QString readLexem(int key,int *err);
-        bool CheckKey(int key)
-        {
-         if(getIdByKey(key)<0)return false;
-          else return true;
-        };
-        bool atEnd(int key,int *err)
-             {
-             if(getIdByKey(key)<0)
-                 {
-                   *err=7010;
-                   return false;
-                 };
-              return fileTable[key]->atEnd();
-             };
-       
-      public slots:
-        void runFunc(QString name,QList<KumValueStackElem>* aruments,int *err); 
+public:
+	/**
+	 * Конструктор
+	 * @param parent сслыка на объект-владелец
+	 */
+	KumFiles(QWidget *parent = 0);
 
-        QString getLexem(PeremType type,int key,int *err,int *pos);
+	bool isReady()
+	{
+		return ready;
+	};
+public:
+	int getFunctionList(function_table *Functions, symbol_table *Symbols);
+	QString readLexem(int key, int *err);
+	bool CheckKey(int key)
+	{
+		if (getIdByKey(key) < 0) {
+			return false;
+		} else {
+			return true;
+		}
+	};
+	bool atEnd(int key, int *err)
+	{
+		if (getIdByKey(key) < 0) {
+			*err = 7010;
+			return false;
+		};
+		return fileTable[key]->atEnd();
+	};
 
-        int writeText(int key,QString text,int *pos);
-				void close();
-     void reset(void)
-        {
-         qDebug("Files Reset");
-         for(int i=0;i<fileTable.count();i++)fileTable[i]->CloseFile();
-         fileTable.clear();
-        };
-       bool flushFile(int key)
-        {
-         int id=getIdByKey(key);
+public slots:
+	void runFunc(QString name, QList<KumValueStackElem> *aruments, int *err);
 
-         if(id<0)
-          {
-          return RT_FILE_NO_KEY;
-          };
-         return fileTable[id]->Flush();
-        };
+	QString getLexem(PeremType type, int key, int *err, int *pos);
 
-      signals:
-        void sync();
-      private:
-      bool isAbsPath(QString FileName)
-      {
-       #ifndef WIN32
-      if ( FileName.startsWith("/") )
-      return true;
-      #else
-       QRegExp diskName("[a-z]\\:\\\\",Qt::CaseInsensitive);
-      if ( diskName.indexIn(FileName) == 0 )
-      return true;
-      #endif
-      return false;
-      };
+	int writeText(int key, QString text, int *pos);
+	void close();
+	void reset(void)
+	{
+		qDebug("Files Reset");
+		for (int i = 0; i < fileTable.count(); i++) {
+			fileTable[i]->CloseFile();
+		}
+		fileTable.clear();
+	};
+	bool flushFile(int key)
+	{
+		int id = getIdByKey(key);
 
-       bool isOpen(QString fileName);
-       int getIdByKey(int key)
-        {
-       for(int i=0;i<fileTable.count();i++)
-         {
-         if(fileTable[i]->handle()==key)return i;
-         };
-          return -1;
-         };
+		if (id < 0) {
+			return RT_FILE_NO_KEY;
+		};
+		return fileTable[id]->Flush();
+	};
+
+signals:
+	void sync();
+private:
+	bool isAbsPath(QString FileName)
+	{
+#ifndef WIN32
+		if (FileName.startsWith("/")) {
+			return true;
+		}
+#else
+		QRegExp diskName("[a-z]\\:\\\\", Qt::CaseInsensitive);
+		if (diskName.indexIn(FileName) == 0) {
+			return true;
+		}
+#endif
+		return false;
+	};
+
+	bool isOpen(QString fileName);
+	int getIdByKey(int key)
+	{
+		for (int i = 0; i < fileTable.count(); i++) {
+			if (fileTable[i]->handle() == key) {
+				return i;
+			}
+		};
+		return -1;
+	};
 
 
-       function_table* functions;
-       symbol_table* symbols;
-       QTextCodec* codec;
-       bool ready;
-       QList<STFile*> fileTable;
+	function_table *functions;
+	symbol_table *symbols;
+	QTextCodec *codec;
+	bool ready;
+	QList<STFile *> fileTable;
 
-      
+
 };
 
 #endif

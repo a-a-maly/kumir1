@@ -18,8 +18,6 @@
 
 #include <QDialog>
 #include "ui_NewMacroDialog.h"
-#include <QtCore>
-#include <QtGui>
 
 class Macro;
 
@@ -30,37 +28,37 @@ class NewMacroDialog : public QDialog, private Ui::NewMacroDialog
 
 public:
 	/**
-		 * Конструктор диалога при создании нового макроса
-		 * @param parent ссылка на объект-владелец
-		 * @param fl флаги окна
-		 */
-	NewMacroDialog ( QWidget* parent = 0, Qt::WFlags fl = 0 );
+	     * Конструктор диалога при создании нового макроса
+	     * @param parent ссылка на объект-владелец
+	     * @param fl флаги окна
+	     */
+	NewMacroDialog(QWidget *parent = 0, Qt::WindowFlags fl = 0);
 	/**
-		 * Конструктор диалога при редактировании макроса
-		 * @param m ссылка на редактируемый макрос
-		 * @param parent ссылка на объект-владелец
-		 * @param fl флаги окна
-		 */
-	NewMacroDialog ( Macro *m, QWidget* parent = 0, Qt::WFlags fl = 0 );
+	     * Конструктор диалога при редактировании макроса
+	     * @param m ссылка на редактируемый макрос
+	     * @param parent ссылка на объект-владелец
+	     * @param fl флаги окна
+	     */
+	NewMacroDialog(Macro *m, QWidget *parent = 0, Qt::WindowFlags fl = 0);
 	/**
-		 * Деструктор
-		 */
+	     * Деструктор
+	     */
 	~NewMacroDialog();
 	/**
-		 * Возвращает имя макроса
-		 * @return имя макроса
-		 */
+	     * Возвращает имя макроса
+	     * @return имя макроса
+	     */
 	QString macroName();
 	/**
-		 * Возвращает последовательность клавиш
-		 * @return последовательность клавиш
-		 */
+	     * Возвращает последовательность клавиш
+	     * @return последовательность клавиш
+	     */
 	QString macroSequence();
 
 public slots:
 	/**
-		 * Закрытие диалога кнопкой OK
-		 */
+	     * Закрытие диалога кнопкой OK
+	     */
 	void accept();
 
 protected:
@@ -72,10 +70,10 @@ protected:
 
 protected slots:
 	/**
-		 * Выполняет перевод произвольного символа клавиатуры в его латинский аналог (в верхрем регистре)
-		 * @param s исходная клавиша
-		 */
-	void keyChanged(const QString & s);
+	     * Выполняет перевод произвольного символа клавиатуры в его латинский аналог (в верхрем регистре)
+	     * @param s исходная клавиша
+	     */
+	void keyChanged(const QString &s);
 
 
 };

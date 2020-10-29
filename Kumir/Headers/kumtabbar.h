@@ -17,34 +17,33 @@
 #define KUMTABBAR_H
 
 #include <QTabBar>
-#include <QtCore>
-#include <QtGui>
+#include <QIcon>
 
 /**
-	@author Victor Yacovlev <V.Yacovlev@gmail.com>
+    @author Victor Yacovlev <V.Yacovlev@gmail.com>
 */
 class KumTabBar : public QTabBar
 {
-Q_OBJECT
+	Q_OBJECT
 public:
-    KumTabBar(QWidget *parent = 0);
-		~KumTabBar();
-		void setIcon(const QPoint& position);
-	protected:
-		void mousePressEvent(QMouseEvent *event);
-		void enterEvent(QEvent* event);
-		void leaveEvent(QEvent* event);
-		void mouseMoveEvent(QMouseEvent *event);
-		int clickedNo;
-		QIcon realIcon;
-		QIcon closeIcon;
-		int prevTab;
+	KumTabBar(QWidget *parent = 0);
+	~KumTabBar();
+	void setIcon(const QPoint &position);
+protected:
+	void mousePressEvent(QMouseEvent *event);
+	void enterEvent(QEvent *event);
+	void leaveEvent(QEvent *event);
+	void mouseMoveEvent(QMouseEvent *event);
+	int clickedNo;
+	QIcon realIcon;
+	QIcon closeIcon;
+	int prevTab;
 
-	protected slots:
-		void closeTab();
-		
-	signals:
-		void tabCloseClicked(int no);
+protected slots:
+	void closeTab();
+
+signals:
+	void tabCloseClicked(int no);
 
 };
 

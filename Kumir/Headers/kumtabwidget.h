@@ -17,31 +17,29 @@
 #define KUMTABWIDGET_H
 
 #include <QTabWidget>
-#include <QtCore>
-#include <QtGui>
 
 class KumTabBar;
 
 /**
-	@author Victor Yacovlev <V.Yacovlev@gmail.com>
+    @author Victor Yacovlev <V.Yacovlev@gmail.com>
 */
 class KumTabWidget : public QTabWidget
 {
-Q_OBJECT
-	public:
-    KumTabWidget(QWidget *parent = 0);
-		~KumTabWidget();
-		void hideTabBar();
-		void showTabBar();
-		
-	protected:
-		KumTabBar *tabBar;
-		
-	protected slots:
-		void closeTab(int no);
-		
-	signals:
-		void closeTab1(int no);
+	Q_OBJECT
+public:
+	KumTabWidget(QWidget *parent = 0);
+	~KumTabWidget();
+	void hideTabBar();
+	void showTabBar();
+
+protected:
+	KumTabBar *tabBar;
+
+protected slots:
+	void closeTab(int no);
+
+signals:
+	void closeTab1(int no);
 
 };
 

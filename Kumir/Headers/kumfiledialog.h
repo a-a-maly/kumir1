@@ -17,10 +17,11 @@
 #define KUMFILEDIALOG_H
 
 #include <QFileDialog>
-#include <QtGui>
+class QComboBox;
+class QLabel;
 
 /**
-	@author Victor Yacovlev <V.Yacovlev@gmail.com>
+    @author Victor Yacovlev <V.Yacovlev@gmail.com>
 */
 
 struct TextFileInfo {
@@ -31,26 +32,26 @@ struct TextFileInfo {
 
 class KumFileDialog : public QFileDialog
 {
-Q_OBJECT
+	Q_OBJECT
 public:
-		KumFileDialog
-				( QWidget * parent = 0, const QString & caption = QString(), const QString & directory = QString(), const QString & filter = QString(), bool showEncodings = true );
+	KumFileDialog
+	(QWidget *parent = 0, const QString &caption = QString(), const QString &directory = QString(), const QString &filter = QString(), bool showEncodings = true);
 
-    ~KumFileDialog();
-		QString encoding();
-		void setEncoding(const QString &e);
-		static TextFileInfo getOpenFileName( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(), const QString & filter = QString(), QString encoding = QString("UTF-8"), bool showEncodings = true );
-		static TextFileInfo getSaveFileName( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(), const QString & filter = QString(), QString encoding = QString("UTF-8"), bool showEncodings = true );
-		void setEncodingVisible(bool flag);
-		void setEncodingEnabled(QList<bool> filtersEnabled);
-	protected:
-		QComboBox *encodings;
-		QLabel *l;
-		QList<bool> filtersEnabled;
-		
-	protected slots:
-		void checkFilter(const QString & filter);
-		
+	~KumFileDialog();
+	QString encoding();
+	void setEncoding(const QString &e);
+	static TextFileInfo getOpenFileName(QWidget *parent = 0, const QString &caption = QString(), const QString &dir = QString(), const QString &filter = QString(), QString encoding = QString("UTF-8"), bool showEncodings = true);
+	static TextFileInfo getSaveFileName(QWidget *parent = 0, const QString &caption = QString(), const QString &dir = QString(), const QString &filter = QString(), QString encoding = QString("UTF-8"), bool showEncodings = true);
+	void setEncodingVisible(bool flag);
+	void setEncodingEnabled(QList<bool> filtersEnabled);
+protected:
+	QComboBox *encodings;
+	QLabel *l;
+	QList<bool> filtersEnabled;
+
+protected slots:
+	void checkFilter(const QString &filter);
+
 
 };
 

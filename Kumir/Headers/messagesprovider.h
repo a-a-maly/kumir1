@@ -16,43 +16,42 @@
 #ifndef MESSAGESPROVIDER_H
 #define MESSAGESPROVIDER_H
 
-#include <QtCore>
-#include <QtGui>
+#include <QMap>
+#include <QObject>
 
 /**
-	Поставщик текстов сообщений об ошибках
+    Поставщик текстов сообщений об ошибках
 **/
 
 class MessagesProvider : public QObject
 {
-Q_OBJECT
+	Q_OBJECT
 public:
-    /**
-     * Конструктор
-     * @param parent ссылка на объект-владелец
-     */
-    MessagesProvider(QObject *parent = 0);
-    /**
-     * Деструктор
-     */
-    ~MessagesProvider();
-		/**
-		 * Возвращает сообщение об ошибке по его номеру
-		 * @param code код ошибки
-		 * @return текст сообщения
-		 */
-		QString errorMessage(uint code);
+	/**
+	 * Конструктор
+	 * @param parent ссылка на объект-владелец
+	 */
+	MessagesProvider(QObject *parent = 0);
+	/**
+	 * Деструктор
+	 */
+	~MessagesProvider();
+	/**
+	 * Возвращает сообщение об ошибке по его номеру
+	 * @param code код ошибки
+	 * @return текст сообщения
+	 */
+	QString errorMessage(uint code);
 
-	public slots:
-		/**
-		 * Инициализация
-		 * @param languageFileName имя файла с текстами ошибок
-		 */
-		void init(const QString & languageFileName);
-	protected:
-		/** Отбражение из кодов ошибок в тексты */
-		QMap<uint,QString> map;
-
+public slots:
+	/**
+	 * Инициализация
+	 * @param languageFileName имя файла с текстами ошибок
+	 */
+	void init(const QString &languageFileName);
+protected:
+	/** Отбражение из кодов ошибок в тексты */
+	QMap<uint, QString> map;
 };
 
 #endif

@@ -18,26 +18,25 @@
 #include "error.h"
 #include "config.h"
 
-MessagesProvider::MessagesProvider(QObject *parent)
- : QObject(parent)
+MessagesProvider::MessagesProvider(QObject *parent) : QObject(parent)
 {
 
 }
 
 
-void MessagesProvider::init(const QString & languageFileName)
+void MessagesProvider::init(const QString &languageFileName)
 {
 	map.clear();
 	QString msgFilePath;
+	QString appDirPath = QCoreApplication::applicationDirPath();
 #ifdef Q_OS_MAC
-	msgFilePath = QDir::cleanPath(QApplication::applicationDirPath()+"/../Resources/"+languageFileName);
+	msgFilePath = QDir::cleanPath(appDirPath + "/../Resources/" + languageFileName);
 #else
-	msgFilePath = QApplication::applicationDirPath() + "/Kumir/Languages/"+ languageFileName;
+	msgFilePath = appDirPath + "/Kumir/Languages/" + languageFileName;
 #endif
 	QFile f(msgFilePath);
-	if ( !f.open(QIODevice::ReadOnly) )
-	{
-                qDebug("Warning: error messages file \"%s\" not found! Error messages will be empty.",languageFileName.toUtf8().data());
+	if (!f.open(QIODevice::ReadOnly)) {
+		qDebug("Warning: error messages file \"%s\" not found! Error messages will be empty.", languageFileName.toUtf8().data());
 		return;
 	}
 	QTextStream ts(&f);
@@ -45,24 +44,20 @@ void MessagesProvider::init(const QString & languageFileName)
 	QString data = ts.readAll();
 	f.close();
 	QStringList lines = data.split("\n");
-	foreach ( QString line, lines )
-	{
-		if ( !line.startsWith("#") )
-		{
+	foreach (QString line, lines) {
+		if (!line.startsWith("#")) {
 			uint code;
 			QString msg;
 			QStringList pair = line.split(QRegExp("\\s+"));
-			if ( pair.count() >= 1 )
-			{
+			if (pair.count() >= 1) {
 				bool ok;
 				code = pair[0].toUInt(&ok);
-				if ( pair.count() >= 2 )
-				{
-					for ( int i=1; i<pair.count(); i++ )
-						msg += pair[i].simplified()+" ";
+				if (pair.count() >= 2) {
+					for (int i = 1; i < pair.count(); i++) {
+						msg += pair[i].simplified() + " ";
+					}
 				}
-				if ( ok )
-				{
+				if (ok) {
 					map[code] = msg;
 				}
 			}
@@ -73,23 +68,19 @@ void MessagesProvider::init(const QString & languageFileName)
 
 QString MessagesProvider::errorMessage(uint code)
 {
- if(code==ISP_INT_ERROR)
-	{
-	return app()->ispErrorText();
+	if (code == ISP_INT_ERROR) {
+		return app()->ispErrorText();
 	};
-	if ( map.keys().contains(code) )
-	{
+	if (map.keys().contains(code)) {
 		QString result = map[code];
 #ifdef SHOW_ERROR_CODES
 		{
-			result += " ("+QString::number(code)+")";
+			result += " (" + QString::number(code) + ")";
 		}
 #endif
 		return result;
-	}
-	else
-	{
-		return QString(tr("Error"))+" "+QString::number(code);
+	} else {
+		return QString(tr("Error")) + " " + QString::number(code);
 	}
 }
 

@@ -15,16 +15,15 @@
 ****************************************************************************/
 
 #include "robotwindow.h"
-#include "application.h"
 
 
-RobotWindow::RobotWindow ( QWidget* parent, Qt::WFlags fl ) :
-		QWidget(parent, fl),
-		Ui::RobotWindow()
+RobotWindow::RobotWindow ( QWidget* parent, Qt::WindowFlags fl ) :
+	QWidget(parent, fl),
+	Ui::RobotWindow()
 {
 	setupUi ( this );
-};
-;
+}
+
 RobotWindow::~RobotWindow()
 {
 }

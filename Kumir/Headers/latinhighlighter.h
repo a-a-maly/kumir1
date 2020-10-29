@@ -1,18 +1,17 @@
 #ifndef LATINHIGHLIGHTER_H
 #define LATINHIGHLIGHTER_H
 
-#include <QtCore>
-#include <QtGui>
+#include <QSyntaxHighlighter>
+class QTextEdit;
 
-class LatinHighlighter
-    : public QSyntaxHighlighter
+class LatinHighlighter : public QSyntaxHighlighter
 {
 public:
-    explicit LatinHighlighter(QTextEdit * editor);
+	explicit LatinHighlighter(QTextEdit *editor);
 protected:
-    void highlightBlock(const QString &text);
+	void highlightBlock(const QString &text);
 
-    QRegExp rxLatinSymbols;
+	QRegExp rxLatinSymbols;
 };
 
 #endif // LATINHIGHLIGHTER_H

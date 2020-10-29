@@ -1,10 +1,8 @@
 #ifndef KUMMODULES_H
 #define KUMMODULES_H
 
-#include <QtCore>
-#include <QtGui>
-
 #include "kum_tables.h"
+#include <QDomDocument>
 
 class KumModules : public QObject
 

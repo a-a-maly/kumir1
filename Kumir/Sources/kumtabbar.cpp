@@ -14,9 +14,10 @@
 **
 ****************************************************************************/
 #include "kumtabbar.h"
+#include <QMenu>
+#include <QMouseEvent>
 
-KumTabBar::KumTabBar(QWidget *parent)
- : QTabBar(parent)
+KumTabBar::KumTabBar(QWidget *parent) : QTabBar(parent)
 {
 	closeIcon = QIcon(QString::fromUtf8(":/icons/window-close.png"));
 	setMouseTracking(true);
@@ -25,55 +26,54 @@ KumTabBar::KumTabBar(QWidget *parent)
 
 void KumTabBar::mousePressEvent(QMouseEvent *event)
 {
-	if ( event->button()==Qt::RightButton ) {
+	if (event->button() == Qt::RightButton) {
 		clickedNo = tabAt(event->pos());
-		if ( clickedNo > 0 ) {
+		if (clickedNo > 0) {
 			QMenu *menu = new QMenu(this);
-			*menu->addAction(tr("Close"),this,SLOT(closeTab()));
+			*menu->addAction(tr("Close"), this, SLOT(closeTab()));
 			menu->exec(event->globalPos());
 		}
-	}
-	else {
+	} else {
 		clickedNo = tabAt(event->pos());
 		QRect r = tabRect(clickedNo);
 		int w = iconSize().width();
 		int x = event->pos().x();
-		if ( x >= r.x() && x <= r.x() + w*1.5  && clickedNo > 0 ) {
+		if (x >= r.x() && x <= r.x() + w * 1.5  && clickedNo > 0) {
 			emit tabCloseClicked(clickedNo);
-		}
-		else {
+		} else {
 			QTabBar::mousePressEvent(event);
 		}
 	}
 }
 
-void KumTabBar::enterEvent(QEvent* event)
+void KumTabBar::enterEvent(QEvent *event)
 {
 	QWidget::enterEvent(event);
 }
 
-void KumTabBar::leaveEvent(QEvent* event)
+void KumTabBar::leaveEvent(QEvent *event)
 {
-	setIcon(QPoint(0,0));
+	setIcon(QPoint(0, 0));
 	QWidget::leaveEvent(event);
 }
 
 void KumTabBar::mouseMoveEvent(QMouseEvent *event)
 {
- 	setIcon(event->pos());
- 	QTabBar::mouseMoveEvent(event);
+	setIcon(event->pos());
+	QTabBar::mouseMoveEvent(event);
 }
 
-void KumTabBar::setIcon(const QPoint& position)
+void KumTabBar::setIcon(const QPoint &position)
 {
 	int tabNo = tabAt(position);
-	if (tabNo!=prevTab) {
-		if ( prevTab > -1 ) {
-			setTabIcon(prevTab,realIcon);
+	if (tabNo != prevTab) {
+		if (prevTab > -1) {
+			setTabIcon(prevTab, realIcon);
 		}
 		realIcon = tabIcon(tabNo);
-		if ( tabNo>0 )
-			setTabIcon(tabNo,closeIcon);
+		if (tabNo > 0) {
+			setTabIcon(tabNo, closeIcon);
+		}
 		prevTab = tabNo;
 	}
 }
@@ -84,6 +84,6 @@ KumTabBar::~KumTabBar()
 
 void KumTabBar::closeTab()
 {
-	qDebug("Close tab: %i",clickedNo);
+	qDebug("Close tab: %i", clickedNo);
 	emit tabCloseClicked(clickedNo);
 }

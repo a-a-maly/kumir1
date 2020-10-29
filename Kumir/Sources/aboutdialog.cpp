@@ -17,10 +17,10 @@
 #include "aboutdialog.h"
 #include "config.h"
 
-AboutDialog::AboutDialog ( QWidget* parent, Qt::WFlags fl )
-		: QDialog ( parent, fl ), Ui::AboutDialog()
+AboutDialog::AboutDialog(QWidget *parent, Qt::WindowFlags fl)
+	: QDialog(parent, fl), Ui::AboutDialog()
 {
-	setupUi ( this );
+	setupUi(this);
 	QString label2Text = label_2->text();
 	QString day;
 	QString month;
@@ -31,64 +31,66 @@ AboutDialog::AboutDialog ( QWidget* parent, Qt::WFlags fl )
 #ifdef BUILD_DAY
 	day = QString::number(BUILD_DAY);
 #endif
-	
+
 #ifdef BUILD_MONTH
-	if ( BUILD_MONTH==1 )
+	if (BUILD_MONTH == 1) {
 		month = QString::fromUtf8("января");
-	else if ( BUILD_MONTH==2 )
-				month = QString::fromUtf8("февраля");
-	else if ( BUILD_MONTH==3 )
-				month = QString::fromUtf8("марта");
-	else if ( BUILD_MONTH==4 )
-				month = QString::fromUtf8("апреля");
-	else if ( BUILD_MONTH==5 )
-				month = QString::fromUtf8("мая");
-	else if ( BUILD_MONTH==6 )
-				month = QString::fromUtf8("июня");
-	else if ( BUILD_MONTH==7 )
-				month = QString::fromUtf8("июля");
-	else if ( BUILD_MONTH==8 )
-				month = QString::fromUtf8("августа");
-	else if ( BUILD_MONTH==9 )
-				month = QString::fromUtf8("сентября");
-	else if ( BUILD_MONTH==10 )
-				month = QString::fromUtf8("октября");
-	else if ( BUILD_MONTH==11 )
-				month = QString::fromUtf8("ноября");
-	else if ( BUILD_MONTH==12 )
-				month = QString::fromUtf8("декабря");
+	} else if (BUILD_MONTH == 2) {
+		month = QString::fromUtf8("февраля");
+	} else if (BUILD_MONTH == 3) {
+		month = QString::fromUtf8("марта");
+	} else if (BUILD_MONTH == 4) {
+		month = QString::fromUtf8("апреля");
+	} else if (BUILD_MONTH == 5) {
+		month = QString::fromUtf8("мая");
+	} else if (BUILD_MONTH == 6) {
+		month = QString::fromUtf8("июня");
+	} else if (BUILD_MONTH == 7) {
+		month = QString::fromUtf8("июля");
+	} else if (BUILD_MONTH == 8) {
+		month = QString::fromUtf8("августа");
+	} else if (BUILD_MONTH == 9) {
+		month = QString::fromUtf8("сентября");
+	} else if (BUILD_MONTH == 10) {
+		month = QString::fromUtf8("октября");
+	} else if (BUILD_MONTH == 11) {
+		month = QString::fromUtf8("ноября");
+	} else if (BUILD_MONTH == 12) {
+		month = QString::fromUtf8("декабря");
+	}
 #endif
-	
+
 #ifdef BUILD_YEAR
 	year = QString::number(BUILD_YEAR);
 #endif
-	if (!day.isEmpty() && !month.isEmpty() && !year.isEmpty())
-		label2Text.replace("%date",day+" "+month+" "+year+QString::fromUtf8(" г."));
-	else
-		label2Text.replace("(%date)","");
-	
+	if (!day.isEmpty() && !month.isEmpty() && !year.isEmpty()) {
+		label2Text.replace("%date", day + " " + month + " " + year + QString::fromUtf8(" г."));
+	} else {
+		label2Text.replace("(%date)", "");
+	}
+
 #ifdef VERSION_MAJOR
 	version += QString::number(VERSION_MAJOR);
 #endif
 #ifdef VERSION_MINOR
-	version += QString(".")+QString::number(VERSION_MINOR);
+	version += QString(".") + QString::number(VERSION_MINOR);
 #endif
 #ifdef VERSION_RELEASE
-	version += QString(".")+QString::number(VERSION_RELEASE);
+	version += QString(".") + QString::number(VERSION_RELEASE);
 #endif
 #ifdef REVISION
-	version += QString(" (Rev. ")+QString::number(REVISION)+")";
+	version += QString(" (Rev. ") + QString::number(REVISION) + ")";
 #endif
 
 #endif
-	label2Text.replace("%version",version);
+	label2Text.replace("%version", version);
 	label_2->setText(label2Text);
-	
+
 	QString s;
 	s = QString::fromUtf8("<p><b>КуМир</b> (<b>К</b>омплект <b>У</b>чебных <b>МИР</b>ов) — система программирования, предназначенная для поддержки начальных курсов информатики и программирования в средней и высшей школе.</p>\n");
-	
+
 	s += QString::fromUtf8("<p>Система КуМир поддерживает преподавание по учебникам (общий тираж – около 9 млн. экз.):<p>\n");
-	
+
 	s += QString::fromUtf8("<p><small>\
 	1.Основы информатики и вычислительной техники: Пробный учеб. для средних учебных заведений. / А. П. Ершов, А. Г. Кушниренко, Г. В. Лебедев, А. Л. Семенов, А. Х. Шень. – М.: Просвещение, 1988. – 207 с.<br>\
 	2.Основы информатики и вычислительной техники : Учеб. для 10-11 кл. общеобразоват. учреждений / А. Г. Кушниренко, Г. В. Лебедев, Р. А. Сворень. – 4-е изд. – М. : Просвещение, 1996. – 223 c.<br>\
@@ -104,9 +106,9 @@ AboutDialog::AboutDialog ( QWidget* parent, Qt::WFlags fl )
 	s += QString::fromUtf8("<p>Любые вопросы по использованию системы КуМир направляйте в Научно-исследовательский институт системных исследований Российской академии наук (НИИСИ РАН):<br>\n");
 	s += QString::fromUtf8("<b>117218, Москва, Нахимовский просп., 36, к.1</b><br>\
 телефон: <b>719-76-51</b>, факс: <b>719-76-81</b>, e-mail: <b>mail@niisi.ru</b></p>");
-	
+
 	label->setText(s);
-	
+
 }
 
 AboutDialog::~AboutDialog()

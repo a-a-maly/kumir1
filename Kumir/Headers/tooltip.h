@@ -23,35 +23,38 @@
 
 class ToolTip : public QWidget, public Ui::ToolTip
 {
-		Q_OBJECT
+	Q_OBJECT
 
-	public:
-		ToolTip ( QWidget* parent = 0, Qt::WFlags fl = 0 );
-		~ToolTip();
+public:
+	ToolTip(QWidget *parent = 0, Qt::WindowFlags fl = 0);
+	~ToolTip();
 
-		int cursorPosition;
-                inline bool isClosed() const  { return m_closed; }
+	int cursorPosition;
+	inline bool isClosed() const
+	{
+		return m_closed;
+	}
 
-	public slots:
-		void hide();
-                void init();
+public slots:
+	void hide();
+	void init();
 
-	protected:
-                virtual void closeEvent(QCloseEvent *event);
-                virtual void hideEvent(QHideEvent *event);
-                bool m_closed;
-                bool m_activatedByMouse;
+protected:
+	virtual void closeEvent(QCloseEvent *event);
+	virtual void hideEvent(QHideEvent *event);
+	bool m_closed;
+	bool m_activatedByMouse;
 
-	protected slots:
-		void setButtonsEnabled();
-		void enter();
-                void mouseClick(QListWidgetItem *item);
-                void activated(QListWidgetItem *item);
-		void help();
-		
-	signals:
-                void itemSelected(QListWidgetItem*, const QString &reason);
-		void closed();
+protected slots:
+	void setButtonsEnabled();
+	void enter();
+	void mouseClick(QListWidgetItem *item);
+	void activated(QListWidgetItem *item);
+	void help();
+
+signals:
+	void itemSelected(QListWidgetItem *, const QString &reason);
+	void closed();
 
 };
 

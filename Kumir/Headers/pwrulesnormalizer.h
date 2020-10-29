@@ -21,18 +21,18 @@
 #ifndef PWRULESNORMALIZER_H
 #define PWRULESNORMALIZER_H
 
-#include <QtCore>
+#include <QStringList>
 
 class PWRulesNormalizer
 {
 
-	public:
-		static int process(const QStringList &files, QIODevice *out, QList<int> priors = QList<int>());
-		
-	private:
-		static bool isNagruzka(const QString& str);
-		static bool isNeterminal(const QString& str);
-		static bool isTerminal(const QString& str);
+public:
+	static int process(const QStringList &files, QIODevice *out, QList<int> priors = QList<int>());
+
+private:
+	static bool isNagruzka(const QString &str);
+	static bool isNeterminal(const QString &str);
+	static bool isTerminal(const QString &str);
 
 };
 

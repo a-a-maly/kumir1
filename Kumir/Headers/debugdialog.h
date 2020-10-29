@@ -17,45 +17,43 @@
 #ifndef DEBUGDIALOG_H
 #define DEBUGDIALOG_H
 
-#include <QWidget>
-//#include <QtCore>
-#include <QtGui>
 #include "ui_DebugDialog.h"
 #include "int_proga.h"
+#include <QWidget>
 
 class DebugDialog : public QWidget, Ui::DebugDialog
 {
 	Q_OBJECT
 
-	public:
-		explicit DebugDialog ( QWidget* parent = 0 );
-		~DebugDialog();
-		void init( KumModules* modules );
-	
-	public slots:
-		void refreshVariables();
-		void reset();
-        signals:
-                void sync();
-	protected slots:
-		void handleItemDoubleClicked(QTreeWidgetItem * item, int column);
-		void handleTableViewerClosed();
-		void handleItemHovered(QTreeWidgetItem * item, int column);
+public:
+	explicit DebugDialog(QWidget *parent = 0);
+	~DebugDialog();
+	void init(KumModules *modules);
 
-	protected:
-		static QString unserializeArray(const QVariant &data);
-		static QString unserialize1D(const QList<QVariant> l, int size, int &index);
+public slots:
+	void refreshVariables();
+	void reset();
+signals:
+	void sync();
+protected slots:
+	void handleItemDoubleClicked(QTreeWidgetItem *item, int column);
+	void handleTableViewerClosed();
+	void handleItemHovered(QTreeWidgetItem *item, int column);
 
-		void createSeparateTableViewer(int moduleId, int variableId);
+protected:
+	static QString unserializeArray(const QVariant &data);
+	static QString unserialize1D(const QList<QVariant> l, int size, int &index);
 
-		void showEvent(QShowEvent *event);
-		void closeEvent ( QCloseEvent * event );
-		void setHeaders();
-		bool isFunction(const QString& name);
-		QVariant getValue(int mod, int id) ;
-		KumModules *modules;
-		QMap<QString, class TableViewer*> l_tables;
-		QMap<QString, class SecondaryWindow*> l_childWindows;
+	void createSeparateTableViewer(int moduleId, int variableId);
+
+	void showEvent(QShowEvent *event);
+	void closeEvent(QCloseEvent *event);
+	void setHeaders();
+	bool isFunction(const QString &name);
+	QVariant getValue(int mod, int id) ;
+	KumModules *modules;
+	QMap<QString, class TableViewer *> l_tables;
+	QMap<QString, class SecondaryWindow *> l_childWindows;
 };
 
 #endif

@@ -16,8 +16,8 @@
 #ifndef SYNTAXHIGHLIGHTER_H
 #define SYNTAXHIGHLIGHTER_H
 
-#include <QtCore>
-#include <QtGui>
+#include <QSyntaxHighlighter>
+#include <QMutex>
 
 
 class KumirEdit;
@@ -26,8 +26,7 @@ class LineProp;
 
 
 /** Класс подсветки синтаксиса */
-class SyntaxHighlighter
-	: public QSyntaxHighlighter
+class SyntaxHighlighter : public QSyntaxHighlighter
 {
 	struct Block {
 		inline Block(int a, int b, char c) { pos=a; len=b; val=c; }
