@@ -933,12 +933,16 @@ void KumDraw::CreatePen(void)
 	mPen->setZValue(100);
 	mPen->setBrush(QBrush(QColor("black")));
 	scene->addItem(mPen);
+#if 1
+	mPen->setScale(0.125 * 0.125 * mPen->scale());
+#else
 	mPen->scale(0.5, 0.5);
 	mPen->scale(0.5, 0.5);
 	mPen->scale(0.5, 0.5);
 	mPen->scale(0.5, 0.5);
 	mPen->scale(0.5, 0.5);
 	mPen->scale(0.5, 0.5);
+#endif
 }
 //--------------------------------------------
 
@@ -2540,7 +2544,11 @@ void KumDraw::drawText(const QString &Text, qreal Scale)
 	texts.append(m_text);
 	kumtexts.append(KText);
 	QList<QGraphicsItem *> scene_items = scene->items();
+#if 1
+	scene_items.last()->setScale(0.1 * scene_items.last()->scale());
+#else
 	scene_items.last()->scale(0.1, 0.1);
+#endif
 	//scene_items.last()->scale(0.1*Scale,0.1*Scale);
 	scene_items.last()->setPos(x0, y0);
 
