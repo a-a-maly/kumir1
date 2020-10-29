@@ -1,14 +1,13 @@
 TARGET = kumir
 TEMPLATE = app
-message($$CONFIG)
-CONFIG = qt uic release warn_on
+message(CONFIG=$$CONFIG)
+CONFIG += qt uic release warn_on
 QT += \
 	gui \
 	xml \
 	script \
 	svg \
 	network\
-	x11extras\
 	printsupport\
 	webkit\
 	webkitwidgets
@@ -184,7 +183,6 @@ RESOURCES += Resources/MainWindow.qrc
 
 macx: ICON=../app_icons/mac/kumir.icns
 
-unix: CONFIG += x11
 
 include(../Scripts/common.pri)
 
@@ -198,9 +196,12 @@ dummy.path=./
 
 INSTALLS = dummy
 
+
 unix {
 	HEADERS += Headers/secondarywindow_x11.h
 	SOURCES += Sources/secondarywindow_x11.cpp
+	QT += x11extras
+	CONFIG += x11
 }
 
 macx {

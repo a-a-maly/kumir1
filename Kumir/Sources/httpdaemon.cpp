@@ -80,7 +80,9 @@ void HttpDaemon::readClient()
 				break;
 			}
 		}
-
+#if QT_VERSION >= 0x050000
+		os << "HTTP/1.0 501 Not implemented\r\nContent-Type: text/html; charset=utf-8\r\n\r\n";
+#else
 		QString dir(app()->settings->value("HyperText/Path", defaultPath()).toString());
 		if (!(dir.endsWith('\\') || dir.endsWith('/'))) {
 			dir += QDir::separator();
@@ -192,6 +194,7 @@ void HttpDaemon::readClient()
 			os << rh.toString();
 			os << "Bad method";
 		}
+#endif
 		socket->close();
 		if (socket->state() == QTcpSocket::UnconnectedState) {
 			delete socket;
