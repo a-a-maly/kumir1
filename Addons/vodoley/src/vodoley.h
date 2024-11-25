@@ -13,126 +13,127 @@
 //** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 //**
 //****************************************************************************/
-#ifndef TURTLE_H
-#define TURTLE_H
+
+#ifndef VODOLEY_H
+#define VODOLEY_H
 
 #include <QMainWindow>
-#include <QCloseEvent>
-#include <QGraphicsScene>
-#include <QtSvg>
-#include <QGraphicsSvgItem>
+#include <QGraphicsItem>
+class QToolButton;
+class QGraphicsView;
+class QMenuBar;
+
 #include "dialog.h"
 #include "kumfiledialog.h"
-//#include "../../isp_window_header.h"
+
 #define MAX_SIZE 160.0
 #define X_SIZE 30
-        //class QAction;
-        //class QMenu;
-        //class QTextEdit;
-        class QAction;
+
+class QAction;
 class pultLogger;
 class VodoleyPult;
-class Menzurka:public QGraphicsItem
+
+class Menzurka: public QGraphicsItem
 {
 
 public:
-    Menzurka(int x,int y,uint size,float lsize);
-    ~Menzurka(){};
+	Menzurka(int x, int y, uint size, float lsize);
+	~Menzurka() {};
 
-    QRectF boundingRect() const
-    {
-        qreal penWidth = 1;
-        return QRectF(-10 - penWidth / 2, -10 - penWidth / 2,
-                      20 + penWidth / 2, 20 + penWidth / 2);
-    }
-
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-               QWidget *widget);
-    void setGp(int gp)
+	QRectF boundingRect() const
 	{
-		qDebug()<<"Gp"<<gp;
-		Gp=gp;
+		qreal penWidth = 1;
+		return QRectF(-10 - penWidth / 2, -10 - penWidth / 2,
+				20 + penWidth / 2, 20 + penWidth / 2);
+	}
+
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+	void setGp(int gp)
+	{
+		Gp = gp;
 		update();
 	};
-    void setGpY(int gpy)
+	void setGpY(int gpy)
 	{
-		qDebug()<<"GpY"<<gpy;
-		GpY=gpy;
+		GpY = gpy;
 		update();
 	};
 	void setCurFill(uint value)
 	{
-		curFil=value;
+		curFil = value;
 	};
 	void setNeedFill(uint value)
 	{
-		needFill=value;
+		needFill = value;
 	};
 	void setSize(uint value)
 	{
-		SizeInLiters=value;
+		SizeInLiters = value;
 	};
 	void setLiterSize(float value)
 	{
-		literSize=value;
+		literSize = value;
 	};
 	void setYoffset(float value)
 	{
-		offsetY=value;
-	};	
+		offsetY = value;
+	};
 
 private:
 
-    uint SizeInLiters;
-    float literSize;
-    uint curFil;
-    int  needFill;
-    int offsetX;
-    int offsetY;
-    int Gp,GpY;
+	uint SizeInLiters;
+	float literSize;
+	uint curFil;
+	int  needFill;
+	int offsetX;
+	int offsetY;
+	int Gp, GpY;
 
 
 };
-class NewDialog:public QDialog
+class NewDialog: public QDialog
 {
 	Q_OBJECT
 
 public:
 	NewDialog();
-	~NewDialog(){};	
+	~NewDialog() {};
 public slots:
 
 private:
-	QFrame * sizeFrame;
-	QFrame * fillFrame;
-	QFrame * valueFrame;
-	QFrame * buttonFrame;
+	QFrame *sizeFrame;
+	QFrame *fillFrame;
+	QFrame *valueFrame;
+	QFrame *buttonFrame;
 	QToolButton *btnOK;
 	QToolButton *btnCancel;
 };
 
-class Vodoley:public QMainWindow
+class Vodoley: public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    Vodoley();
-    ~Vodoley();
+	Vodoley();
+	~Vodoley();
 	QGraphicsScene *scene;
 	QGraphicsView *view;
 	int   step;
 	qreal grad;
-	pultLogger* logger;
-	VodoleyPult* pult;
- bool isReady()
- {
-   if((CurA()==AfillR)||(CurB()==AfillR)||(CurC()==AfillR))return true;
-   else return false;
- };
+	pultLogger *logger;
+	VodoleyPult *pult;
+	bool isReady()
+	{
+		if ((CurA() == AfillR) || (CurB() == AfillR) || (CurC() == AfillR)) {
+			return true;
+		} else {
+			return false;
+		}
+	};
 
 	void showVodoley()
 	{
-                show();
+		show();
 		setVisible(true);
 	}
 	uint CurA()
@@ -147,106 +148,104 @@ public:
 	{
 		return Curfill[2];
 	};
-	void setBaseFill(int A,int B,int C)
+	void setBaseFill(int A, int B, int C)
 	{
-		Curfill[0]=A;
-		Curfill[1]=B;
-		Curfill[2]=C;
+		Curfill[0] = A;
+		Curfill[1] = B;
+		Curfill[2] = C;
 
 	};
-	uint Asize(){return Maxfill[0];};
-	uint Bsize(){return Maxfill[1];};
-	uint Csize(){return Maxfill[2];};
+	uint Asize()
+	{
+		return Maxfill[0];
+	};
+	uint Bsize()
+	{
+		return Maxfill[1];
+	};
+	uint Csize()
+	{
+		return Maxfill[2];
+	};
 
 	uint maxSize()
 	{
-		uint max=0;
-		if (Asize()>Bsize())
-			max=Asize();
-		else max=Bsize();
-		if (max<Csize())
-			max=Csize();
+		uint max = 0;
+		if (Asize() > Bsize()) {
+			max = Asize();
+		} else {
+			max = Bsize();
+		}
+		if (max < Csize()) {
+			max = Csize();
+		}
 		return max;
 	};
 	bool loadFile(QString fileName);
-	void AutoClose() {
-		autoClose=true;
-//		vodHeader->close();
+	void AutoClose()
+	{
+		autoClose = true;
 		setVisible(false);
 	}
 	//Actions
 
-	QAction * actNew;
-	QAction * actLoad;
-	QAction * actSave;
+	QAction *actNew;
+	QAction *actLoad;
+	QAction *actSave;
 protected:
-    void mousePressEvent(QMouseEvent *event);
-    void closeEvent ( QCloseEvent * event );
+	void mousePressEvent(QMouseEvent *event);
+	void closeEvent(QCloseEvent *event);
 public slots:
-    void reset();
+	void reset();
 
-    void newZ();
-    void loadZ();
-    void saveZ();
+	void newZ();
+	void loadZ();
+	void saveZ();
 
-    void FillA();
-    void FillB();
-    void FillC();
+	void FillA();
+	void FillB();
+	void FillC();
 
-    void MoveFromTo(uint from,uint to);
+	void MoveFromTo(uint from, uint to);
 
 
 signals:
-    void Otkaz(QString msg);
-    void Ok();
-    void CNull();
-    void CNotNull();
+	void Otkaz(QString msg);
+	void Ok();
+	void CNull();
+	void CNotNull();
 
 private:
-    void updateMenzur();
-    void updateNeedBirka();
+	void updateMenzur();
+	void updateNeedBirka();
 
-    void createActions();
-    QMenu * menu;
-    QMenuBar * menuBar;
-    void drawTail();
-    void showCurTurtle();
-    void rotateImages();
-    QGraphicsSimpleTextItem* Atext;
-    QGraphicsSimpleTextItem* Btext;
-    QGraphicsSimpleTextItem* Ctext;
+	void createActions();
+	QMenu *menu;
+	QMenuBar *menuBar;
+	QGraphicsSimpleTextItem *Atext;
+	QGraphicsSimpleTextItem *Btext;
+	QGraphicsSimpleTextItem *Ctext;
 
-    QLabel* needLabel;
-    QFrame*  needFrame;
+	QLabel *needLabel;
+	QFrame  *needFrame;
 
+	QList<QGraphicsLineItem *> lines;
 
-    QList<QGraphicsLineItem*> lines;
+	void CreateVodoley(void);
 
-    void CreateVodoley(void);
+	QList<QLineF> desertBorders;
 
-    qreal ang;
-    QList<QLineF> desertBorders;
-    bool tail;
-    qreal curX,curY;
-    qreal zoom,delta;
-    qreal AncX,AncY;
+	//VODOLEY
+	uint Afill, Bfill, Cfill; //Сколько  налито изначально
+	QList<uint> Curfill;//Сколько сейчас налито
+	QList<uint> Maxfill;//Размер емкости
+	uint AfillR, BfillR, CfillR; //Сколько должно быть
 
-    QPointF tailPoint;
-    int curTurtleId;
-
-    //VODOLEY
-    // uint Asize,Bsize,Csize; //Размер емкости
-    uint Afill,Bfill,Cfill;//Сколько  налито изначально
-    QList<uint> Curfill;//Сколько сейчас налито
-    QList<uint> Maxfill;//Размер емкости
-    uint AfillR,BfillR,CfillR;//Сколько должно быть
-
-    Menzurka* Amen;
-    Menzurka* Bmen;
-    Menzurka* Cmen;
-    QString curDir;
-    bool autoClose;
-//    WHeader* vodHeader;
+	Menzurka *Amen;
+	Menzurka *Bmen;
+	Menzurka *Cmen;
+	QString curDir;
+	bool autoClose;
 };
 
 #endif

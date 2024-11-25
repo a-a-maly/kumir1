@@ -16,10 +16,10 @@
 
 
 #include <QApplication>
+#include <QMessageBox>
 #include "vodoley.h"
 #include "pult.h"
 #include "network.h"
-#include <QGraphicsSvgItem>
 #include <iostream>
 
 #ifndef WIN32
@@ -27,56 +27,58 @@
 #endif
 int main(int argc, char *argv[])
 {
-      Q_INIT_RESOURCE(application);
-      QApplication app(argc, argv);
-      qDebug()<<"test";
-	Vodoley * mw = new Vodoley();
-	VodoleyPult *t_pult=new VodoleyPult();
-	bool friendMode=false;
-        if(argc>0)
-	   {
-		if(QString(argv[1]).startsWith("-h"))
-			{	
-			QString message="-f <kumir port>. Start in friend mode.\n";
-			std::cout<<message.toUtf8().data();
-			return 0;
-			};
-		QString initstr=QString(argv[2]);
-		qDebug()<<"Init:"<<initstr;
-		qDebug()<<"Init[]:"<<QString(argv[1]);
-		if(QString(argv[1])=="-f")friendMode=true;
-	   };
-	mw->resize(374,240);
-	//mw->scene->addLine(-600,0,100,0);
-	//mw->scene->addLine(0,-200,0,100);
-        mw->logger=t_pult->pltLogger();
-	mw->pult=t_pult;
-        KNPServer* server=new KNPServer();
-	int port=4355;
-if(!friendMode){
-	if(!server->OpenPort("localhost",port))
-		{
- 			QMessageBox::critical(mw, QString::fromUtf8("Ошибка открытия порта"),
-                             QString::fromUtf8("Невозможно открыть порт %1")
-                              .arg(port));
-		}else
-  		{
-			t_pult->showMessage(QString::fromUtf8("Открыт порт %1").arg(port));
-		};
-		}else
-		{
-		server->initConnection(QString(argv[2]).toInt());
-		};
-        server->SigCross->setVodoley(mw);
-	qDebug()<<"Friend MODE:"<<friendMode;
-   if(!friendMode)     mw->show();
-//	scene->addLine(0,0,200,0);
-      
-      t_pult->VodoleyObj=mw;
+	Q_INIT_RESOURCE(application);
+	QApplication app(argc, argv);
+	qDebug() << "test";
+	Vodoley *mw = new Vodoley();
+	VodoleyPult *t_pult = new VodoleyPult();
+	bool friendMode = false;
 
-      t_pult->Connect(server);
-     if(!friendMode) t_pult->show();
-    //  t_pult->Connect();
-      return app.exec();
+	if (argc > 0) {
+		if (QString(argv[1]).startsWith("-h")) {
+			QString message = "-f <kumir port>. Start in friend mode.\n";
+			std::cout << message.toUtf8().data();
+			return 0;
+		};
+		QString initstr = QString(argv[2]);
+		qDebug() << "Init:" << initstr;
+		qDebug() << "Init[]:" << QString(argv[1]);
+		if (QString(argv[1]) == "-f") {
+			friendMode = true;
+		}
+	}
+
+	mw->resize(374, 240);
+	mw->logger = t_pult->pltLogger();
+	mw->pult = t_pult;
+	KNPServer *server = new KNPServer();
+	int port = 4355;
+
+	if (!friendMode) {
+		if (!server->OpenPort("localhost", port)) {
+			QMessageBox::critical(mw, QString::fromUtf8("Ошибка открытия порта"),
+				QString::fromUtf8("Невозможно открыть порт %1")
+				.arg(port));
+		} else {
+			t_pult->showMessage(QString::fromUtf8("Открыт порт %1").arg(port));
+		}
+	} else {
+		server->initConnection(QString(argv[2]).toInt());
+	}
+
+	server->SigCross->setVodoley(mw);
+	qDebug() << "Friend MODE:" << friendMode;
+	if (!friendMode) {
+		mw->show();
+	}
+
+	t_pult->VodoleyObj = mw;
+
+	t_pult->Connect(server);
+	if (!friendMode) {
+		t_pult->show();
+	}
+	//  t_pult->Connect();
+	return app.exec();
 }
 

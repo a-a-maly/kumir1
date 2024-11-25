@@ -14,11 +14,18 @@
 **
 ****************************************************************************/
 #include "kumfiledialog.h"
+#include <QLabel>
+#include <QComboBox>
+#include <QLayout>
 
 
-KumFileDialog::KumFileDialog
-		( QWidget * parent, const QString & caption, const QString & directory, const QString & filter, bool showEncodings)
-	: QFileDialog(parent,caption,directory,filter)
+KumFileDialog::KumFileDialog(
+	QWidget *parent,
+	const QString &caption,
+	const QString &directory,
+	const QString &filter,
+	bool showEncodings
+) : QFileDialog(parent, caption, directory, filter)
 {
 	if ( showEncodings ) {
 		l = new QLabel(tr("Text encoding:"),this);

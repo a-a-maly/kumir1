@@ -16,53 +16,75 @@
 
 
 #include "ui_dialog.h"
-#include <QtCore>
-#include <QtGui>
 
 
 class Dialog : public QDialog, Ui::Dialog
 {
-	Q_OBJECT
+ Q_OBJECT
 
-	public:
-		Dialog ( QWidget* parent = 0, Qt::WFlags fl = 0 );
-		~Dialog(){};
-	int ASize(){return BaseA->value();};
-	int BSize(){return BaseB->value();};
-	int CSize(){return BaseC->value();};
+public:
+	Dialog(QWidget *parent = 0, Qt::WFlags fl = 0);
+	~Dialog() {};
 
-	int AFill(){return ValueA->value();};
-	int BFill(){return ValueB->value();};
-	int CFill(){return ValueC->value();};
-	
-	int ANeed(){return NeedA->value();};
-//	int BNeed(){return NeedB->value();};
-//	int CNeed(){return NeedC->value();};
+	int ASize()
+	{
+		return BaseA->value();
+	}
 
-	void setSizes(int A,int B,int C)
-		{
+	int BSize()
+	{
+		return BaseB->value();
+	}
+
+	int CSize()
+	{
+		return BaseC->value();
+	}
+
+	int AFill()
+	{
+		return ValueA->value();
+	}
+
+	int BFill()
+	{
+		return ValueB->value();
+	}
+
+	int CFill()
+	{
+		return ValueC->value();
+	}
+
+	int ANeed()
+	{
+		return NeedA->value();
+	}
+
+	void setSizes(int A, int B, int C)
+	{
 		BaseA->setValue(A);
 		BaseB->setValue(B);
 		BaseC->setValue(C);
-		};
-	void setFill(int A,int B,int C)
-		{
-		qDebug()<<A<<B<<C;
+	}
+
+	void setFill(int A, int B, int C)
+	{
 		ValueA->setValue(A);
 		ValueB->setValue(B);
 		ValueC->setValue(C);
-		};
-	void setNeed(int A)
-		{
-		NeedA->setValue(A);
-		//NeedB->setValue(B);
-		//NeedC->setValue(C);
-		};
-	void setMaximum()
-		{
+	}
 
-		};
+	void setNeed(int A)
+	{
+		NeedA->setValue(A);
+	}
+
+	void setMaximum()
+	{
+	}
+
 public slots:
- void setMax();
-	
+	void setMax();
+
 };

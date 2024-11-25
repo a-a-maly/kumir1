@@ -1,9 +1,10 @@
 SUBDIRS += src
-TEMPLATE = subdirs 
+TEMPLATE = subdirs
 QT += svg
-CONFIG += warn_on \
-          qt \
-          thread 
+CONFIG += \
+	warn_on \
+	qt \
+	thread
 
 dummy.path = .
 unix:dummy.extra = python ../../Scripts/install_addon.py --addon=vodoley --spec=unix --prefix=$$PREFIX --kumir-dir=$$KUMIR_DIR
