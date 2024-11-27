@@ -1,7 +1,9 @@
 TARGET = kumir
 TEMPLATE = app
 message(CONFIG=$$CONFIG)
-CONFIG += qt uic release warn_on
+include(../Scripts/common.pri)
+CONFIG += qt uic
+
 QT += \
 	gui \
 	xml \
@@ -90,7 +92,6 @@ HEADERS += \
 	Headers/pwrulesnormalizer.h \
 	Headers/pult.h \
 	Headers/printDialog.h \
-	Headers/signal_crosser.h \
 	Headers/externalIsp.h \
 	Headers/httpdaemon.h \
 	Headers/kumtabbar.h \
@@ -184,7 +185,6 @@ RESOURCES += Resources/MainWindow.qrc
 macx: ICON=../app_icons/mac/kumir.icns
 
 
-include(../Scripts/common.pri)
 
 unix:dummy.extra=python ../Scripts/install_kumir.py --spec=unix --prefix=$$PREFIX --kumir-dir=$$KUMIR_DIR
 
