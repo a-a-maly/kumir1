@@ -17,6 +17,9 @@
 #include "application.h"
 #include "error.h"
 #include "config.h"
+#include <QApplication>
+#include <QFile>
+#include <QTextStream>
 
 MessagesProvider::MessagesProvider(QObject *parent) : QObject(parent)
 {

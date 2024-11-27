@@ -16,6 +16,8 @@
 #include "application.h"
 #include <QMessageBox>
 #include <QCloseEvent>
+#include <QSettings>
+#include <QTextStream>
 
 QString TextWindow::fakeLabel()
 {

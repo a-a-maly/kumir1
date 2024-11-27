@@ -16,7 +16,8 @@
 #ifndef KUMUNDOSTACK_H
 #define KUMUNDOSTACK_H
 
-#include "lineprop.h"
+//#include "lineprop.h"
+#include <QStack>
 
 /**
     @author Victor Yacovlev <V.Yacovlev@gmail.com>

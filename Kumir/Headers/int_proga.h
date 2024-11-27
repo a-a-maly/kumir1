@@ -17,17 +17,18 @@
 #ifndef INT_PROGA_H
 #define INT_PROGA_H
 
-#include "application.h"
-#include "network.h"
-#include "kum_instrument.h"
+#include "enums.h"
 
+#include <QMap>
+#include <QVariant>
 class QTextEdit;
+class QFile;
 
 #define MAX_ISP 64
 
 class ProgramTab;
 class MainWindow;
-
+class KNPConnection;
 
 enum RunMode {
 	Null = 0,
@@ -105,7 +106,6 @@ struct BoolOrLit {
  * Таблица исполнителей
  */
 //class KumInstrument;
-class KumValueStackElem;
 class symbol_table;
 class isp_table
 {
@@ -463,10 +463,7 @@ private:
 /**
  * Внутреннее представление строки программы
  */
-class KumirEdit;
 class KumModules;
-
-
 
 class KumOutBuffElem
 {

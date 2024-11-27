@@ -15,17 +15,26 @@
 //****************************************************************************/
 //draw_isp.cpp
 //begin 14-02-2008
+
+#include <math.h>
 #include "kum_instrument.h"
 #include "kumdraw.h"
-#include <math.h>
 #include "kumfiledialog.h"
 #include "secondarywindow.h"
 #include "kumscene.h"
+#include "application.h"
+#include "printDialog.h"
+#include "kum_tables.h"
+#include "int_proga.h"
 
 #include <QMessageBox>
 #include <QMenuBar>
+#include <QLabel>
+#include <QLineEdit>
 #include <QPrinter>
 #include <QPainter>
+#include <QLayout>
+#include <QSettings>
 #include <QToolButton>
 #include <QPushButton>
 #include <QGraphicsScene>

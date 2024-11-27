@@ -16,11 +16,14 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include <QtCore>
 #include "../../TaskControl/taskControlInterface.h"
 #include "../../TaskControl/csInterface.h"
 #include "enums.h"
 class QTcpSocket;
+class QSettings;
+class QFile;
+class QTranslator;
+class QTimer;
 
 class MainWindow;
 class SettingsDialog;
@@ -57,13 +60,10 @@ public:
 	{
 		return 0;
 	}
-
-
 };
 
 /** Класс приложения КУМИР */
-class Application
-	: public QObject
+class Application : public QObject
 {
 	Q_OBJECT
 	Q_PROPERTY(QStringList languageList READ languageList)
@@ -143,63 +143,38 @@ public:
 	bool isBatchMode();
 	QString getZPath();
 	QString getMacroDir();
+
 	/** Ппроверяет наличие другого kumir-процесса
 	 * @return true, если выполняется kumir с другими PID и PPID (Unix) или два экземпляра kumir.exe (Win32)
 	 */
 	bool isOtherKumirRunning();
-	bool isTeacherMode()
-	{
-		return QCoreApplication::arguments().contains("-t") || QCoreApplication::arguments().contains("--teacher");
-	}
+	bool isTeacherMode();
 
-	QStringList ExtIspsList()
-	{
-		QString data = settings->value("Isps", "").toString();
-		return data.split(';');
-	};
-	void RemoveAtExtIspsList(int id)
-	{
-		QStringList data = settings->value("Isps", "").toString().split(';');
-		if (data.count() > id) {
-			data.removeAt(id);
-			QString toSett = "";
-			for (int i = 0; i < data.count(); i++) {
-				toSett += data[i] + ";";
-			}
-			settings->setValue("Isps", toSett);
-		} else {
-			qDebug() << "RemoveAtExtIspsList:Bad id";
-		};
-	};
-	void AppendExtIspsToList(QString name, uint port)
-	{
-		QString data = settings->value("Isps", "").toString();
-		data = data + ";" + name + "," + QString::number(port);
-		settings->setValue("Isps", data);
-	};
-	void AppendExtIspsToList(QString name, uint port, QString url)
-	{
-		QString data = settings->value("Isps", "").toString();
-		data = data + ";" + name + "," + QString::number(port) + ',' + url;
-		settings->setValue("Isps", data);
-	};
+	QStringList ExtIspsList();
+	void RemoveAtExtIspsList(int id);
+	void AppendExtIspsToList(QString name, uint port);
+	void AppendExtIspsToList(QString name, uint port, QString url);
+
 	QString ispErrorText()
 	{
 		return errorText;
-	};
+	}
+
 	void setIspErrorText(QString text)
 	{
 		errorText = text;
-	};
+	}
 
 	int kumPort()
 	{
 		return port;
-	};
+	}
+
 	bool isExamMode()
 	{
 		return isExam;
-	};
+	}
+
 	//Парсировка и добавление в таблицы алгоритмов исполнителя. Исполнитель должен существовать.
 	void compileAlgList(int module_id, QStringList algList);
 	void checkFriendConnections();//Проверка соединения с друзьями и их запск по необходимости.
@@ -211,18 +186,22 @@ public:
 	HttpDaemon *httpDaemon;
 	QString errorText;
 	void debugMsg(QString msg);
+
 	taskControlInterface *TaskControl()
 	{
 		return taskControl;
 	}
+
 	fromTCInterface *CSInterface()
 	{
 		return csInterface;
 	}
+
 	bool isTaskControlLoaded()
 	{
 		return taskControlLoaded;
 	}
+
 	/** Загрузка библиотеки контроля заданий. Вызывается при запуске КУМИРа.*/
 	void loadTaskControlPlugin();
 	void startCheck();
@@ -231,7 +210,8 @@ public:
 	void endCheck()
 	{
 		startControlScripts = false;
-	};
+	}
+
 	bool isScriptTesting()
 	{
 		return startControlScripts;
@@ -306,8 +286,6 @@ protected:
 	KumZadanie task;
 	int curFieldId;
 	bool isExam;
-
-
 };
 
 Application *app();

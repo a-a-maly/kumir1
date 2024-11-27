@@ -19,12 +19,16 @@
 
 #include "const.h"
 #include "error.h"
-//#include "strtypes.h"
-#include "int_proga.h"
 #include "lineprop.h"
 #include "enums.h"
+#include "kum_tables.h"
 
 #include <QThread>
+#include <QUrl>
+#include <QNetworkAccessManager>
+#include <application.h>
+
+class KumirEdit;
 
 
 enum InputError {
@@ -81,8 +85,7 @@ struct ErrorPosition
 	int len;
 };
 
-class UrlFetcher
-	: public QThread
+class UrlFetcher : public QThread
 {
 public:
 	UrlFetcher(QObject *parent = 0);

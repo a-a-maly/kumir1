@@ -19,6 +19,9 @@
 
 #include "ui_MainWindow.h"
 #include <QToolButton>
+#include <QFileInfo>
+
+class QProcess;
 
 class KumirEdit;
 class KumirMargin;

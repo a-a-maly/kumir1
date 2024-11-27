@@ -17,6 +17,7 @@
 #include "application.h"
 #include "mainwindow.h"
 #include "compiler.h"
+#include <QSettings>
 
 //______________________________________________
 //          PTFile

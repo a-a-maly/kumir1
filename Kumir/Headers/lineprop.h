@@ -16,7 +16,9 @@
 #ifndef LINEPROP_H
 #define LINEPROP_H
 
+#include "kum_tables.h"
 #include "int_proga.h"
+
 #include <QTextBlockUserData>
 
 enum BlockState { SIMPLE = -1, HIDDEN = 0, PROTECTED = 1 };

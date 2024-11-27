@@ -14,6 +14,7 @@
 **
 ****************************************************************************/
 #include "run.h"
+#include "network.h"
 #include "int_proga.h"
 #include "files_isp.h"
 #include "files_p_isp.h"

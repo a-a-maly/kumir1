@@ -30,6 +30,8 @@
 #include "assistant.h"
 #include "gotolinedialog.h"
 
+#include "network.h"
+#include "messagesprovider.h"
 #include "compiler.h"
 #include "run.h"
 #include "httpdaemon.h"

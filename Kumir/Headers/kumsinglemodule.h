@@ -1,10 +1,12 @@
 #ifndef KUM_SINGLE_MODULE_H
 #define KUM_SINGLE_MODULE_H
 
-#include "enums.h"
 #include "kum_tables.h"
+#include "Addons/plugin_interface.h"
 #include <QObject>
 #include <QDomDocument>
+class QProcess;
+
 
 class KumInstrument;
 class ProgramTab;

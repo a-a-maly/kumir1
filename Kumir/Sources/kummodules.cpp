@@ -1,6 +1,8 @@
 #include "kummodules.h"
 #include "kumsinglemodule.h"
+#include "kum_instrument.h"
 #include "network.h"
+#include "application.h"
 #include "protomodule_interface.h"
 
 KumModules::KumModules(QWidget *parent) :

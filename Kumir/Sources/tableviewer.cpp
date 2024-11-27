@@ -6,6 +6,7 @@
 #include "kum_tables.h"
 
 #include <QTableWidget>
+#include <QVBoxLayout>
 
 typedef QPair<int, int> Size;
 

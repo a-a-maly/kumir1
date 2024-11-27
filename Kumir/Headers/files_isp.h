@@ -15,8 +15,14 @@
 ****************************************************************************/
 #ifndef KUM_FILES_H
 #define KUM_FILES_H
+
+#include "enums.h"
 #include "kum_instrument.h"
 #include "error.h"
+#include <QFile>
+#include <QTextCodec>
+#include <QTextStream>
+#include <QDebug>
 
 class STFile
 {

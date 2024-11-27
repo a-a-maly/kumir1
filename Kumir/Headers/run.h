@@ -15,9 +15,17 @@
 ****************************************************************************/
 #ifndef _KUMIR_RUN_H
 #define _KUMIR_RUN_H
+
+#include "const.h"
+#include "kum_tables.h"
 #include "int_proga.h"
-#include "error.h" // NEW V.Y. 01.09
-#include "messagesprovider.h"
+#include <QThread>
+#include <QStack>
+#include <QDateTime>
+
+
+//#include "error.h" // NEW V.Y. 01.09
+//#include "messagesprovider.h"
 
 struct RunContext {
 	inline RunContext()

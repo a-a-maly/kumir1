@@ -19,9 +19,10 @@
 #include "macro.h"
 #include "newmacrodialog.h"
 
-#include <QtGlobal>
 #include <QMessageBox>
 #include <QDomDocument>
+#include <QDir>
+#include <QTextStream>
 
 MacrosManagementDialog::MacrosManagementDialog ( QWidget* parent, Qt::WindowFlags fl )
 		: QDialog ( parent, fl ), Ui::Dialog()

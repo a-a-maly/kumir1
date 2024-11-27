@@ -1,5 +1,6 @@
 #ifndef SECONDARYWINDOW_H
 #define SECONDARYWINDOW_H
+
 #include <QtGlobal>
 
 #ifdef Q_OS_WIN32

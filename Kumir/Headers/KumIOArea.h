@@ -13,11 +13,13 @@
 ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 **
 ****************************************************************************/
-#include "int_proga.h"
 #include "tools.h"
 #include <QSyntaxHighlighter>
+#include <QTextEdit>
+#include <QValidator>
 
 class KumIOArea;
+class QAction;
 
 class InputHighlighter : public QSyntaxHighlighter
 {
@@ -53,8 +55,7 @@ struct InputUserData
 	bool highlightable;
 };
 
-class KumIOArea
-	: public QTextEdit
+class KumIOArea : public QTextEdit
 {
 	Q_OBJECT
 	friend class InputHighlighter;

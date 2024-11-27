@@ -3,7 +3,12 @@
 
 #include "kum_instrument.h"
 #include <QGraphicsView>
+#include <QPen>
 class QToolButton;
+class QLineEdit;
+class QMenu;
+class QCheckBox;
+class QLabel;
 
 
 

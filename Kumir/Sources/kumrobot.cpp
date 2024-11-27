@@ -4,11 +4,14 @@
 #include "error.h"
 #include "compiler.h"
 #include "application.h"
+#include "printDialog.h"
+#include "cell_dialog.h"
 
 #include <QMessageBox>
 #include <QPushButton>
 #include <QFileDialog>
 #include <QPrinter>
+#include <QMimeData>
 #include <QGraphicsSceneMouseEvent>
 
 

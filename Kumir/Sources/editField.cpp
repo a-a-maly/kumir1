@@ -19,10 +19,13 @@
 #include "compiler.h"
 #include "kumsinglemodule.h"
 #include "kumrobot.h"
+#include "printDialog.h"
 //#include <QDialogButtonBox>
 #include <QPushButton>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QSpinBox>
+#include <QDialogButtonBox>
 
 editField::editField(QWidget *parent, Qt::WindowFlags fl) :
 	QMainWindow(parent, fl), Ui::editField()

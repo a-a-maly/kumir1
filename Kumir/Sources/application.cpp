@@ -25,6 +25,7 @@
 #include "messagesprovider.h"
 #include "macro.h"
 #include "assistant.h"
+#include "network.h"
 #include "run.h"
 #include "tab.h"
 #include "debugdialog.h"
@@ -118,168 +119,6 @@ void Application::createHttpServer()
 {
 
 }
-
-//#include "kpython.h"
-
-//void Application::startPython()
-//{
-//    QString path;
-//#ifndef Q_OS_MAC
-//    path = QApplication::applicationDirPath()+"/Libraries/";
-//#endif
-//    QString prefix, suffix;
-//#ifdef Q_OS_UNIX
-//    prefix = "lib";
-//    suffix = ".so";
-//#endif
-//#ifdef Q_OS_WIN32
-//    suffix = ".dll";
-//#endif
-//    QString convertorPath;
-//#ifndef Q_OS_MAC
-//    convertorPath = QApplication::applicationDirPath()+"/Addons/convertor/src";
-//#endif
-//    QString pythonPluginPath = path+prefix+"kpython"+suffix;
-//    if (QFile::exists(pythonPluginPath)) {
-//        QPluginLoader *pythonLoader = new QPluginLoader(pythonPluginPath, this);
-//        Q_CHECK_PTR ( pythonLoader );
-//        QObject *obj = pythonLoader->instance();
-//        if (obj) {
-//            m_python = qobject_cast<KumirPythonInterface*>(obj);
-//            Q_CHECK_PTR ( m_python );
-
-//            m_convertorProcess = m_python->startPythonInterpreter(QStringList() << convertorPath,
-//                                                                  this,
-//                                                                  SLOT(loadConvertors(bool)) );
-//        }
-//    }
-//}
-
-//void Application::loadConvertors(bool status)
-//{
-//    if (!status)
-//        return;
-//    QString resorcesPath;
-//#ifdef Q_OS_MAC
-//    resorcesPath = QApplication::applicationDirPath()+"/../Resources";
-//#else
-//    resorcesPath = QApplication::applicationDirPath();
-//#endif
-//    QDir dir(resorcesPath+"/Addons");
-
-//    QStringList files = dir.entryList(QStringList() << "*.convertor");
-//    foreach (QString fname, files) {
-//        QFile f(dir.absoluteFilePath(fname));
-//        QString currentLine;
-//        QString name;
-//        QString value;
-//        QRegExp rxBracket(".+\\[(.+)\\]");
-//        QMap<QString,QString> title;
-//        title[""] = "";
-//        QString pythonModule;
-////        bool ok;
-//        QString subName;
-//        if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
-//            QTextStream ts(&f);
-//            while (!ts.atEnd()) {
-//                currentLine = ts.readLine().trimmed();
-//                if (currentLine.startsWith("#"))
-//                    continue;
-//                int delim = currentLine.indexOf(":");
-//                if (delim!=-1) {
-//                    name = currentLine.left(delim);
-//                    value = currentLine.mid(delim+1).trimmed();
-//                    if (name.toLower()=="character-encoding") {
-//                        ts.setCodec(value.toAscii().data());
-//                    }
-//                    else if (name.toLower().startsWith("title")) {
-//                        if (rxBracket.exactMatch(name)) {
-//                            subName = rxBracket.cap(1);
-//                        }
-//                        else
-//                            subName = "";
-//                        title[subName] = value;
-//                    }
-//                    else if (name.toLower().startsWith("title")) {
-//                        if (rxBracket.exactMatch(name)) {
-//                            subName = rxBracket.cap(1);
-//                        }
-//                        else
-//                            subName = "";
-//                        title[subName] = value;
-//                    }
-//                    else if (name.toLower()=="python-module") {
-//                        pythonModule = value.trimmed();
-//                    }
-
-//                }
-//            }
-//            f.close();
-//            QString itemTitle;
-//            QString currentLanguage = QLocale::system().name();
-//            if (title.contains(currentLanguage))
-//                itemTitle = title[currentLanguage];
-//            else
-//                itemTitle = title[""];
-//            Convertor *conv = new Convertor;
-//            conv->title = itemTitle;
-//            conv->pythonModule = pythonModule;
-//            m_python->importModule(m_convertorProcess, pythonModule);
-//            QAction *a = mainWindow->addConvertor(itemTitle,QString::number(m_convertors.count()));
-//            m_convertors << conv;
-//            connect (a, SIGNAL(triggered()), this, SLOT(sendToConvertor()));
-//        }
-//    }
-//    m_python->importModule(m_convertorProcess, "translator_service.program");
-
-//}
-
-//void Application::sendToConvertor()
-//{
-//    QAction *who = qobject_cast<QAction*>(sender());
-//    if (who!=NULL) {
-//        QString sId = who->property("Convertor ID").toString();
-//        bool ok;
-//        int id = sId.toInt(&ok);
-//        Q_ASSERT(ok);
-//        Convertor *conv = m_convertors[id];
-//        QString data = compiler->modules()->xmlData();
-//        QString pythonData = m_python->createPythonUnicodeString(data);
-//        QVariant result = m_python->executePythonInstruction(m_convertorProcess,
-//                                                             conv->pythonModule+".convert("+pythonData+")",
-//                                                             true);
-//        if (!result.isNull()) {
-//            QList<QString> fileNames;
-//            QList<QString> fileData;
-//            for ( int i=0; i<result.toList().count(); i++ ) {
-//                QList<QVariant> pair = result.toList()[i].toList();
-//                fileNames << pair[0].toString();
-//                fileData << pair[1].toString();
-//            }
-//            MultiFileSaveWizard *wizard =
-//                    new MultiFileSaveWizard(mainWindow,
-//                                            "Convertor",
-//                                            fileNames);
-//            if (wizard->exec()==QDialog::Accepted) {
-//                QStringList filesToSave = wizard->fileNames();
-//                QString encoding = wizard->encoding();
-//                QString path = wizard->path();
-//                for (int i=0; i<filesToSave.count(); i++) {
-//                    int index = fileNames.indexOf(filesToSave[i]);
-//                    Q_ASSERT ( index >= 0 );
-//                    QFile f(path+"/"+fileNames[index]);
-//                    if (f.open(QIODevice::WriteOnly|QIODevice::Text)) {
-//                        QTextStream ts(&f);
-//                        ts.setCodec(encoding.toAscii().data());
-//                        ts << fileData[index];
-//                        f.close();
-//                    }
-//                }
-//            }
-//            wizard->deleteLater();
-//        }
-//    }
-//}
 
 void Application::createSettings()
 {
@@ -401,75 +240,6 @@ void Application::createSettings()
 	if (settings->value("Directories/IO", "").toString().isEmpty()) {
 		settings->setValue("Directories/IO", defaultPath);
 	}
-
-	//    if (zMode)
-	//    {
-	//        if ( !zPath.isEmpty() && (QDir(zPath).exists() || QFile(zPath).exists()) )
-	//        {
-	//            if (QDir(zPath).exists())
-	//            {
-	//                zPath = QDir(zPath).absolutePath();
-
-	//                settings = new QSettings(zPath + QDir::separator() + "kumir.ini", QSettings::IniFormat);
-	//#if QT_VERSION >= 0x040500
-	//                settings->setIniCodec("UTF-8");
-	//#else
-	//#warning "Update your Qt-libraries!"
-	//#endif
-	//                settings->setValue("Directories/StdModules",zPath);
-	//                settings->setValue("Directories/IO",zPath);
-	//            }
-	//            else
-	//            {
-	//                settings = new QSettings(zPath, QSettings::IniFormat);
-	//#if QT_VERSION >= 0x040500
-	//                settings->setIniCodec("UTF-8");
-	//#else
-	//#warning "Update your Qt-libraries!"
-	//#endif
-	//            }
-	//        }
-	//        else
-	//        {
-	//            QString message;
-	//            message = tr("Path ") + zPath + tr(" does not exist") + "\n";
-	//            std::cout<<message.toUtf8().data();
-	//#ifdef WIN32
-	//            QMessageBox::about(NULL, tr("Kumir"), message);
-	//#endif
-	//            return;
-	//        }
-	//    }
-	//    else
-	//    {
-	//        settings = new QSettings("NIISI RAS","Kumir");
-	//        if (settings->allKeys().isEmpty() || settings->value("Common/SetDefaultSettingsAtFirstRun",false).toBool())
-	//        {
-	//            settings->remove("Common/SetDefaultSettingsAtFirstRun");
-	//            QSettings defSettings(QCoreApplication::applicationDirPath() + "/Kumir/Config/default.ini", QSettings::IniFormat);
-	//#if QT_VERSION >= 0x040500
-	//            defSettings.setIniCodec("UTF-8");
-	//#else
-	//#warning "Update your Qt-libraries!"
-	//#endif
-	//            foreach (QString key, defSettings.allKeys())
-	//            {
-	//                settings->setValue(key, defSettings.value(key));
-	//            }
-	//            QSettings vodoleySettings("NIISI RAS", "Vodoley");
-	//            QSettings defVodSettings(QCoreApplication::applicationDirPath() + "/Kumir/Config/default-vodoley.ini", QSettings::IniFormat);
-	//#if QT_VERSION >= 0x040500
-	//            defVodSettings.setIniCodec("UTF-8");
-	//#else
-	//#warning "Update your Qt-libraries!"
-	//#endif
-	//            foreach (QString key, defVodSettings.allKeys())
-	//            {
-	//                vodoleySettings.setValue(key, defVodSettings.value(key));
-	//            }
-	//        }
-	//    }
-	//    settings->setValue("Editor/LegacyIndent",false);
 }
 
 void Application::createMacros()
@@ -497,8 +267,8 @@ void Application::createNetworkUtilites()
 					return;
 				}
 
-			};
-		};
+			}
+		}
 	}
 }
 
@@ -590,7 +360,6 @@ void Application::finishGUIInitialization()
 		}
 	}
 	mainWindow->show();
-
 }
 
 void Application::prepareBatch()
@@ -1320,13 +1089,105 @@ void Application:: loadTaskControlPlugin()
 		qDebug() << "taskControl not loaded:" << taskPluginPath;
 	}
 
-};
+}
+
+void Application::startCheck()
+{
+	startControlScripts = true;
+	curFieldId = 0;
+	for (int i = 0; i < app()->taskIsps.count(); i++) {
+		int id = app()->compiler->modules()->idByName(app()->taskIsps.at(i));
+
+
+		if (app()->compiler->modules()->module(id)->name == "Robot") {
+			app()->mainWindow->textEdit3->append("ROBOT LOAD:" + app()->Task()->field(app()->taskIsps.at(i), curFieldId));
+			KumRobot *robo = (KumRobot *)app()->compiler->Modules.module(id)->instrument();
+			robo->setStartEnvironment(app()->Task()->field(app()->taskIsps.at(i), curFieldId));
+		}
+
+		if (app()->compiler->modules()->module(id)->name == trUtf8("Водолей")) {
+			app()->compiler->modules()->module(id)->Plugin()->setParameter("environment",
+				QVariant(app()->Task()->field(app()->taskIsps.at(i), curFieldId)));
+		}
+	}
+	app()->mainWindow->startTesting();
+}
+
+void Application::continueCheck()
+{
+	curFieldId++;
+	if ((app()->taskIsps.count() == 0) && (curFieldId > 0)) {
+		endCheck();
+		return;
+	}
+	for (int i = 0; i < app()->taskIsps.count(); i++) {
+		int id = app()->compiler->modules()->idByName(app()->taskIsps.at(i));
+		if (curFieldId >= Task()->fieldsCount(taskIsps.at(i))) {
+			endCheck();
+			return;
+		}
+
+		if (app()->compiler->modules()->module(id)->name == "Robot") {
+			app()->mainWindow->textEdit3->append("ROBOT LOAD:" + app()->Task()->field(app()->taskIsps.at(i), curFieldId));
+			KumRobot *robo = (KumRobot *)app()->compiler->Modules.module(id)->instrument();
+			robo->setStartEnvironment(app()->Task()->field(app()->taskIsps.at(i), curFieldId));
+		}
+
+		if (app()->compiler->modules()->module(id)->name == trUtf8("Водолей")) {
+			app()->compiler->modules()->module(id)->Plugin()->setParameter("environment",
+				QVariant(app()->Task()->field(app()->taskIsps.at(i), curFieldId)));
+		}
+	}
+	app()->mainWindow->startTesting();
+}
+
+bool Application::isTeacherMode()
+{
+	return QCoreApplication::arguments().contains("-t") ||
+		QCoreApplication::arguments().contains("--teacher");
+}
+
+QStringList Application::ExtIspsList()
+{
+	QString data = settings->value("Isps", "").toString();
+	return data.split(';');
+}
+
+void Application::RemoveAtExtIspsList(int id)
+{
+	QStringList data = settings->value("Isps", "").toString().split(';');
+	if (data.count() > id) {
+		data.removeAt(id);
+		QString toSett = "";
+		for (int i = 0; i < data.count(); i++) {
+			toSett += data[i] + ";";
+		}
+		settings->setValue("Isps", toSett);
+	} else {
+		qDebug() << "RemoveAtExtIspsList:Bad id";
+	}
+}
+
+void Application::AppendExtIspsToList(QString name, uint port)
+{
+	QString data = settings->value("Isps", "").toString();
+	data = data + ";" + name + "," + QString::number(port);
+	settings->setValue("Isps", data);
+}
+
+void Application::AppendExtIspsToList(QString name, uint port, QString url)
+{
+	QString data = settings->value("Isps", "").toString();
+	data = data + ";" + name + "," + QString::number(port) + ',' + url;
+	settings->setValue("Isps", data);
+}
+
 
 void fromTCInterface::setParam(QString paramname, QString value)
 {
 	qDebug() << paramname << " " << value;
 	app()->mainWindow->setCurFile(value);
-};
+}
 
 bool fromTCInterface::startNewTask(QStringList isps)
 {
@@ -1346,12 +1207,13 @@ bool fromTCInterface::startNewTask(QStringList isps)
 			app()->mainWindow->textEdit3->append("ROBOT LOAD:" + app()->Task()->field(isps[i], 0));
 			KumRobot *robo = (KumRobot *)app()->compiler->Modules.module(id)->instrument();
 			robo->setStartEnvironment(app()->Task()->field(isps[i], 0));
-		};
+		}
 	}
 	app()->taskIsps = isps;
 	app()->mainWindow->setWindowTitle(app()->Task()->name + QString::fromUtf8(" - Кумир"));
 	return true;
-};
+}
+
 bool fromTCInterface::setPreProgram(QVariant param)
 {
 	QString program_file = param.toString();
@@ -1367,75 +1229,26 @@ bool fromTCInterface::setPreProgram(QVariant param)
 		}
 	}
 	return true;
-};
+}
+
 void fromTCInterface::startProgram(QVariant param)
 {
 	//    qDebug()<<"StartProg";
 	QString program_file = param.toString();
 	app()->startCheck();
-};
+}
 
 
-void Application::startCheck()
-{
-	startControlScripts = true;
-	curFieldId = 0;
-	for (int i = 0; i < app()->taskIsps.count(); i++) {
-		int id = app()->compiler->modules()->idByName(app()->taskIsps.at(i));
-
-
-		if (app()->compiler->modules()->module(id)->name == "Robot") {
-			app()->mainWindow->textEdit3->append("ROBOT LOAD:" + app()->Task()->field(app()->taskIsps.at(i), curFieldId));
-			KumRobot *robo = (KumRobot *)app()->compiler->Modules.module(id)->instrument();
-			robo->setStartEnvironment(app()->Task()->field(app()->taskIsps.at(i), curFieldId));
-		};
-
-		if (app()->compiler->modules()->module(id)->name == trUtf8("Водолей")) {
-			app()->compiler->modules()->module(id)->Plugin()->setParameter("environment",
-				QVariant(app()->Task()->field(app()->taskIsps.at(i), curFieldId)));
-		};
-
-
-
-	};
-	app()->mainWindow->startTesting();
-};
-void Application::continueCheck()
-{
-	curFieldId++;
-	if ((app()->taskIsps.count() == 0) && (curFieldId > 0)) {
-		endCheck();
-		return;
-	};
-	for (int i = 0; i < app()->taskIsps.count(); i++) {
-		int id = app()->compiler->modules()->idByName(app()->taskIsps.at(i));
-		if (curFieldId >= Task()->fieldsCount(taskIsps.at(i))) {
-			endCheck();
-			return;
-		};
-
-		if (app()->compiler->modules()->module(id)->name == "Robot") {
-			app()->mainWindow->textEdit3->append("ROBOT LOAD:" + app()->Task()->field(app()->taskIsps.at(i), curFieldId));
-			KumRobot *robo = (KumRobot *)app()->compiler->Modules.module(id)->instrument();
-			robo->setStartEnvironment(app()->Task()->field(app()->taskIsps.at(i), curFieldId));
-		};
-
-		if (app()->compiler->modules()->module(id)->name == trUtf8("Водолей")) {
-			app()->compiler->modules()->module(id)->Plugin()->setParameter("environment",
-				QVariant(app()->Task()->field(app()->taskIsps.at(i), curFieldId)));
-		};
-
-	};
-	app()->mainWindow->startTesting();
-};
 QString fromTCInterface::getText()
 {
 	QString text = app()->mainWindow->getPrgText();
 	return text;
-};
+}
+
 bool fromTCInterface::setTesting(QString param)
 {
 	app()->compiler->curEditor()->setPostScriptumText(param);
 	// qDebug()<<"Set testing alg"<<param;
 	return true;
 }
+

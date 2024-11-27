@@ -2,9 +2,26 @@
 #define KUMROBOT_H
 
 #include "kum_instrument.h"
+#include "robotwindow.h"
+#include "application.h"
+#include <QSettings>
 #include <QGraphicsObject>
+#include <QGraphicsScene>
+#include <QWidget>
+#include <QFont>
+#include <QPen>
+#include <QSpinBox>
+#include <QLineEdit>
+
 class QMainWindow;
 class QToolButton;
+class QCheckBox;
+class QLabel;
+class QLineEdit;
+class QSpinBox;
+
+class CellDialog;
+class RobotWindow;
 
 
 class SimpleRobot: public QGraphicsObject
@@ -127,7 +144,7 @@ public:
 	void setTextColor()
 	{
 		TextColor = QColor(app()->settings->value("Robot/TextColor", "#FFFFFF").toString());
-	};
+	}
 
 public:
 	bool IsColored;

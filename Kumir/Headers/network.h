@@ -16,12 +16,16 @@
 
 #ifndef KNPConnect_H
 #define KNPConnect_H
+
 #include "int_proga.h"
 #include "kum_tables.h"
+
 #include <QObject>
 #include <QAbstractSocket>
 #include <QTcpServer>
+#include <QEvent>
 class QTcpSocket;
+class Kumir_Run;
 
 #define HAND_SHAKE       0
 #define EXT_CMD          1
@@ -43,7 +47,6 @@ class QTcpSocket;
 #define ERROR            100
 #define PARCE_ERROR      101
 
-class KumValueStackElem;
 class KumModules;
 class KNPEvent : public QEvent
 {
@@ -56,6 +59,7 @@ public:
 private:
 	QString s;
 };
+
 struct KNPCommand {
 	QString text;
 	uint type;

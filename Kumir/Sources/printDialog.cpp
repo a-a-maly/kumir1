@@ -15,6 +15,7 @@
 #include "kumrobot.h"
 #include <QPrinter>
 #include <QMessageBox>
+#include <QDateTime>
 
 PrintPreview::PrintPreview(QWidget *parent, Qt::WindowFlags) : QWidget(parent)
 {

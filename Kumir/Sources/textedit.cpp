@@ -25,6 +25,9 @@
 #include <QtGlobal>
 #include <QScrollBar>
 #include <QClipboard>
+#include <QSettings>
+#include <QPainter>
+#include <QTimer>
 
 #ifdef Q_OS_UNIX
 #include <X11/XKBlib.h>

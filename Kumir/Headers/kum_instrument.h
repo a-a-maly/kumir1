@@ -21,12 +21,12 @@
 
 #ifndef KUM_INSTR_H
 #define KUM_INSTR_H
-#include "int_proga.h"
-#include "kum_tables.h"
-#include "cell_dialog.h"
-#include "printDialog.h"
-#include "robotwindow.h"
+
 #include <QObject>
+#include <QRect>
+#include <QDebug>
+
+class symbol_table;
 
 #define LEFT_WALL   0x1
 #define RIGHT_WALL  0x2
@@ -156,11 +156,6 @@ private:
 	QTextCodec *codec;
 	KumModules *m_modules;
 };
-
-
-
-
-
 
 
 //Robot

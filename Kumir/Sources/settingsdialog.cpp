@@ -27,6 +27,8 @@
 #include <QStyleFactory>
 #include <QFileDialog>
 #include <QColorDialog>
+#include <QSettings>
+#include <QProcess>
 
 SettingsDialog::SettingsDialog(QWidget *parent, Qt::WindowFlags fl)
 	: QDialog(parent, fl), Ui::SettingsDialog()

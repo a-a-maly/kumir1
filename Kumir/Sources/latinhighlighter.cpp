@@ -1,6 +1,7 @@
 #include "latinhighlighter.h"
 #include "application.h"
 #include <QTextEdit>
+#include <QSettings>
 
 LatinHighlighter::LatinHighlighter(QTextEdit *editor) :
 	QSyntaxHighlighter(editor)

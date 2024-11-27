@@ -15,11 +15,11 @@
 ****************************************************************************/
 #ifndef KUM_TABLES_H
 #define KUM_TABLES_H
-#include "application.h"
-#include "const.h"
 #include "kassert.h"
-#include "Addons/plugin_interface.h"
+//#include "Addons/plugin_interface.h"
 #include "enums.h"
+#include <QStringList>
+#include <QPoint>
 
 class KumInstrument;
 class KumValueStackElem;

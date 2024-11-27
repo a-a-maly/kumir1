@@ -14,7 +14,7 @@
 **
 ****************************************************************************/
 
-//#include <math.h>
+#include <math.h>
 #include "int_proga.h"
 #include "kum_tables.h"
 #include "error.h"
@@ -22,6 +22,9 @@
 #include "integeroverflowchecker.h"
 #include "doubleoverflowchecker.h"
 #include "config.h"
+#include "application.h"
+#include <QFile>
+#include <QDir>
 
 
 ProgaText::ProgaText()

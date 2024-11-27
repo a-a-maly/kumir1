@@ -30,6 +30,7 @@
 #include <QMessageBox>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QSettings>
 
 
 void addToMap(QHash<QString, QString> *map,

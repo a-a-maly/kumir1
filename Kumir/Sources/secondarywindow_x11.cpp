@@ -1,10 +1,12 @@
-#include <QtGlobal>
+#include "secondarywindow.h"
+
 #ifdef Q_OS_UNIX
 
-#include "secondarywindow_x11.h"
 #include "application.h"
 
 #include <QVBoxLayout>
+#include <QSettings>
+#include <QTimerEvent>
 
 SecondaryWindow::SecondaryWindow(QWidget *innerWidget, const QString &windowName)
 	: QWidget(0)

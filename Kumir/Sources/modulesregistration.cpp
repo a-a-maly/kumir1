@@ -28,6 +28,7 @@
 #include <QShowEvent>
 #include <QCloseEvent>
 #include <QTcpSocket>
+#include <QCheckBox>
 
 ModulesRegistration::ModulesRegistration(QWidget *parent, Qt::WindowFlags fl)  : QDialog(parent, fl), Ui::ModulesRegistration()
 {

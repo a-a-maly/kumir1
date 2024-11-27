@@ -19,6 +19,9 @@
 
 #include <QScriptable>
 #include <QScriptEngine>
+#include <QStack>
+#include <QPointer>
+#include <QMutex>
 #include "kum_tables.h"
 #include "ui_PDDebugWindow.h"
 

@@ -23,6 +23,11 @@
 #include <QScrollBar>
 #include <QMenu>
 #include <QKeyEvent>
+#include <QSettings>
+#include <QDateTime>
+#include <QPainter>
+#include <QTextCodec>
+#include <QApplication>
 
 #define FC_PLAIN char(0x00)
 #define FC_INPUT char(0x01)

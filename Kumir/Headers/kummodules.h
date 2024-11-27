@@ -3,6 +3,8 @@
 
 #include "kum_tables.h"
 #include <QDomDocument>
+#include <QDir>
+class QTcpSocket;
 
 class KumModules : public QObject
 

@@ -18,6 +18,7 @@
 #include "kumiredit.h"
 #include "application.h"
 #include "tools.h"
+#include <QSettings>
 
 #define FC_PLAIN char(0x00)
 #define FC_STRING char(0x01)

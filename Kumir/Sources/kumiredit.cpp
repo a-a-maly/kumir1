@@ -38,6 +38,7 @@
 #include <QClipboard>
 #include <QTextLayout>
 #include <QDesktopServices>
+#include <QPainter>
 
 KumirEdit::KumirEdit(QWidget *parent) : TextEdit(parent)
 {

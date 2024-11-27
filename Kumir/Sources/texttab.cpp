@@ -16,6 +16,8 @@
 #include "textedit.h"
 #include "mainwindow.h"
 #include <QPrinter>
+#include <QPainter>
+#include <QSettings>
 
 TextTab::TextTab ( QWidget* parent, Qt::WindowFlags fl ) :
 	QWidget ( parent, fl )

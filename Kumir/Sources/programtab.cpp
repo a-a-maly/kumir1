@@ -20,6 +20,8 @@
 #include <QtGlobal>
 #include <QScrollBar>
 #include <QPrinter>
+#include <QSettings>
+#include <QPainter>
 
 ProgramTab::ProgramTab(QWidget *parent, Qt::WindowFlags fl)
 	: QWidget(parent, fl), Ui::ProgramTab()

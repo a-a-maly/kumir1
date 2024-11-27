@@ -24,6 +24,11 @@
 //#include "strtypes.h"
 #include "kum_tables.h"
 #include "error.h"
+#include "const.h"
+
+#include <QDir>
+#include <QThread>
+#include <QBuffer>
 
 #define CRITICAL_PERFORMANCE_PROGRAM_SIZE 20
 #define ALLOW_QDEBUG false

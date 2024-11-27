@@ -3,6 +3,9 @@
 #include "kum_instrument.h"
 #include "kummodules.h"
 #include "secondarywindow.h"
+#include "application.h"
+#include "int_proga.h"
+#include <QIcon>
 
 KumSingleModule::KumSingleModule ( QWidget *parent,
 								   const QString &Name,

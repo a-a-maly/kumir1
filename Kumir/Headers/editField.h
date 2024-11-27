@@ -17,8 +17,15 @@
 #define EDITWINDOW_H
 
 #include <QMainWindow>
+#include <QFileInfo>
+#include <QSettings>
 #include "ui_editField.h"
 #include "kum_instrument.h"
+#include "application.h"
+
+class QPushButton;
+class QSpinBox;
+
 
 #define MAX_COLUMNS 16
 #define MAX_ROWS 10

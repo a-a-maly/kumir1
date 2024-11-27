@@ -17,6 +17,7 @@
 #include "kumfiledialog.h"
 #include "kumsinglemodule.h"
 #include "kummodules.h"
+#include "network.h"
 #include <QMessageBox>
 #include <QTcpSocket>
 
