@@ -1,0 +1,11 @@
+style=otbs
+indent=force-tab=4
+indent-after-parens
+indent-preproc-define
+pad-oper
+pad-header
+unpad-paren
+align-pointer=name
+align-reference=name
+break-one-line-headers
+convert-tabs
