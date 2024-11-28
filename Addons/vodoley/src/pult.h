@@ -305,7 +305,7 @@ class VodoleyPult : public QWidget, public Ui::VodoleyPult
 	Q_OBJECT
 
 public:
-	VodoleyPult(QWidget *parent = 0, Qt::WFlags fl = 0);
+	VodoleyPult(QWidget *parent = 0, Qt::WindowFlags fl = 0);
 	~VodoleyPult() {};
 
 	bool Link()

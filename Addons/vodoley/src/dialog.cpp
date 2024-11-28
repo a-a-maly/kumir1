@@ -12,7 +12,7 @@
 
 #include "dialog.h"
 
-Dialog::Dialog(QWidget *parent, Qt::WFlags fl): QDialog(parent, fl), Ui::Dialog()
+Dialog::Dialog(QWidget *parent, Qt::WindowFlags fl): QDialog(parent, fl), Ui::Dialog()
 {
 	setupUi(this);
 	connect(BaseA, SIGNAL(valueChanged(int)), this, SLOT(setMax()));

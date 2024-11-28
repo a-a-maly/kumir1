@@ -6,6 +6,7 @@
 #include "application.h"
 #include "int_proga.h"
 #include <QIcon>
+#include <QSettings>
 
 KumSingleModule::KumSingleModule ( QWidget *parent,
 								   const QString &Name,

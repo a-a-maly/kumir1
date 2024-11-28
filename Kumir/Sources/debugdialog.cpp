@@ -21,6 +21,7 @@
 #include "secondarywindow.h"
 #include "tableviewer.h"
 #include "run.h"
+#include <QSettings>
 
 DebugDialog::DebugDialog ( QWidget* parent )
 	: QWidget ( parent )

@@ -44,6 +44,9 @@
 
 #include <QMessageBox>
 #include <QDesktopServices>
+#include <QTimer>
+#include <QTranslator>
+#include <QPluginLoader>
 
 #ifndef WIN32
 #include "unistd.h"

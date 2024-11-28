@@ -14,6 +14,8 @@
 **
 ****************************************************************************/
 #include "interface.h"
+#include <QMessageBox>
+
 void KuznecStarter::start()
 {
 	mw = new KumKuznec();
@@ -177,4 +179,6 @@ emit sendText(text);
 };
 
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 Q_EXPORT_PLUGIN2(kuznecStarter, KuznecStarter)
+#endif

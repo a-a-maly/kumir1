@@ -16,17 +16,23 @@
 ****************************************************************************/
 #ifndef KUZNEC_H
 #define KUZNEC_H
+
 #include <QMainWindow>
 #include <QCloseEvent>
+#include <QGraphicsView>
+#include <QGraphicsItem>
 #include <QGraphicsScene>
-#include <QtSvg>
- #include <QGraphicsSvgItem>
-//#include "src/pult.h"
-//class QAction;
-//class QMenu;
-//class QTextEdit;
+#include <QDebug>
+//#include <QGraphicsSvgItem>
+
 class pultLogger;
 class GrasshopperPult;
+class QLineEdit;
+class QCheckBox;
+class QLabel;
+class QCloseEvent;
+class QToolButton;
+
 #define DEFAULT_SIZEX 500
 #define DEFAULT_SIZEY 260
 #define BUTTON_SIZE 20
@@ -96,8 +102,7 @@ void wheelEvent ( QGraphicsSceneWheelEvent * wheelEvent );
 
 };
 
-class DrawView
-	: public QGraphicsView
+class DrawView : public QGraphicsView
 {
 	public:
 		DrawView(QGraphicsScene *, QWidget*);
@@ -118,8 +123,7 @@ int pos;
 };
 
 
-class KumKuznec
-     :public QMainWindow
+class KumKuznec :public QMainWindow
 {
 	friend class KuznecStarter;
 	Q_OBJECT

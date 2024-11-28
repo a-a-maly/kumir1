@@ -29,8 +29,9 @@
 #include "kumsinglemodule.h"
 #include "kumrobot.h"
 #include "kumdraw.h"
-Compiler::Compiler(QObject *parent)
-	: QObject(parent)
+#include <QBuffer>
+
+Compiler::Compiler(QObject *parent) : QObject(parent)
 {
 	analizer = new text_analiz();
 

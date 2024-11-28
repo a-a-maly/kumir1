@@ -13,10 +13,12 @@
 //** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 //**
 //****************************************************************************/
-#include <QTextEdit>
 #include "network.h"
 #include "pult.h"
 #include "kuznec.h"
+
+#include <QTextEdit>
+#include <QSettings>
 
 KNPCommand KNPParcer::ParceCommand(QString command)
 {

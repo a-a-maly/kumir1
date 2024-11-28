@@ -1,6 +1,7 @@
 #ifndef TASKCONTROLINTERFACE_H
 #define TASKCONTROLINTERFACE_H
 
+#include <QtPlugin>
 #include <QStringList>
 #include <QMap>
 #include <QRect>

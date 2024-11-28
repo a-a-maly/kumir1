@@ -15,8 +15,6 @@
 //****************************************************************************/
 #ifndef KNPConnect_H
 #define KNPConnect_H
-#include <QtCore>
-#include <QtNetwork>
 
 #define VER 0.2
 
@@ -40,9 +38,13 @@
 #define ERROR            100
 #define PARCE_ERROR      101
 
+#include <QEvent>
+#include <QTcpSocket>
+#include <QTcpServer>
+
 class QTextEdit;
 class KumKuznec;
-//class KumValueStackElem;
+
 class KNPEvent : public QEvent
 {
 public:

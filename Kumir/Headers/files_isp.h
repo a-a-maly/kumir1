@@ -22,6 +22,7 @@
 #include <QFile>
 #include <QTextCodec>
 #include <QTextStream>
+#include <QDataStream>
 #include <QDebug>
 
 class STFile

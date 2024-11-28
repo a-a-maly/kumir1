@@ -28,6 +28,7 @@
 #include <QSettings>
 #include <QPainter>
 #include <QTimer>
+#include <QMimeData>
 
 #ifdef Q_OS_UNIX
 #include <X11/XKBlib.h>

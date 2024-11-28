@@ -16,24 +16,21 @@
 
 
 #include "ui_dialog.h"
-#include <QtCore>
-#include <QtGui>
-
+#include <QDialog>
+#include <QDebug>
 
 class Dialog : public QDialog, Ui::Dialog
 {
 	Q_OBJECT
 
 	public:
-		Dialog ( QWidget* parent = 0, Qt::WFlags fl = 0 );
+		Dialog ( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
 		~Dialog(){};
 	int ASize(){return BaseA->value();};
 	int BSize(){return BaseB->value();};
 
 	
 	int ANeed(){return NeedA->value();};
-//	int BNeed(){return NeedB->value();};
-//	int CNeed(){return NeedC->value();};
 
 	void setSizes(int A,int B)
 		{
@@ -95,10 +92,12 @@ class Dialog : public QDialog, Ui::Dialog
 		spinBox->setEnabled(true);
 		spinBox_2->setEnabled(true);
 		};
+
         bool isTaskNeeded()
 		{
 		return taskNeeded->isChecked();
 		};
+
         void setTaskNeeded(bool task)
 		{
 		taskNeeded->setChecked(task);
@@ -106,11 +105,10 @@ class Dialog : public QDialog, Ui::Dialog
 		frame_3->setEnabled(true);
 		qDebug()<<"frame_3->ENABLED!";
 		};
+
 public slots:
  void setMax();
  void addFlag();
  void enableDelete();
  void removeFlag();
-
-	
 };

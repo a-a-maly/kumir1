@@ -3,6 +3,8 @@
 ######################################################################
 
 TEMPLATE = app
+CONFIG += qt
+include(../../../Scripts/common.pri)
 TARGET = 
 DEPENDPATH += .
 INCLUDEPATH += .

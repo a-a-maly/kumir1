@@ -17,7 +17,8 @@
 #define KUMFILEDIALOG_H
 
 #include <QFileDialog>
-#include <QtGui>
+class QComboBox;
+class QLabel;
 
 /**
 	@author Victor Yacovlev <V.Yacovlev@gmail.com>

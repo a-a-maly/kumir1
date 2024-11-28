@@ -5,6 +5,9 @@
 #include "application.h"
 #include "protomodule_interface.h"
 
+#include <QWidget>
+#include <QApplication>
+
 KumModules::KumModules(QWidget *parent) :
 		QObject(parent)
 {

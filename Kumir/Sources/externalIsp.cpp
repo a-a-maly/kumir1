@@ -20,6 +20,7 @@
 #include "network.h"
 #include <QMessageBox>
 #include <QTcpSocket>
+#include <QSettings>
 
 externalIspDialog::externalIspDialog(QWidget *parent, Qt::WindowFlags fl) :
 	QDialog(parent, fl), Ui::externalIspDialog()

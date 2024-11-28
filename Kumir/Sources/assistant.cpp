@@ -15,7 +15,6 @@
 ****************************************************************************/
 
 #include "assistant.h"
-//#include <QtWebKit>
 #include "application.h"
 #include "int_proga.h"
 #include "kummodules.h"
@@ -25,6 +24,7 @@
 #include "tab.h"
 #include "programtab.h"
 #include "kumiredit.h"
+#include <QSettings>
 
 //static const char* folder_closed_xpm[]={
 //	"16 16 9 1",

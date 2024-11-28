@@ -14,7 +14,9 @@
 **
 ****************************************************************************/
 #include "kumfiledialog.h"
-
+#include <QLayout>
+#include <QLabel>
+#include <QComboBox>
 
 KumFileDialog::KumFileDialog
 		( QWidget * parent, const QString & caption, const QString & directory, const QString & filter, bool showEncodings)

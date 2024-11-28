@@ -18,7 +18,6 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QClipboard>
-//#include <QPen>
 
 const double DegreesPerMinute = 7.0;
 const double DegreesPerSecond = DegreesPerMinute / 60;
@@ -587,7 +586,7 @@ void pultLogger::CopyLog()
 	cp->setText(text);
 }
 
-VodoleyPult::VodoleyPult(QWidget *parent, Qt::WFlags fl)
+VodoleyPult::VodoleyPult(QWidget *parent, Qt::WindowFlags fl)
 	: QWidget(parent, fl), Ui::VodoleyPult()
 {
 	autoClose = false;

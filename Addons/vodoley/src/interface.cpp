@@ -302,4 +302,6 @@ void VodoleyStarter::setParameter(const QString &paramName, const QVariant &para
 	return;
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 Q_EXPORT_PLUGIN2(VodoleyStarter, VodoleyStarter)
+#endif

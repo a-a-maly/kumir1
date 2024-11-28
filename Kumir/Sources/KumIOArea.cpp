@@ -27,6 +27,7 @@
 #include <QDateTime>
 #include <QPainter>
 #include <QTextCodec>
+#include <QMimeData>
 #include <QApplication>
 
 #define FC_PLAIN char(0x00)

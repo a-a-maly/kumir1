@@ -48,6 +48,9 @@
 #include <QMessageBox>
 #include <QPrinter>
 #include <QPrintDialog>
+#include <QTimer>
+#include <QProcess>
+#include <QMimeData>
 #include <QDesktopWidget>
 #include <QDesktopServices>
 

@@ -16,10 +16,7 @@
 
 #include "text_analiz.h"
 #include "error.h"
-//#include "strtypes.h"
 #include "tools.h"
-// #include "kumiredit.h"
-// #include "lineprop.h"
 #include "kassert.h"
 #include "config.h"
 
@@ -29,6 +26,8 @@
 #include "kumsinglemodule.h"
 
 #include "config.h"
+
+#include <QStack>
 
 
 int find_viraj_Func(QStringList virajList, QList<PeremType> *virajTypes, function_table *table, KumModules *modules, QString func, int *err)
