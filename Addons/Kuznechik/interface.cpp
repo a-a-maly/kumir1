@@ -15,6 +15,7 @@
 ****************************************************************************/
 #include "interface.h"
 #include <QMessageBox>
+#include <QUrl>
 
 void KuznecStarter::start()
 {
