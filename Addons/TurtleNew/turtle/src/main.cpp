@@ -15,45 +15,45 @@
 //****************************************************************************/
 
 
-#include <QApplication>
 #include "turtle.h"
 #include "pult.h"
 #include "network.h"
+
+#include <QMessageBox>
+#include <QApplication>
 #include <QGraphicsSvgItem>
 
 int main(int argc, char *argv[])
 {
-      Q_INIT_RESOURCE(application);
-      QApplication app(argc, argv);
-      
-	turtle * mw = new turtle();
-	TurtlePult *t_pult=new TurtlePult();
+	Q_INIT_RESOURCE(application);
+	QApplication app(argc, argv);
+
+	turtle *mw = new turtle();
+	TurtlePult *t_pult = new TurtlePult();
 
 
-	mw->resize(500,500);
+	mw->resize(500, 500);
 	//mw->scene->addLine(-600,0,100,0);
 	//mw->scene->addLine(0,-200,0,100);
-        mw->logger=t_pult->pltLogger();
-        KNPServer* server=new KNPServer();
-	int port=4354;
-	if(!server->OpenPort("localhost",port))
-		{
- 			QMessageBox::critical(mw, QString::fromUtf8("Ошибка открытия порта"),
-                             QString::fromUtf8("Невозможно открыть порт %1")
-                              .arg(port));
-		}else
-  		{
+	mw->logger = t_pult->pltLogger();
+	KNPServer* server = new KNPServer();
+	int port = 4354;
+	if (!server->OpenPort("localhost", port)) {
+		QMessageBox::critical(mw, QString::fromUtf8("Ошибка открытия порта"),
+			QString::fromUtf8("Невозможно открыть порт %1")
+			.arg(port));
+	} else {
 		t_pult->showMessage(QString::fromUtf8("Открыт порт %1").arg(port));
-		};
-        server->SigCross->setTurtle(mw);
-        mw->show();
+	};
+	server->SigCross->setTurtle(mw);
+	mw->show();
 //	scene->addLine(0,0,200,0);
-      
-      t_pult->turtleObj=mw;
-      t_pult->Connect(server);
-      t_pult->show();
-	mw->Tpult=t_pult;
-    //  t_pult->Connect();
-      return app.exec();
+
+	t_pult->turtleObj = mw;
+	t_pult->Connect(server);
+	t_pult->show();
+	mw->Tpult = t_pult;
+	//  t_pult->Connect();
+	return app.exec();
 }
 
