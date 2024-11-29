@@ -2,6 +2,13 @@
 #include "ui_painterwindow.h"
 #include "painternewimagedialog.h"
 #include "paintertools.h"
+#include <QScrollBar>
+#include <QSettings>
+#include <QDesktopWidget>
+#include <QLabel>
+#include <QDir>
+#include <QFileDialog>
+
 
 PainterWindow::PainterWindow(QWidget *parent) :
     QMainWindow(parent),

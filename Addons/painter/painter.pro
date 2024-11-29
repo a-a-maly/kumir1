@@ -4,16 +4,17 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
-
-TARGET = painter
-TEMPLATE = lib
+include(../../Scripts/common.pri)
 CONFIG += plugin
+QT += core gui widgets
+
+TEMPLATE = lib
 
 INCLUDEPATH += ../
 DESTDIR = ../
 
-SOURCES += painterplugin.cpp \
+SOURCES += \
+    painterplugin.cpp \
     painterwindow.cpp \
     painterview.cpp \
     painterruler.cpp \
@@ -30,4 +31,6 @@ HEADERS += painterplugin.h \
 FORMS += \
     painterwindow.ui \
     painternewimagedialog.ui
+
+TARGET = painter
 macx:TARGET = ../../kumir.app/Contents/Resources/Addons/painter
