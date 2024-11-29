@@ -13,7 +13,10 @@
 ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 **
 ****************************************************************************/
+
 #include "interface.h"
+#include "network.h"
+
 #include <QMessageBox>
 #include <QUrl>
 

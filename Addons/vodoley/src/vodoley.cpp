@@ -17,7 +17,9 @@
 
 #include "vodoley.h"
 #include "pult.h"
+#include "dialog.h"
 
+#include <QDebug>
 #include <QCloseEvent>
 #include <QFileDialog>
 #include <QMessageBox>

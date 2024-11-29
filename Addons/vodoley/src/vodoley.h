@@ -18,13 +18,13 @@
 #define VODOLEY_H
 
 #include <QMainWindow>
+#include <QDialog>
 #include <QGraphicsItem>
 class QToolButton;
 class QGraphicsView;
 class QMenuBar;
-
-#include "dialog.h"
-#include "kumfiledialog.h"
+class QFrame;
+class QLabel;
 
 #define MAX_SIZE 160.0
 #define X_SIZE 30
@@ -91,6 +91,7 @@ private:
 
 
 };
+
 class NewDialog: public QDialog
 {
 	Q_OBJECT
@@ -136,37 +137,44 @@ public:
 		show();
 		setVisible(true);
 	}
+
 	uint CurA()
 	{
 		return Curfill[0];
-	};
+	}
+
 	uint CurB()
 	{
 		return Curfill[1];
-	};
+	}
+
 	uint CurC()
 	{
 		return Curfill[2];
-	};
+	}
+
 	void setBaseFill(int A, int B, int C)
 	{
 		Curfill[0] = A;
 		Curfill[1] = B;
 		Curfill[2] = C;
 
-	};
+	}
+
 	uint Asize()
 	{
 		return Maxfill[0];
-	};
+	}
+
 	uint Bsize()
 	{
 		return Maxfill[1];
-	};
+	}
+
 	uint Csize()
 	{
 		return Maxfill[2];
-	};
+	}
 
 	uint maxSize()
 	{
@@ -180,21 +188,26 @@ public:
 			max = Csize();
 		}
 		return max;
-	};
+	}
+
 	bool loadFile(QString fileName);
+
 	void AutoClose()
 	{
 		autoClose = true;
 		setVisible(false);
 	}
+
 	//Actions
 
 	QAction *actNew;
 	QAction *actLoad;
 	QAction *actSave;
+
 protected:
 	void mousePressEvent(QMouseEvent *event);
 	void closeEvent(QCloseEvent *event);
+
 public slots:
 	void reset();
 
@@ -207,7 +220,6 @@ public slots:
 	void FillC();
 
 	void MoveFromTo(uint from, uint to);
-
 
 signals:
 	void Otkaz(QString msg);

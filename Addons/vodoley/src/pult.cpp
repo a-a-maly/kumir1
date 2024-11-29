@@ -13,30 +13,22 @@
 ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 **
 ****************************************************************************/
+
 #include "pult.h"
+#include "vodoley.h"
+#include "network.h"
+
+#include <QDebug>
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QClipboard>
 
 const double DegreesPerMinute = 7.0;
-const double DegreesPerSecond = DegreesPerMinute / 60;
-const int MaxMinutes = 45;
-const int MaxSeconds = 620;
-const int UpdateInterval = 5;
 
 
-OvenTimer::OvenTimer(QWidget *parent)
-	: QWidget(parent)
+OvenTimer::OvenTimer(QWidget *parent) : QWidget(parent)
 {
-	// finishTime = QDateTime::currentDateTime();
-	//    updateTimer = new QTimer(this);
-	// connect(updateTimer, SIGNAL(timeout()), this, SLOT(update()));
-
-	// finishTimer = new QTimer(this);
-	// finishTimer->setSingleShot(true);
-	//  connect(finishTimer, SIGNAL(timeout()), this, SIGNAL(timeout()));
-	//   connect(finishTimer, SIGNAL(timeout()), updateTimer, SLOT(stop()));
 	gradValue = 45;
 	QFont font;
 	font.setPointSize(8);
@@ -55,15 +47,18 @@ void OvenTimer::setDuration(int secs)
 	emit angChange(gradValue);
 	qDebug() << "Set " << secs;
 }
+
 int OvenTimer::duration() const
 {
 	return gradValue;
 }
+
 void OvenTimer::setValue(int value)
 {
 	gradValue = value;
 	update();
 }
+
 void OvenTimer::mousePressEvent(QMouseEvent *event)
 {
 	Q_UNUSED(event);
@@ -73,7 +68,8 @@ void OvenTimer::mousePressEvent(QMouseEvent *event)
 	qDebug() << "Mouse pos" << point;
 	update();
 }
-void OvenTimer:: mouseMoveEvent(QMouseEvent *event)
+
+void OvenTimer::mouseMoveEvent(QMouseEvent *event)
 {
 	Q_UNUSED(event);
 	if (!mouseFlag) {
@@ -91,11 +87,13 @@ void OvenTimer:: mouseMoveEvent(QMouseEvent *event)
 	old_mouse_pos = point;
 	update();
 }
+
 void OvenTimer::mouseReleaseEvent(QMouseEvent *event)
 {
 	Q_UNUSED(event);
 	mouseFlag = false;
 }
+
 void OvenTimer::paintEvent(QPaintEvent * /* event */)
 {
 	QPainter painter(this);
@@ -109,6 +107,7 @@ void OvenTimer::paintEvent(QPaintEvent * /* event */)
 
 	draw(&painter);
 }
+
 void OvenTimer::draw(QPainter *painter)
 {
 	static const int triangle[3][2] = {
@@ -226,8 +225,7 @@ void linkLight::paintEvent(QPaintEvent *event)
 
 
 
-MainButton::MainButton(QWidget *parent) :
-	QWidget(parent)
+MainButton::MainButton(QWidget *parent) : QWidget(parent)
 {
 	direction = UP;
 	posX = 1;
@@ -238,14 +236,6 @@ MainButton::MainButton(QWidget *parent) :
 	Parent = parent;
 	int mid = buttonImageUp.width() / 2;
 	Q_UNUSED(mid);
-	// upArrow.append(QLine(mid,30,mid-15,40));
-	// upArrow.append(QLine(mid,30,mid+15,40));
-	// downArrow.append(QLine(mid,40,mid-15,30));
-	// downArrow.append(QLine(mid,40,mid+15,30));
-	// leftArrow.append(QLine(30,mid,40,mid-15));
-	// leftArrow.append(QLine(30,mid,40,mid+15));
-	// rightArrow.append(QLine(40,mid,30,mid-15));
-	// rightArrow.append(QLine(40,mid,30,mid+15));
 	text = "";
 	checked = false;
 	checkable = false;
@@ -909,11 +899,6 @@ void VodoleyPult::logToKumir()
 
 void VodoleyPult::Connect(KNPServer *server)
 {
-
-	//connect(server->SigCross,SIGNAL(do_tailDown()),VodoleyObj,SLOT(TailDown()));
-
-
-
 	connect(server, SIGNAL(newClient(QString)), this, SLOT(newClient(QString)));
 	connect(server, SIGNAL(lockGui()), this, SLOT(noLink()));
 	connect(server, SIGNAL(reset()), this, SLOT(resetVodoley()));

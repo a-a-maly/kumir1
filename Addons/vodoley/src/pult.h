@@ -16,8 +16,8 @@
 #include <QWidget>
 
 #include "ui_pult.h"
-#include "vodoley.h"
-#include "network.h"
+class Vodoley;
+class KNPServer;
 
 #define SCROLL_STEP 10
 #define RESP_PANEL 40
@@ -53,9 +53,6 @@ protected:
 	void mouseMoveEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);
 private:
-	//  QDateTime finishTime;
-	//  QTimer *updateTimer;
-	//  QTimer *finishTimer;
 	bool mouseFlag;
 	QPointF old_mouse_pos;
 	int gradValue;
@@ -67,34 +64,27 @@ class  linkLight : public QWidget
 {
 	Q_OBJECT
 public:
-	/**
-	 * Конструктор
-	 * @param parent ссыка на объект-владелец
-	 *
-	 */
 	linkLight(QWidget *parent = 0);
-	/**
-	 * Деструктор
-	 */
 	~linkLight() {};
+
 	void setLink(bool b)
 	{
 		onLine = b;
-	};
+	}
+
 	bool link()
 	{
 		return onLine;
-	};
-	QString text;
-signals:
-	//void pressed();
+	}
+
+
 protected:
 	void paintEvent(QPaintEvent *event);
-// void mousePressEvent ( QMouseEvent * event );
-//void mouseReleaseEvent ( QMouseEvent * event );
+
 private:
 	int posX, posY;
 	bool onLine;
+	QString text;
 };
 
 
@@ -102,16 +92,9 @@ class  MainButton : public QWidget
 {
 	Q_OBJECT
 public:
-	/**
-	 * Конструктор
-	 * @param parent ссыка на объект-владелец
-	 *
-	 */
 	MainButton(QWidget *parent = 0);
-	/**
-	 * Деструктор
-	 */
 	~MainButton() {};
+
 	void setDirection(int d)
 	{
 		direction = d;
@@ -191,8 +174,8 @@ private:
 class logLine
 {
 public:
-	logLine(QString KumCommand,
-		QString LogCommand,
+	logLine(
+        QString KumCommand, QString LogCommand,
 		QString React, QFrame *frame, QFrame *respFrame, uint pos
 	) {
 		kumCommand = KumCommand;
@@ -265,10 +248,6 @@ public:
 
 	void Show()
 	{
-		//mainFrame->show();
-		//downButton->show();
-		//upButton->show();
-		//show();
 	}
 
 	void appendText(QString kumCommand, QString text, QString replay);

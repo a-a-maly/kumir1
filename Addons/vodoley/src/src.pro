@@ -3,25 +3,22 @@ include(../../../Scripts/common.pri)
 QT += svg network
 CONFIG += plugin dll
 
-SOURCES += main.cpp \
+SOURCES += \
     pult.cpp \
     network.cpp \
     vodoley.cpp \
     dialog.cpp \
-    kumfiledialog.cpp \
     interface.cpp
 
-HEADERS += pult.h \
+HEADERS += \
+    pult.h \
     network.h \
     vodoley.h \
     dialog.h \
-    kumfiledialog.h \
-    ../../plugin_interface.h \
     interface.h \
-    ../../isp_window_header.h
+    ../../plugin_interface.h
 
-FORMS += pult.ui \
-    dialog.ui
+FORMS += pult.ui dialog.ui
 
 RESOURCES = application.qrc
 

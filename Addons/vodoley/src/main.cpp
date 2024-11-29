@@ -25,6 +25,7 @@
 #ifndef WIN32
 #include "unistd.h"
 #endif
+
 int main(int argc, char *argv[])
 {
 	Q_INIT_RESOURCE(application);
@@ -39,7 +40,7 @@ int main(int argc, char *argv[])
 			QString message = "-f <kumir port>. Start in friend mode.\n";
 			std::cout << message.toUtf8().data();
 			return 0;
-		};
+		}
 		QString initstr = QString(argv[2]);
 		qDebug() << "Init:" << initstr;
 		qDebug() << "Init[]:" << QString(argv[1]);
@@ -78,7 +79,7 @@ int main(int argc, char *argv[])
 	if (!friendMode) {
 		t_pult->show();
 	}
-	//  t_pult->Connect();
+
 	return app.exec();
 }
 
