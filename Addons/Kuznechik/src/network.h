@@ -31,8 +31,8 @@
 #define LOCKGUI          21
 #define UNLOCKGUI        22
 #define RESET            23
-#define SHOWWND		 24
-#define SHOWPLT		 25
+#define SHOWWND          24
+#define SHOWPLT          25
 #define EXIT             98
 #define DUMMY            99
 #define ERROR            100
@@ -49,160 +49,192 @@ class KumKuznec;
 class KNPEvent : public QEvent
 {
 public:
- KNPEvent(int type, const QString& s) : QEvent(static_cast<Type>(type)), s(s) {}; 
- const QString& str() { return s; }; 
+    KNPEvent(int type, const QString &_s) : QEvent(static_cast<Type>(type)), s(_s) {}; 
+    const QString& str() const { return s; }; 
+
 private: 
- QString s; 
+    QString s; 
 };
+
 struct KNPCommand
 {
-  QString text;
-  uint type;
-  QList<QVariant> arguments;
+    uint type;
+    QString text;
+    QList<QVariant> arguments;
 };
 
 class KNPParcer
 {
  public:
- KNPParcer(){};
- KNPCommand ParceCommand(QString command);
- 
+    KNPParcer(){};
+    KNPCommand ParceCommand(QString command); 
 };
 
 
 class SignalCrosser : public QObject
 {
-Q_OBJECT
+	Q_OBJECT
 public:
-SignalCrosser( QObject * parent=0){};
+	SignalCrosser(QObject *parent = 0)
+    {
+        Q_UNUSED(parent);
+    }
 
-void RunStart();
-void RunEnds();
-QString DoCommand(KNPCommand command,int client_id,QTcpSocket *Client);
-void setKuznec(KumKuznec* trtl){kuznecObj=trtl;};
+	void RunStart();
+	void RunEnds();
+	QString DoCommand(KNPCommand command, int client_id, QTcpSocket *Client);
+	void setKuznec(KumKuznec *trtl)
+	{
+		kuznecObj = trtl;
+	}
+
 signals:
+	void do_move(int d);
+	void do_rotate(int d);
+	void do_tailUp();
+	void do_tailDown();
 
-void do_move(int d);
-void do_rotate(int d);
-void do_tailUp();
-void do_tailDown();
+	void Sync();
 
-void Sync();
 public slots:
-void OK();
-void LostIsp(int module_id);
-void showPult();
-void showWindow();
+	void OK();
+	void LostIsp(int module_id);
+	void showPult();
+	void showWindow();
 
 private:
-KumKuznec* kuznecObj;
-
+	KumKuznec *kuznecObj;
 };
 
 class KNPConnection : public QObject
 {
-Q_OBJECT
-public:
-KNPConnection( QObject * parent=0);
-void Connect(QString addr,quint16 port);
+	Q_OBJECT
 
-QString name,Addr;
-uint Port;
-QStringList funcList(){return alg_desc;};
+public:
+	KNPConnection(QObject *parent = 0);
+	void Connect(QString addr, quint16 port);
+
+	QStringList funcList()
+	{
+		return alg_desc;
+	}
+
 signals:
-void Ready();
-void Error(QString text);//Ошибки подключения-взаимодействия
-void GetModuleError(QString text);//Ошибки выполнения 
-void getFuncList();
-void getOK();
-void getReturn(QString value);
+	void Ready();
+	void Error(QString text);//Ошибки подключения-взаимодействия
+	void GetModuleError(QString text);//Ошибки выполнения
+	void getFuncList();
+	void getOK();
+	void getReturn(QString value);
+
 public slots:
-void sendCmd(QString text); //Послать сообщение 
-//void runCommand(int funct_id,QString text); //Вызвать фунцию 
+	void sendCmd(QString text); //Послать сообщение
+
 private slots:
-void readData(); //Чтение из сокета
-void socketError(QAbstractSocket::SocketError socketError); //Обработка ошибок сокета
-void Connected();
-void Disconnected();
+	void readData(); //Чтение из сокета
+	void socketError(QAbstractSocket::SocketError socketError); //Обработка ошибок сокета
+	void Connected();
+	void Disconnected();
+
 private:
-     void analizeRequest(QString line);
-    
-     QTcpSocket tcpSocket;
-     KNPParcer Parcer;
-     bool onLine;
-     bool HSOK;
-     QStringList alg_desc;
-     
-     int oldType;
+	void analizeRequest(QString line);
+
+	QString name, Addr;
+	uint Port;
+
+	bool onLine;
+	bool HSOK;
+	int oldType;
+	QTcpSocket tcpSocket;
+	KNPParcer Parcer;
+	QStringList alg_desc;
 };
 
 class KumClient
 {
 public:
-KumClient(QTcpSocket* Socket)
+	KumClient(QTcpSocket* Socket)
 	{
-	HSOK=false;
-	tcpSocket=Socket;
-	};
+		HSOK = false;
+		tcpSocket = Socket;
+	}
 
-QTcpSocket* tcpSocket;
-bool HSOK;
-
+	QTcpSocket *tcpSocket;
+	bool HSOK;
 };
+
 class KNPServer : public QObject
 {
-Q_OBJECT
-public:
-KNPServer( QObject * parent=0);
-bool OpenPort(QString addr,quint16 port);
-int ClientId(QTcpSocket* tcpSocket)
-	{
+	Q_OBJECT
 
-	for(int i=0;i<ClientList.count();i++)
-		if(ClientList[i].tcpSocket==tcpSocket)return i;
-	return -1;
-	};
-SignalCrosser* SigCross;
+public:
+	SignalCrosser *SigCross;
+
+	KNPServer(QObject * parent = 0);
+
+	bool OpenPort(QString addr, quint16 port);
+
+	int ClientId(QTcpSocket *tcpSocket) const
+	{
+		for (int i = 0; i < ClientList.count(); i++)
+			if (ClientList[i].tcpSocket == tcpSocket) {
+				return i;
+			}
+		return -1;
+	}
 
 signals:
-void Ready(); 
-void Error(QString text);
-void newClient(QString text);
-void lockGui();
-void unlockGui();
-void clientDisconnect();
-void reset();
+	void Ready();
+	void Error(QString text);
+	void newClient(QString text);
+	void lockGui();
+	void unlockGui();
+	void clientDisconnect();
+	void reset();
+
 public slots:
-void sendCmdAllClients(QString text); //Послать сообщение 
-void initConnection(uint port);//инициировать подключение к Кумир.
+	void sendCmdAllClients(QString text); //Послать сообщение
+	void initConnection(uint port);//инициировать подключение к Кумир.
+
 private slots:
-//void readData(); //Чтение из сокета
-void socketError(QAbstractSocket::SocketError socketError); //Обработка ошибок сокета
-void ClientConnected();
-void ClientDisconnected();
-void reciveMessage();
-void deleteConnection() ;
-void servReplay(QString text,int client_id);
+	void socketError(QAbstractSocket::SocketError socketError); //Обработка ошибок сокета
+	void ClientConnected();
+	void ClientDisconnected();
+	void reciveMessage();
+	void deleteConnection() ;
+	void servReplay(QString text, int client_id);
+
 private:
-     QStringList ExtIspsList();
-     void AppendExtIspsToList(QString name,uint port);
-     void sendMessage(QTcpSocket * tcpSocket, QString newMessage);
+	QStringList ExtIspsList();
+	void AppendExtIspsToList(QString name, uint port);
+	void sendMessage(QTcpSocket * tcpSocket, QString newMessage);
 
-     void sendList(QTcpSocket * tcpSocket);
-     bool hs_ok(QTcpSocket * tcpSocket)
-		{int id=ClientId(tcpSocket);
-			if(id>-1)return ClientList[id].HSOK;else return false;};
-     bool set_hs_ok(QTcpSocket * tcpSocket)
-		{int id=ClientId(tcpSocket);
-			if(id>-1)ClientList[id].HSOK=true;};
-     QTcpServer Server;
-     KNPParcer Parcer;
-     bool onLine,Connected;
-     bool HSOK;
-     QList<KumClient> ClientList;
-     QTcpSocket *lastKumir;
+	void sendList(QTcpSocket * tcpSocket);
+
+	bool hs_ok(QTcpSocket * tcpSocket)
+	{
+		int id = ClientId(tcpSocket);
+		if (id > -1) {
+			return ClientList[id].HSOK;
+		} else {
+			return false;
+		}
+	}
+
+	void set_hs_ok(QTcpSocket * tcpSocket)
+	{
+		int id = ClientId(tcpSocket);
+		if (id > -1) {
+			ClientList[id].HSOK = true;
+		}
+	}
+
+	QTcpServer Server;
+	KNPParcer Parcer;
+	bool onLine, Connected;
+	bool HSOK;
+	QList<KumClient> ClientList;
+	QTcpSocket *lastKumir;
 };
-
-
 
 #endif

@@ -10,23 +10,26 @@ DEPENDPATH += """. src"""
 INCLUDEPATH += . src
 
 # Input
-HEADERS += src/kuznec.h \
+HEADERS += \
+    src/kuznec.h \
     src/network.h \
     src/pult.h \
-    dialog.h \
+    src/dialog.h \
     kumfiledialog.h \
-    ../plugin_interface.h \
     interface.h
-SOURCES += src/kuznec.cpp \
+    ../plugin_interface.h \
+
+SOURCES += \
+    src/kuznec.cpp \
     src/main.cpp \
     src/network.cpp \
     src/pult.cpp \
     dialog.cpp \
     kumfiledialog.cpp \
     interface.cpp
+
 RESOURCES += application.qrc
-FORMS += src/pult.ui \
-    src/dialog.ui
+FORMS += src/pult.ui src/dialog.ui
 TRANSLATIONS = russian.ts
 
 TARGET = ../kuznechik

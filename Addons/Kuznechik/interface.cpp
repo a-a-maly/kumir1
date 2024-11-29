@@ -14,170 +14,210 @@
 **
 ****************************************************************************/
 #include "interface.h"
+#include "network.h"
+#include "kuznec.h"
+#include "pult.h"
 #include <QMessageBox>
 #include <QUrl>
+
+void KuznecStarter::showField()
+{
+	mw->showHideWindow();
+	mw->raise();
+	showPult();
+}
+
+void KuznecStarter::hideField()
+{
+	mw->hide();
+}
+
+void KuznecStarter::showPult()
+{
+	t_pult->showNormal();
+	t_pult->raise();
+}
+
+void KuznecStarter::hidePult()
+{
+	t_pult->hide();
+}
+
+void KuznecStarter::reset()
+{
+	mw->Reset();
+	errortext = "";
+}
+
+QWidget * KuznecStarter::mainWidget()
+{
+	return (QWidget*)(mw->MV);
+}
+
+QWidget * KuznecStarter::pultWidget()
+{
+	return t_pult;
+}
 
 void KuznecStarter::start()
 {
 	mw = new KumKuznec();
-	qDebug() <<
-				"KUZN START !!!!!!!!!!!1 ==================== ";
+	qDebug() << "KUZN START !!!!!!!!!!!1 ==================== ";
 
-	t_pult=new GrasshopperPult();
-        errortext="";
-	 mw->hide();
-	mw->resize(450,280);
+	t_pult = new GrasshopperPult();
+	errortext = "";
+	mw->hide();
+	mw->resize(450, 280);
 	mw->MV->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	//mw->scene->addLine(-600,0,100,0);
-	//mw->scene->addLine(0,-200,0,100);
-	mw->Kpult=t_pult;
-        mw->logger=t_pult->pltLogger();
-        server=new KNPServer();
+	mw->Kpult = t_pult;
+	mw->logger = t_pult->pltLogger();
+	server = new KNPServer();
+	server->SigCross->setKuznec(mw);
 
-	
-        server->SigCross->setKuznec(mw);
-
-//	scene->addLine(0,0,200,0);
-      
-      t_pult->kuznecObj=mw;
-      t_pult->Connect(server);
-      t_pult->libMode=true;
-      t_pult->toKumir->setEnabled(true);
-      connect(t_pult,SIGNAL(sendText(QString)),this,SLOT(sendText2Kumir(QString)));
-      
-     // t_pult->show();
-};
+	t_pult->kuznecObj = mw;
+	t_pult->Connect(server);
+	t_pult->libMode = true;
+	t_pult->toKumir->setEnabled(true);
+	connect(t_pult, SIGNAL(sendText(QString)), this, SLOT(sendText2Kumir(QString)));
+}
 
 QUrl KuznecStarter::pdfUrl() const
 {
-    return QUrl::fromLocalFile("Help/kuznechik.pdf");
+	return QUrl::fromLocalFile("Help/kuznechik.pdf");
 }
 
 QUrl KuznecStarter::infoXmlUrl() const
 {
-    return QUrl();
+	return QUrl();
 }
 
 void KuznecStarter::setParameter(const QString &paramName, const QVariant &paramValue)
- {
-     if(paramName=="Shagi")
-    {
-         QString shag_s=paramValue.toString();
-         shag_s=shag_s.simplified();
-         QStringList shagL=shag_s.split(" ");
-         if(shagL.count()<2)
-         {
-             qDebug()<<"KuznecStarter::Bad Shag parametr";
-             return;
-         };
+{
+	if (paramName == "Shagi") {
+		QString shag_s = paramValue.toString();
+		shag_s = shag_s.simplified();
+		QStringList shagL = shag_s.split(" ");
+		if (shagL.count() < 2) {
+			qDebug() << "KuznecStarter::Bad Shag parametr";
+			return;
+		}
 
-         mw->setSteps(shagL[0].toInt(),shagL[1].toInt());
-         t_pult->setStepSizes(shagL[0].toInt(),shagL[1].toInt());
+		mw->setSteps(shagL[0].toInt(), shagL[1].toInt());
+		t_pult->setStepSizes(shagL[0].toInt(), shagL[1].toInt());
 
-    };
-    return;
- };
+	}
+}
+
 QList<Alg> KuznecStarter::algList()
 {
 
-QList<Alg> toRet;
-Alg tmp;
- tmp.kumirHeader=trUtf8("алг вперед ")+QString::number(mw->stepForward());
+	QList<Alg> toRet;
+	Alg tmp;
+	tmp.kumirHeader = trUtf8("алг вперед ") + QString::number(mw->stepForward());
 
- toRet<<tmp;
-        tmp.kumirHeader=trUtf8("алг назад ")+QString::number(mw->stepBackward());
+	toRet << tmp;
+	tmp.kumirHeader = trUtf8("алг назад ") + QString::number(mw->stepBackward());
 
- toRet<<tmp;
-	tmp.kumirHeader=trUtf8("алг перекрасить");
+	toRet << tmp;
+	tmp.kumirHeader = trUtf8("алг перекрасить");
 
- toRet<<tmp;
+	toRet << tmp;
 
-return toRet;
-};
+	return toRet;
+}
+
 QList<QVariant> KuznecStarter::algOptResults()
 {
- QList<QVariant> tmp;
-	tmp<<QVariant("NO OPT RESULTS");
- return tmp;
-};
+	QList<QVariant> tmp;
+	tmp << QVariant("NO OPT RESULTS");
+	return tmp;
+}
 
-void KuznecStarter::runAlg(QString alg,QList<QVariant> params)
+void KuznecStarter::runAlg(QString alg, QList<QVariant> params)
 {
-errortext="";
-if(alg.startsWith(QString::fromUtf8("вперед")))
-	{
-	//qDebug()<<"Vpered";
+	errortext = "";
+	if (alg.startsWith(QString::fromUtf8("вперед"))) {
 
-	
+		if (mw->canFwd()) {
+			mw->MoveFwd();
+		} else {
+			errortext = QString::fromUtf8("Выход за границы");
+		}
+		sync();
+		return ;
+	}
 
-  	  if(mw->canFwd()){mw->MoveFwd();sync();return ;}
-		else{ errortext=QString::fromUtf8("Выход за границы");sync();
-			return ;};
-	};
-if(alg.startsWith(QString::fromUtf8("назад")))
-	{
-	
+	if (alg.startsWith(QString::fromUtf8("назад"))) {
 
-          if(mw->canBack()){mw->MoveBack();sync();return ;}
-		else{ errortext=QString::fromUtf8("Выход за границы");sync();
-			return ;};
+		if (mw->canBack()) {
+			mw->MoveBack();
+		} else {
+			errortext = QString::fromUtf8("Выход за границы");
+		}
+		sync();
+		return ;
+	}
 
-	};
+	if (alg == QString::fromUtf8("перекрасить")) {
 
-if(alg==QString::fromUtf8("перекрасить"))
-	{
-	
-       mw->ColorUncolor();
-       sync();
-	return;
-	};
-
-if(alg==QString::fromUtf8("|open port"))
-	{	
-	int port=params[0].toInt();
-	t_pult->SetAloneMode();
-	if(port<1024) return;
-        openServerPort(port);
+		mw->ColorUncolor();
+		sync();
+		return;
 	};
 
-return;
+	if (alg == QString::fromUtf8("|open port")) {
+		int port = params[0].toInt();
+		t_pult->SetAloneMode();
+		if (port < 1024) {
+			return;
+		}
+		openServerPort(port);
+	};
 
+}
 
-};
 void KuznecStarter::openServerPort(int port)
 {
-t_pult->libMode=false;
- if(!server->OpenPort("localhost",port))
-		{
- 			QMessageBox::critical(NULL, QString::fromUtf8("Ошибка открытия порта"),
-                             QString::fromUtf8("Невозможно открыть порт %1")
-                              .arg(port));
-		}else
-  		{
+	t_pult->libMode = false;
+	if (!server->OpenPort("localhost", port)) {
+		QMessageBox::critical(NULL, QString::fromUtf8("Ошибка открытия порта"),
+			QString::fromUtf8("Невозможно открыть порт %1")
+			.arg(port));
+	} else {
 		t_pult->showMessage(QString::fromUtf8("Открыт порт %1").arg(port));
-		};
+	}
+}
 
-};
-
-QVariant KuznecStarter::result(){return QVariant(" ");};
+QVariant KuznecStarter::result()
+{
+	return QVariant(" ");
+}
 
 void KuznecStarter::setMode(int che_mode)
 {
- mode=che_mode;
- if(mode==1)t_pult->noLink();
-	else t_pult->LinkOK();
+	mode = che_mode;
+	if (mode == 1) {
+		t_pult->noLink();
+	} else {
+		t_pult->LinkOK();
+	}
 
-};
-void KuznecStarter::connectSignalSync( const QObject *obj, const char *method)
-       {connect(this,SIGNAL(sync()),obj,method);};
+}
 
-void KuznecStarter::connectSignalSendText( const QObject *obj, const char *method ) 
-       {connect(this,SIGNAL(sendText(QString)),obj,method);};
+void KuznecStarter::connectSignalSync(const QObject *obj, const char *method)
+{
+	connect(this, SIGNAL(sync()), obj, method);
+}
+
+void KuznecStarter::connectSignalSendText(const QObject *obj, const char *method)
+{
+	connect(this, SIGNAL(sendText(QString)), obj, method);
+}
 
 void KuznecStarter::sendText2Kumir(QString text)
 {
-emit sendText(text);
-};
+	emit sendText(text);
+}
 
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)

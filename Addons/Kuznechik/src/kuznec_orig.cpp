@@ -22,7 +22,6 @@
 #include "pult.h"
 #include "kumfiledialog.h"
 
-#include <QDebug>
 #include <QGraphicsSimpleTextItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QDesktopServices>
@@ -32,7 +31,6 @@
 #include <QLineEdit>
 #include <QAction>
 #include <QSettings>
-#include <QResizeEvent>
 
 class DrawTopFrame : public QFrame
 {
@@ -129,118 +127,24 @@ KuznSled::KuznSled(int start, int fin)
 	Intens = 0;
 }
 
-void KuznSled::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void KuznSled::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+	QWidget *widget)
 {
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
 	QPen black(QColor(Intens, Intens, Intens));
+	int H = 32;
+	if (abs(Fn - St) > 128) {
+		H = 64;
+	}
 	qDebug() << "ABS" << abs(Fn - St);
 	painter->setPen(black);
 	painter->drawArc(St, 0, Fn, 32, 0, 360 * 8);
 }
 
 
-void KumKuznec::Reset()
+//-------------------------------------------------------------------------------
+
+void KumKuznec::showHideWindow(bool show)//Show - true
 {
-	qDebug() << "Reset";
-	GoPoint(startPos * ZOOMMULTIP, -0.25);
-	createFlags();
-	ClearSledi();
-	ClearZakr();
-	scene->update();
-
-	MV->show();
-}
-
-void KumKuznec::ClearZakr()
-{
-	for (int i = 0; i < zakr.count(); i++) {
-		if (!zakr[i]->zakraska) {
-			qDebug() << "KumKuznec::ClearZakr():No rect!";
-			return;
-		};
-		scene->removeItem(zakr[i]->zakraska);
-	};
-	zakr.clear();
-}
-
-void KumKuznec::MoveFwd()
-{
-	addSled(CurX, Fstep);
-	GoVector(Fstep * ZOOMMULTIP, 0);
-	redrawFlags();
-}
-
-bool KumKuznec::canFwd()
-{
-	if (!borderEnable) {
-		return true;
-	}
-	qDebug() << "RightB*Z:" << rightBorder*ZOOMMULTIP << " CurX" << CurX << " StepF*Z" << Fstep*ZOOMMULTIP;
-	if (CurX + Fstep * ZOOMMULTIP > rightBorder * ZOOMMULTIP) {
-		return false;
-	}
-	return true;
-}
-
-void KumKuznec::MoveBack()
-{
-	addSled(CurX, -Bstep);
-
-	GoVector(-Bstep * ZOOMMULTIP, 0);
-	qDebug() << "Move Back";
-	redrawFlags();
-}
-
-bool KumKuznec::canBack()
-{
-	if (!borderEnable) {
-		return true;
-	}
-	qDebug() << "LeftB*Z:" << leftBorder*ZOOMMULTIP << " CurX" << CurX << " StepB*Z" << Bstep*ZOOMMULTIP;
-	if (CurX - Bstep * ZOOMMULTIP < leftBorder * ZOOMMULTIP) {
-		return false;
-	}
-	return true;
-}
-
-void KumKuznec::createFlags()
-{
-	qDebug() << "Create f";
-	for (int i = 0; i < flags.count(); i++) {
-		if (flags[i]->flagItem) {
-			scene->removeItem(flags[i]->flagItem);
-		}
-	}
-	flags.clear();
-	for (int i = 0; i < flags_pos.count(); i++) {
-		KuznFlag* curFlag = new KuznFlag();
-		curFlag->flagItem = new QGraphicsPolygonItem(mFlag->polygon());
-		curFlag->f_pos = flags_pos[i];
-		curFlag->flagItem->setScale(BASEZOOM * 2);
-		curFlag->flagItem->setZValue(99);
-		curFlag->flagItem->setBrush(QBrush(QColor(150, 100, 100)));
-		curFlag->flagItem->setPos(curFlag->f_pos * ZOOMMULTIP, -ZOOMMULTIP);
-		flags.append(curFlag);
-		scene->addItem(curFlag->flagItem);
-	}
-}
-
-void KumKuznec::redrawFlags()
-{
-	qDebug() << "F count" << flags.count();
-	for (int i = 0; i < flags.count(); i++) {
-		qDebug() << "F pos" << flags[i]->f_pos << "CurX" << CurX;
-		if (CurX / ZOOMMULTIP == flags[i]->f_pos) {
-			flags[i]->flagItem->setBrush(QBrush(QColor(100, 150, 100)));
-			qDebug() << "FINISH";
-		}
-	}
-}
-
-void KumKuznec::showHideWindow(bool show)
-{
-    Q_UNUSED(show);
 	MV->showNormal();
 }
 
@@ -249,9 +153,11 @@ void KumKuznec::Close()
 	qDebug() << "KUZNEC CLOSE Close";
 	if ((Kpult->libMode) || (autoClose)) {
 		close();
+
 		return;
-	}
+	};
 	Kpult->close();
+
 }
 
 void KumKuznec::resizeEvent(QResizeEvent * event)
@@ -382,6 +288,8 @@ KumKuznec::KumKuznec()
 	WindowX0 = visibleRect().x();
 	WindowY0 = visibleRect().y();
 
+
+
 	RightMousePressFlag = false;
 	Fstep = 3;
 	Bstep = 2;
@@ -422,6 +330,7 @@ KumKuznec::KumKuznec()
 }
 
 
+//----------------------------------------------------
 //сдвиг на вектор
 int KumKuznec::GoVector(double DeltaXX, double DeltaYY)
 {
@@ -449,17 +358,18 @@ int KumKuznec::GoVector(double DeltaXX, double DeltaYY)
 }
 
 //опустить перо
+//------------------------------------
 void KumKuznec::PenDown()
 {
 	PenPosition = true;
 }
-
+//------------------------------------------------------
 //поднять перо
 void KumKuznec::PenUp()
 {
 	PenPosition = false;
 }
-
+//------------------------------------------
 //переход в точку
 int KumKuznec::GoPoint(double xx, double yy)
 {
@@ -479,84 +389,123 @@ int KumKuznec::GoPoint(double xx, double yy)
 //}
 //-----------------------------------------------------------------------
 
+//-------------------------------------------------------------------
 //сдвиг окна вправо
 void KumKuznec::MoveRight(void)
 {
 
 	WindowX0 = WindowX0 - SizeX / WindowZoom / 4;
-	WindowRedraw();
-}
 
+	WindowRedraw();
+
+}
+//------------------------------------------------------
 //сдвиг окна влево
 void KumKuznec::MoveLeft(void)
 {
 
 	WindowX0 = WindowX0 + SizeX / WindowZoom / 4;
-	WindowRedraw();
-}
 
+	WindowRedraw();
+
+}
+//-----------------------------------------------------
 //сдвиг окна вверх
 void KumKuznec::MoveUp(void)
 {
 	WindowY0 = WindowY0 - SizeY / WindowZoom / 4;
+
 	WindowRedraw();
 }
-
+//-----------------------------------------------------
 //сдвиг окна вниз
 void KumKuznec::MoveDown(void)
 {
 	WindowY0 = WindowY0 + SizeY / WindowZoom / 4;
+
 	WindowRedraw();
 }
-
+//-----------------------------------------------------
 void KumKuznec::ZoomUp(void)
 {
 	if (WindowZoom > MaxZoom) {
 		return;
 	}
 
+
+
+	qreal CenterX = center().x();
+	qreal CenterY = center().y();
+
 	WindowZoom = WindowZoom * 2;
 
+
+	//(WindowZoom>64)WindowY0 -= 1;
 	view->scale(2., 2.);
+	//view->centerOn(CenterX,0);
 	WindowX0 = visibleRect().x();
 	WindowY0 = visibleRect().y();
 	qDebug() << "Zoom" << WindowZoom << " viewRECT" << view->sceneRect() << "sceneRect" << scene->sceneRect();
+	//WindowRedraw();
+
+	//if(WindowZoom>64){MoveDown();MoveDown();qDebug()<<"MOVE DOWN";};
+
+
 }
-
-
+//--------------------------------------------------
 void KumKuznec::ZoomDown(void)
 {
 	if (WindowZoom < MinZoom) {
 		return;
 	}
 
+
+	qreal CenterX = center().x();
+	qreal CenterY = center().y();
+	//if(WindowZoom>64)WindowY0 += 1;
 	WindowZoom = WindowZoom / 2;
+
 
 	QPointF center_p = view->mapToScene(view->viewport()->rect().center());
 	view->scale(0.5, 0.5);
+	//view->centerOn(CenterX,0);
 
 	WindowX0 = visibleRect().x();
 	WindowY0 = visibleRect().y();
+	//view->centerOn(CenterX,0);
 	qDebug() << "Zoom OUT" << WindowZoom << "SCENE RECT" << view->sceneRect() << "ViewRect" << visibleRect() << "Center" << center_p;
 }
-
+//-------------------------------------------------------------------
 void KumKuznec::lockControls()
 {
-}
+	/*
+	    if  ( btnBox->isEnabled() )
+	        btnBox->setEnabled(false);
 
+	*/
+}
+//----------------------------------------
 void KumKuznec::unlockControls()
 {
+	/*
+	    if ( !btnBox->isEnabled() )
+	        btnBox->setEnabled(true);
+	*/
 }
-
+//----------------------------------------------------------
 //сохранение в ps-файл
 int KumKuznec::SaveToFile(QString p_FileName)
 {
 	QFile l_File(p_FileName);
+	QChar Bukva;
 	char ctmp[200];
 	if (!l_File.open(QIODevice::WriteOnly)) {
 		return 1;
 	}
 
+	//QString ttt = QString::fromUtf8("Чертежник - Начало");
+
+//l_File.write( ttt.toUtf8());
 	l_File.write("%!PS-Adobe-1.0 EPSF-1.0\n");
 	QString l_String;
 	l_File.write("%%Creator: Cherteznik\n");
@@ -565,6 +514,7 @@ int KumKuznec::SaveToFile(QString p_FileName)
 
 
 	// maximum, minimum
+
 	qreal MinX, MaxX, MinY, MaxY, VecX1, VecX2, VecY1, VecY2;
 
 	QLineF TmpLine;
@@ -618,6 +568,10 @@ int KumKuznec::SaveToFile(QString p_FileName)
 	}
 	Scale = Scale * 0.9;
 
+//	QString tmp1 = QString(ctmp)+" scale\n";
+
+
+
 	l_File.write("%%BoundingBox: 0 0 596 842\n");
 	l_File.write("%%HiResBoundingBox: 0 0 596 842\n");
 	l_File.write("%%EndComments\n");
@@ -633,7 +587,7 @@ int KumKuznec::SaveToFile(QString p_FileName)
 	l_File.write("0 setlinejoin\n");
 	l_File.write("0 setlinecap\n");
 	l_File.write("newpath\n");
-
+//QColor TmpColor;
 	QPen TmpPen;
 	QColor TmpColor;
 	for (int i = 0; i < lines.count(); i++) {
@@ -659,6 +613,7 @@ int KumKuznec::SaveToFile(QString p_FileName)
 
 	}
 
+//77777777777777777777777777777777777
 	QString TmpText;
 	QByteArray ccc;
 	qreal tmpX, tmpY, FontSize;
@@ -673,6 +628,8 @@ int KumKuznec::SaveToFile(QString p_FileName)
 		l_File.write(ctmp);
 
 
+		//TmpPen = texts[i]->pen();
+		//TColor = TmpPen.color();
 		sprintf(ctmp, "%i %i %i setrgbcolor\n", kumtexts[i]->color.Red,  kumtexts[i]->color.Green, kumtexts[i]->color.Blue);
 		l_File.write(ctmp);
 
@@ -681,6 +638,7 @@ int KumKuznec::SaveToFile(QString p_FileName)
 		l_File.write(ccc);
 	}
 
+//777777777777777777777777777
 
 	l_File.write("stroke\n");
 	l_File.write("grestore\n");
@@ -717,15 +675,29 @@ int KumKuznec::LoadFromFile(QString p_FileName)
 
 	MV->setWindowTitle(Title);
 
+	qreal CurrentScale;
+
 	QString tmp = "";
+	char ctmp[200];
 	QString l_String;
 	QFile l_File(p_FileName);
 
+
+
+	int NStrok;
+	NStrok = 0;
+
+//	long l_Err;
+	//int CurX,CurY;
+//	int SizeX, SizeY;
+	qreal x1, y1, x2, y2;
 	if (!l_File.open(QIODevice::ReadOnly)) {
 		QMessageBox::information(MV, "", QString::fromUtf8("Ошибка открытия файла"), 0, 0, 0);
 		return 1;
 	}
 
+	//l_String = l_File.readLine();
+//QMessageBox::information( 0, "", tmp, 0,0,0);
 	QByteArray ttt;
 	ttt = l_File.readLine();
 
@@ -734,7 +706,8 @@ int KumKuznec::LoadFromFile(QString p_FileName)
 		ttt = l_File.readLine();
 	}
 	qDebug() << ttt;
-	l_String = QString::fromUtf8(ttt).simplified();
+	l_String = QString::fromUtf8(ttt);
+	l_String.simplified();
 	QStringList zadanie = l_String.split(" ");
 	if (zadanie.count() < 2) {
 		return 1;
@@ -762,7 +735,8 @@ int KumKuznec::LoadFromFile(QString p_FileName)
 		ttt = l_File.readLine();
 	}
 	qDebug() << ttt;
-	l_String = QString::fromUtf8(ttt).simplified();
+	l_String = QString::fromUtf8(ttt);
+	l_String.simplified();
 	zadanie = l_String.split(" ");
 	if (zadanie.count() < 2) {
 		return 3;
@@ -790,7 +764,8 @@ int KumKuznec::LoadFromFile(QString p_FileName)
 	}
 
 	qDebug() << ttt;
-	l_String = QString::fromUtf8(ttt).simplified();
+	l_String = QString::fromUtf8(ttt);
+	l_String.simplified();
 	zadanie = l_String.split(" ", QString::SkipEmptyParts);
 	for (int i = 0; i < zadanie.count() - 1; i++) {
 		qDebug() << "flag:" << zadanie[i];
@@ -959,6 +934,7 @@ void KumKuznec::ToWindow(void)
 
 	qreal tmp;
 	qreal tmpZoom;
+	qreal Delta ;
 	qreal XSdwig = 0;
 	qreal YSdwig = 0;
 
@@ -966,14 +942,21 @@ void KumKuznec::ToWindow(void)
 		return;
 	}
 
+//if (MaxX - MinX > MaxY - MinY)
 	if ((MaxX - MinX) / SizeX > (MaxY - MinY) / SizeY) {
 		tmp = MaxX - MinX;
 		tmpZoom = (SizeX) / tmp;
+//YSdwig = (MaxX-MinX)/2 - (MaxY-MinY)/2;
 		YSdwig = SizeY / 2 / tmpZoom - (MaxY - MinY) / 2;
+//Delta = (MaxX-MinX)/50;
+		Delta = 0;
 	} else {
 		tmp = MaxY - MinY;
 		tmpZoom = (SizeY) / tmp;
+//XSdwig = (MaxY-MinY)/2 - (MaxX-MinX)/2;
 		XSdwig = SizeX / 2 / tmpZoom - (MaxX - MinX) / 2;
+//Delta = (MaxY-MinY)/50;
+		Delta = 0;
 	}
 
 	qreal Scale = tmpZoom / WindowZoom;
@@ -981,12 +964,18 @@ void KumKuznec::ToWindow(void)
 	WindowZoom = tmpZoom;
 	WindowX0 = MinX  - XSdwig;
 
+//WindowY0 = MinY - YSdwig;
 	WindowY0 = -MaxY - YSdwig;
+//qWarning(",WindowY0 %f %f",WindowX0,WindowY0);
+//qWarning("WindowX0,WindowY0 %f %f",WindowX0,WindowY0);
+//mPen->scale(1/Scale,1/Scale);
 	view->scale(Scale, Scale);
 
-	WindowRedraw();
-}
 
+	WindowRedraw();
+
+}
+//------------------------------------------------
 void KumKuznec::ClearPicture(void)
 {
 	HideCoord();
@@ -1231,35 +1220,79 @@ void KumKuznec::DrawNet()
 
 	double BegX = -1024 * ZOOMMULTIP;
 	double EndX = 1024 * ZOOMMULTIP;
-	double fx1, fx2;
+	int Zapas = 100;
+	double fx1, fy1, fx2, fy2;
+//,DeltaXX,DeltaYY;
+
+
+	//BegX = WindowX0 -  SdvigX - SizeX/WindowZoom;
+	//EndX = WindowX0 + SizeX/WindowZoom +SizeX/WindowZoom;
+
+
+
+
+
+	//float BegY = WindowY0 -SdvigY - SizeY/WindowZoom;
+	//float EndY = WindowY0 + SizeY/WindowZoom;
 	float Step = ZOOMMULTIP;
+
+
+
 	fx1 = BegX;
 
 	while (fx1 < EndX) {
 		fx1 = fx1 + Step;
 		fx2 = fx1 + ZOOMMULTIP;
 
+//	fy1 = WindowY0 - 100/WindowZoom-100*Step;
+//	fy2 = WindowY0 + SizeY/WindowZoom +100/WindowZoom+100*Step;
+
+
+
 		Netlines.append(scene->addLine((fx1 - 0.2 * ZOOMMULTIP), 0.2 * ZOOMMULTIP, fx1 - 0.2 * ZOOMMULTIP, -0.2 * ZOOMMULTIP));
+		//Netlines.last()->scale(ZOOMMULTIP,ZOOMMULTIP);
 		Netlines.last()->setZValue(0.5);
 		Netlines.last()->setPen(QPen(QColor("blue"))); // Левая вертикаль
 
 		Netlines.append(scene->addLine((fx1 + 0.2 * ZOOMMULTIP), 0.2 * ZOOMMULTIP, fx1 + 0.2 * ZOOMMULTIP, -0.2 * ZOOMMULTIP));
+		//Netlines.last()->scale(ZOOMMULTIP,ZOOMMULTIP);
 		Netlines.last()->setZValue(0.5);
 		Netlines.last()->setPen(QPen(QColor("blue")));//Правая вертикаль
 
 		Netlines.append(scene->addLine((fx1 - 0.2 * ZOOMMULTIP), -0.2 * ZOOMMULTIP, fx1 + 0.2 * ZOOMMULTIP, -0.2 * ZOOMMULTIP));
+		//Netlines.last()->scale(ZOOMMULTIP,ZOOMMULTIP);
 		Netlines.last()->setZValue(0.5);
 		Netlines.last()->setPen(QPen(QColor("blue")));//верх
 
 
 		Netlines.append(scene->addLine((fx1 - 0.2 * ZOOMMULTIP), 0.2 * ZOOMMULTIP, fx1 + 0.2 * ZOOMMULTIP, 0.2 * ZOOMMULTIP));
+		//Netlines.last()->scale(ZOOMMULTIP,ZOOMMULTIP);
 		Netlines.last()->setZValue(0.5);
 		Netlines.last()->setPen(QPen(QColor("blue")));//Низ
 
 		Netlines.append(scene->addLine((fx1 + 0.2 * ZOOMMULTIP), 0, fx2 - 0.2 * ZOOMMULTIP, 0));
+		//Netlines.last()->scale(ZOOMMULTIP,ZOOMMULTIP);
 		Netlines.last()->setZValue(0.5);
 		Netlines.last()->setPen(QPen(QColor("blue")));//соединялка
 
+//         Netlines.append(scene->addLine(fx1-0.2, 0.2 , fx2-0.2, -0.2 ));
+//  Netlines.last()->scale(ZOOMMULTIP,ZOOMMULTIP);
+//  Netlines.last()->setZValue(0.5);
+//  Netlines.last()->setPen(QPen(QColor("blue")));
+//
+//  Netlines.append(scene->addLine(fx1-0.2, 0.2 , fx2+0.2, 0.2 ));
+//  Netlines.last()->scale(ZOOMMULTIP,ZOOMMULTIP);
+//  Netlines.last()->setZValue(0.5);
+//  Netlines.last()->setPen(QPen(QColor("blue")));
+//         Netlines.append(scene->addLine(fx1-0.2, -0.2 , fx2+0.2, -0.2 ));
+//  Netlines.last()->scale(ZOOMMULTIP,ZOOMMULTIP);
+//  Netlines.last()->setZValue(0.5);
+//  Netlines.last()->setPen(QPen(QColor("blue")));
+//
+//         Netlines.append(scene->addLine(fx1+0.2, 0.0 , fx1+Step-0.2, 0.0 ));
+//  Netlines.last()->scale(ZOOMMULTIP,ZOOMMULTIP);
+//  Netlines.last()->setZValue(0.5);
+//  Netlines.last()->setPen(QPen(QColor("blue")));
 		if ((borderEnable) && ((fx1 / ZOOMMULTIP == rightBorder) || (fx1 / ZOOMMULTIP == leftBorder))) {
 			qreal zdvig = Step / 2;
 			if (fx1 / ZOOMMULTIP == leftBorder) {
@@ -1275,7 +1308,9 @@ void KumKuznec::DrawNet()
 
 //Оси координат
 
-	qreal textX = BegX;
+
+	qreal textX, textY;
+	textX = BegX;
 	while (textX < EndX) {
 		NetText.append(new QGraphicsSimpleTextItem(QString::number(textX / ZOOMMULTIP)));
 
@@ -1283,20 +1318,40 @@ void KumKuznec::DrawNet()
 		if ((textX / ZOOMMULTIP > 0.5) || (textX / ZOOMMULTIP < 9.5)) {
 			zdvig += 0.1 * ZOOMMULTIP;
 		}
+		//if(textX<-9.5)zdvig+=0.1;
 		NetText.last()->setPos(textX + zdvig, 0.2 * ZOOMMULTIP);
 		int Zoom = Step;
 
+		//qDebug()<<((int)textX)%100;
 		if ((((int)textX / ZOOMMULTIP) % 100) == 0) {
+			//qDebug()<<"Text ZoomUP";
 			Zoom = Zoom * 1.5;
-		}
+		};
 
 		NetText.last()->setScale(0.03 * Zoom);
 		NetText.last()->setZValue(1000);
 
 		scene->addItem(NetText.last());
 
+
 		textX = textX + Step;
-	}
+		//Netlines.append(scene->addLine(textX, -0.25 , textX, 0.25 ));
+		//Netlines.last()->setZValue(1000);
+		//Netlines.last()->setPen(QPen(QColor("black")));
+	};
+
+	//Netlines.append(scene->addLine(fx1, fy1 , fx2, fy2 ));
+	//Netlines.last()->setZValue(0.6);
+	//Netlines.last()->setPen(QPen(QColor("blue")));
+
+
+
+
+
+
+
+
+
 
 }
 
@@ -1425,14 +1480,231 @@ void KumKuznec::Info()
 	}
 
 	lPen->setText(tmp);
-}
 
+//**InfoWindow->show();
+}
+//-------------------------------------------------------
 bool KumKuznec::PrintToPDF(void)
 {
-    return false;
+// KumFileDialog dialog(MV,QString::fromUtf8 ("Печатать в файл"),curDir, "(*.pdf)",false);
+// dialog.setAcceptMode(QFileDialog::AcceptSave);
+// if(!dialog.exec())return false;
+//
+// QString  PrintFileName = dialog.selectedFiles().first();
+// QDir dir=dialog.directory();
+// curDir=dir.path();
+//
+// if (PrintFileName.contains("*") || PrintFileName.contains("?"))
+// {
+// QMessageBox::information( 0, "", QString::fromUtf8("Недопустимый символ в имени файла!"), 0,0,0);
+// return false;
+// }
+//
+// if(PrintFileName.right(4) != ".pdf")PrintFileName += ".pdf";
+//
+//
+// QPrinter *RPrinter = new QPrinter(QPrinter::PrinterResolution);
+// RPrinter->setOutputFileName(PrintFileName);
+// RPrinter->setFullPage(false);
+// RPrinter->setPageSize(QPrinter::A4);
+//
+//
+// QPainter *RPainter = new QPainter();
+// RPainter->begin(RPrinter);
+// RPainter->setBrush(Qt::SolidPattern);
+// QColor RLineColor = QColor(1,1,1);
+//
+//
+// //RPainter->setViewTransformEnabled(true);
+//
+// QLineF TmpLine;
+//
+// qreal MinX,MaxX,MinY,MaxY,VecX1,VecX2,VecY1,VecY2;
+// MinX = WindowX0;
+// MinY = -WindowY0- SizeY/WindowZoom;
+// MaxX = WindowX0 + SizeX/WindowZoom;
+// MaxY = -WindowY0 ;
+//
+// qreal Scale;
+// int PageWidth = 540;
+//
+//  if (MaxX - MinX > MaxY - MinY)
+//  {
+//  Scale = MaxX-MinX;
+//  }
+//  else
+//  {
+//  Scale = MaxY-MinY;
+//  }
+//
+// if (Scale < 0.000001)return false;
+//
+// int PenWidth = 1;
+// QPen Pen;
+//
+//
+// //    int Stepen = log10(Scale);
+// //    Step = 0.1*pow(10,Stepen);
+//
+// Scale = PageWidth/Scale;
+// PenWidth = 2;
+// Pen = QPen(RLineColor,PenWidth);
+// RPainter->setPen(Pen);
+// RPainter->setClipRect(0,0,(MaxX-MinX)*Scale,(MaxY-MinY)*Scale);
+// //RPainter->setWindow ( 0, -5, 10,10 );
+// //RPainter->setViewport ( MinX, MinY, Scale, Scale*1.41 );
+// //RPainter->setWindow ( MinX, MinY, Scale+1, (Scale+1)*1.41 );
+// qreal x1,y1,x2,y2;
+//
+//
+// x1 = (MinX - MinX)*Scale+1;
+// y1 = (MinY - MinY)*Scale+1;
+// x2 = (MaxX - MinX)*Scale-2;
+// y2 = (MaxY - MinY)*Scale-1;
+// //рисуем границы
+//
+// RPainter->drawLine(x1, y1, x1, y2 );
+// RPainter->drawLine(x1, y2, x2, y2 );
+// RPainter->drawLine(x2, y2, x2, y1 );
+// RPainter->drawLine(x2, y1, x1, y1 );
+//
+//
+//
+// //qreal Stepen = log(Scale)/2;
+// //qreal Step = 10./pow(10,Stepen);
+// //qWarning ("Stepen Step %f %f",Stepen,Step);
+//
+// //� исуем сетку
+// Pen = QPen(QColor("gray"),1);
+// RPainter->setPen(Pen);
+// Pen.setWidthF(0.5);
+// qreal XCur = 0;
+//
+// if (NetShowFlag && TmpNetShowFlag)
+// {
+//  while (XCur < MaxX - StepX)
+//  {
+//  XCur += StepX;
+//  if (XCur < MinX)continue;
+//
+//  x1 = (XCur - MinX)*Scale+1;
+//  y1 = (MinY - MinY)*Scale+1;
+//  x2 = (XCur - MinX)*Scale-1;
+//  y2 = (MaxY - MinY)*Scale-1;
+//
+//  RPainter->drawLine(x1 , y1, x2, y2);
+//  }
+//
+// XCur = 0;
+//  while (XCur > MinX +StepX)
+//  {
+//  XCur -= StepX;
+//  if (XCur > MaxX)continue;
+//
+//  x1 = (XCur - MinX)*Scale+1;
+//  y1 = (MinY - MinY)*Scale+1;
+//  x2 = (XCur - MinX)*Scale-1;
+//  y2 = (MaxY - MinY)*Scale-1;
+//  RPainter->drawLine(x1 , y1, x2, y2);
+//  }
+//
+//
+// qreal YCur = 0;
+//  while (YCur < MaxY - StepY)
+//  {
+//  YCur += StepY;
+//  if (YCur < MinY)continue;
+//  x1 = (MinX - MinX)*Scale+1;
+//  y1 = (MaxY-YCur )*Scale+1;
+//  x2 = (MaxX - MinX)*Scale-1;
+//  y2 = (MaxY-YCur )*Scale-1;
+//
+//  RPainter->drawLine(x1 , y1, x2, y2);
+//  }
+//
+// YCur = 0;
+//  while (YCur > MinY + StepY)
+//  {
+//  YCur -= StepY;
+//  if (YCur > MaxY)continue;
+//  x1 = (MinX - MinX)*Scale+1;
+//  y1 = (MaxY-YCur )*Scale;
+//  x2 = (MaxX - MinX)*Scale-1;
+//  y2 = (MaxY-YCur )*Scale;
+//  RPainter->drawLine(x1 , y1, x2, y2);
+//  }
+// }
+//
+// //рисуем оси
+// Pen.setWidthF(2);
+// RPainter->setPen(Pen);
+// //вертикальная ось
+// if (MinX < 0 && MaxX > 0)
+// {
+// x1 = (0 - MinX)*Scale;
+// y1 = (MaxY-MinY )*Scale;
+// x2 = (0 - MinX)*Scale;
+// y2 = (MaxY-MaxY )*Scale;
+// RPainter->drawLine(x1 , y1, x2, y2 );
+// }
+// //горизонтальная ось
+// if (MinY < 0 && MaxY > 0)
+// {
+// x1 = (MinX - MinX)*Scale;
+// y1 = MaxY*Scale;
+// x2 = (MaxX - MinX)*Scale;
+// y2 = MaxY*Scale;
+// RPainter->drawLine(x1 , y1, x2, y2 );
+// }
+//
+//
+//
+// //Pen.setStyle(Qt::DashDotDotLine);
+// Pen.setColor("black");
+// Pen.setWidthF(1);
+// RPainter->setPen(Pen);
+// //рисуем картинку
+//  for (int i = 0; i <lines.count(); i++)
+//  {
+//  TmpLine = lines[i]->line();
+//  VecX1 = TmpLine.x1();
+//  VecY1 = -TmpLine.y1();
+//  VecX2 = TmpLine.x2();
+//  VecY2 = -TmpLine.y2();
+//
+//  x1 = (VecX1 - MinX)*Scale;
+//  y1 = (MaxY-VecY1 )*Scale;
+//  x2 = (VecX2 - MVMinX)*Scale;
+//  y2 = (MaxY-VecY2 )*Scale;
+//
+//  RPainter->drawLine(x1 , y1, x2, y2 );
+//  }
+// //рисуем текст
+// qreal FontSize,tmpX,tmpY;
+// QString TmpText;
+// //QFont font ( "Courier", -1, -1,  false );
+// QFont font ( "Courier", 40 );
+// RPainter->setFont(font);
+//  for (int i = 0; i<kumtexts.count(); i++)
+//  {
+//  FontSize = kumtexts[i]->Size*Scale/24; //Подобрано экспериментально
+//  tmpX = kumtexts[i]->x;
+//  tmpY = kumtexts[i]->y;
+//  x1 = (tmpX - MinX)*Scale/FontSize;
+//  y1 = (MaxY-tmpY )*Scale/FontSize;
+//
+//  TmpText = texts[i]->text();
+//  RPainter->scale(FontSize,FontSize);
+//  RPainter->drawText(x1,y1,TmpText);
+//  RPainter->scale(1/FontSize,1/FontSize);
+//  }
+//
+// RPainter->end();
+
 }
 
 
+//-----------------------------------------------------------------
 //-----------------------------------------------------------------
 void KumKuznec::MouseWheel(int Delta)
 {
@@ -1443,7 +1715,7 @@ void KumKuznec::MouseWheel(int Delta)
 		ZoomDown();
 	}
 }
-
+//-------------------------------------------------------
 void KumKuznec::SetWindowSize(int x1, int y1, int w, int h)
 {
 
@@ -2013,12 +2285,11 @@ void KumKuznec::SaveToFileActivated()
 	vFile.write("\n;END\n");
 	fileName = QFileInfo(vFile).fileName();
 	MV->setWindowTitle(QString::fromUtf8("Кузнечик - ") + QFileInfo(vFile).fileName());
-}
-
+//kuznHeader->setWMTitle( QString::fromUtf8("Кузнечик - ")+QFileInfo(vFile).fileName ());
+};
+//--------------------------------------------------------------
 void KumKuznec::MousePress(qreal x, qreal y, bool LeftButtonFlag, qreal xScene, qreal yScene)
 {
-    Q_UNUSED(xScene);
-    Q_UNUSED(yScene);
 
 	qWarning("Draw::MousePress %i", LeftButtonFlag);
 
@@ -2036,40 +2307,47 @@ void KumKuznec::MousePress(qreal x, qreal y, bool LeftButtonFlag, qreal xScene, 
 
 
 }
-
+//---------------------------------
 void KumKuznec::MouseRelease(qreal x, qreal y, bool LeftButtonFlag)
 {
-    Q_UNUSED(x);
-    Q_UNUSED(y);
-
 	if (LeftButtonFlag) {
 		LeftMousePressFlag = false;
 		QApplication::restoreOverrideCursor();
 
+		//DrawNet();
+//qWarning("DrawNet");
 	} else {
 		RightMousePressFlag = false;
 	}
+//HideCoord();
+//qWarning("HideCoord");
 }
-
+//-------------------------------------------
 void KumKuznec::MouseMove(int x, int y, bool LeftButtonFlag)
 {
-    Q_UNUSED(LeftButtonFlag);
-
+//if(!LeftMousePressFlag){if(!RightMousePressFlag)return;ShowCoord(xScene,-yScene);return;};
 	if (moving) {
 		return;
 	}
 	if (!LeftMousePressFlag) {
 		return;
 	}
-
+//qDebug()<<"MMove "<<x;
 	if ((abs(x - OldX) < 5) && (abs(y - OldY) < 5)) {
 		qDebug() << "return 1";
 		return;
-	}
+	};
 
-	WindowX0 += (view->mapToScene(QPoint(OldX, OldY)).x() - view->mapToScene(QPoint(x, y)).x());
+//QApplication::setOverrideCursor(Qt::PointingHandCursor);
+	qreal centY = center().y();
+	WindowX0 = WindowX0 + (view->mapToScene(QPoint(OldX, OldY)).x() - view->mapToScene(QPoint(x, y)).x());
+	WindowY0 = WindowY0;
+	QRectF curentRect;
 
+
+//curentRect.setRect(WindowX0,WindowY0,SizeX/WindowZoom,sceneSizeY());
 	qDebug() << "sceneSizeY()" << sceneSizeY();
+//scene->setSceneRect(curentRect);
 	qDebug() << "XZdvig" << - (x - OldX) / WindowZoom;
 	moving = true;
 	view->centerOn(center().x() - (x - OldX) / WindowZoom, -1);
@@ -2080,11 +2358,37 @@ void KumKuznec::MouseMove(int x, int y, bool LeftButtonFlag)
 	OldY = y;
 	qDebug() << "WX0" << WindowX0;
 
+
 	if (sledi.count() > 0) {
 		sledi.last()->show();
-	}
+		//qDebug()<<sledi.last()->isEnabled()<<"RECT:"<<sledi.last()->sceneBoundingRect();
+	};
+//WindowRedraw();
+//qWarning("Draw::MouseMove %f %f",x,y);
 	moving = false;
 }
+void KumKuznec::createFlags()
+{
+	qDebug() << "Create f";
+	for (int i = 0; i < flags.count(); i++) {
+		if (flags[i]->flagItem) {
+			scene->removeItem(flags[i]->flagItem);
+		}
+	};
+	flags.clear();
+	for (int i = 0; i < flags_pos.count(); i++) {
+		KuznFlag* curFlag = new KuznFlag();
+		curFlag->flagItem = new QGraphicsPolygonItem(mFlag->polygon());
+		curFlag->f_pos = flags_pos[i];
+		curFlag->flagItem->setScale(BASEZOOM * 2);
+		curFlag->flagItem->setZValue(99);
+		curFlag->flagItem->setBrush(QBrush(QColor(150, 100, 100)));
+		curFlag->flagItem->setPos(curFlag->f_pos * ZOOMMULTIP, -ZOOMMULTIP);
+		flags.append(curFlag);
+		scene->addItem(curFlag->flagItem);
+	};
+
+};
 
 void KumKuznec::ColorUncolor()
 {
@@ -2157,13 +2461,10 @@ void KumKuznec::closeEvent(QCloseEvent * event)
 	} else {
 		event->ignore();
 	}
-}
-
-void KumKuznec::resizeSlot(QSize *oldSize, QSize* newSize)
+};
+void KumKuznec::resizeSlot(QSize * oldSize, QSize* newSize)
 {
-    Q_UNUSED(oldSize);
 	QSize newSize_p = *newSize;
 
 	resizeEvent(new QResizeEvent(newSize_p, size()));
-}
-
+};

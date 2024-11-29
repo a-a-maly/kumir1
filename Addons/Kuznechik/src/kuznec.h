@@ -18,12 +18,9 @@
 #define KUZNEC_H
 
 #include <QMainWindow>
-#include <QCloseEvent>
 #include <QGraphicsView>
 #include <QGraphicsItem>
 #include <QGraphicsScene>
-#include <QDebug>
-//#include <QGraphicsSvgItem>
 
 class pultLogger;
 class GrasshopperPult;
@@ -40,172 +37,152 @@ class QToolButton;
 #define BASEZOOM 2
 #define ZOOMMULTIP 16
 
-//--------------------------------------------------------
-class KuznSled:public QGraphicsItem
+
+class KuznSled : public QGraphicsItem
 {
-      
 public:
-      KuznSled(int start,int fin);
+	KuznSled(int start, int fin);
+	~KuznSled() {};
 
-
-      ~KuznSled(){};
-
-     QRectF boundingRect() const
-     {
-         qreal penWidth = 1;
-         return QRectF(St, -ZOOMMULTIP,
-                       Fn, ZOOMMULTIP);
-     }
-
-     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-                QWidget *widget);
-
-     void  setStartFin(int start,int fin)
-		{
-		St=start;
-		Fn=fin;
-		};
-     QPoint start_Fin()
+	QRectF boundingRect() const
 	{
-	return QPoint(St,Fn);
-	};
-     void setInt(int Int)
+		return QRectF(St, -ZOOMMULTIP, Fn, ZOOMMULTIP);
+	}
+
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+	void  setStartFin(int start, int fin)
 	{
-	Intens=Int;
-	update();
-	};
+		St = start;
+		Fn = fin;
+	}
+
+	QPoint start_Fin()
+	{
+		return QPoint(St, Fn);
+	}
+
+	void setInt(int Int)
+	{
+		Intens = Int;
+		update();
+	}
+
 private:
-int St,Fn;
-int Intens;
+	int St, Fn;
+	int Intens;
 };
-//_____________________________________________________
-class KumScene: public QGraphicsScene
+
+
+class KumScene : public QGraphicsScene
 {
-Q_OBJECT
+	Q_OBJECT
 public:
-KumScene(QWidget *parent = 0);
+	KumScene(QWidget *parent = 0);
 
-public:  
-    signals:
-void MousePress(qreal x,qreal y, bool Flag, qreal xScene,qreal yScene);
-void MouseRelease(qreal x,qreal y, bool Flag);
-void MouseMove(int x,int y, bool Flag);
-void MouseWheel(int Delta);
-//void MousePress1(qreal x,qreal y, bool Flag);  
+signals:
+	void MousePress(qreal x, qreal y, bool Flag, qreal xScene, qreal yScene);
+	void MouseRelease(qreal x, qreal y, bool Flag);
+	void MouseMove(int x, int y, bool Flag);
+	void MouseWheel(int Delta);
+
 private:
-void mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent );
-void mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent );
-void mouseMoveEvent ( QGraphicsSceneMouseEvent * mouseEvent );
-void wheelEvent ( QGraphicsSceneWheelEvent * wheelEvent );
-
-
-
+	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
+	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
 };
 
 class DrawView : public QGraphicsView
 {
-	public:
-		DrawView(QGraphicsScene *, QWidget*);
-	protected:
-                void scrollContentsBy ( int dx, int dy );
+public:
+	DrawView(QGraphicsScene*, QWidget*);
+protected:
+	void scrollContentsBy(int dx, int dy);
 };
 
-struct KuznFlag
-{
-QGraphicsPolygonItem * flagItem;
-int f_pos;	
+struct KuznFlag {
+	QGraphicsPolygonItem *flagItem;
+	int f_pos;
 };
 
-struct KuznZakr
-{
-QGraphicsRectItem * zakraska;
-int pos;	
+struct KuznZakr {
+	QGraphicsRectItem *zakraska;
+	int pos;
 };
 
 
-class KumKuznec :public QMainWindow
+class KumKuznec : public QMainWindow
 {
 	friend class KuznecStarter;
 	Q_OBJECT
- public:
-	
+
 public:
+	KumKuznec();
+	void PenDown();
+	void PenUp();
+	int GoVector(double x, double y);
+	int GoPoint(double x, double y);
 
-//		 * Конструктор
-		KumKuznec();
-		void PenDown();
-		void PenUp();
-		int GoVector(double x,double y);
-		int GoPoint(double x,double y);
-		void Reset()
-		{
-		//FromDubl();
-        	qDebug()<<"Reset";
-		GoPoint(startPos*ZOOMMULTIP,-0.25);
-		createFlags();
-		ClearSledi();
-		ClearZakr();
-		scene->update();
+	void Reset();
 
-                MV->show();
-		};
-		void ClearZakr()
-		{
-		for(int i=0;i<zakr.count();i++)
-		{
-		if(!zakr[i]->zakraska){qDebug()<<"KumKuznec::ClearZakr():No rect!";return;};
-	  	scene->removeItem(zakr[i]->zakraska);
-		};
-		zakr.clear();
-		};
-		void closeEvent ( QCloseEvent * event );
-		void SetWindowSize(int x1, int y1, int x2, int y2);
-		QPoint lastPos;	
-		void DrawText(QString Text, qreal Scale);
-		//void show();
-		//void hide();
-		//void SetWindowPosition(double x0,double y0, double zoom);
-	
-        	bool init();
-        	bool isReady()
-            	{
-            	return ready; 
-            	};
-  
-        	void setMode(bool EditMode)
-		{
-		isEditor=EditMode;
-		};
-		void reset(){Reset();};
-		void ClearSledi()
-		{
-		for(int i=0;i<sledi.count();i++)
-			{
+	void ClearZakr();
+
+	void closeEvent(QCloseEvent * event);
+	void SetWindowSize(int x1, int y1, int x2, int y2);
+
+
+	void DrawText(QString Text, qreal Scale);
+
+	bool init();
+
+	bool isReady() const
+	{
+		return ready;
+	}
+
+	void setMode(bool EditMode)
+	{
+		isEditor = EditMode;
+	}
+
+	void reset()
+	{
+		Reset();
+	}
+
+	void ClearSledi()
+	{
+		for (int i = 0; i < sledi.count(); i++) {
 			scene->removeItem(sledi[i]);
-			};
-		sledi.clear();
 		};
+		sledi.clear();
+	}
+
+	QPoint lastPos;
 	qreal step;
- pultLogger* logger;
- int Fstep,Bstep,Finish;
- GrasshopperPult *Kpult;
- public slots:	
-        void setSteps(int fwd,int backwd)
-        {
-            Fstep=fwd;
-            Bstep=backwd;
-        };
-        int stepForward()
-        {
-            return Fstep;
-        };
+	pultLogger *logger;
+	int Fstep, Bstep, Finish;
+	GrasshopperPult *Kpult;
 
-        int stepBackward()
-        {
-            return Bstep;
-        };
+public slots:
+	void setSteps(int fwd, int backwd)
+	{
+		Fstep = fwd;
+		Bstep = backwd;
+	}
 
-        void resizeSlot(QSize * oldSize,QSize* newSize);
+	int stepForward()
+	{
+		return Fstep;
+	}
+
+	int stepBackward()
+	{
+		return Bstep;
+	}
+
+	void resizeSlot(QSize * oldSize, QSize* newSize);
 	void lockControls();
 	void unlockControls();
 
@@ -224,14 +201,12 @@ public:
 	void ToCenter(void);
 	void FindKuznec();
 	void Info();
-	void MousePress(qreal x,qreal y, bool Flag, qreal xScene, qreal yScene);
-	void MouseRelease(qreal x,qreal y, bool Flag);
-        void MouseMove(int x,int y, bool Flag);
+	void MousePress(qreal x, qreal y, bool Flag, qreal xScene, qreal yScene);
+	void MouseRelease(qreal x, qreal y, bool Flag);
+	void MouseMove(int x, int y, bool Flag);
 	void MouseWheel(int Delta);
 	void HorizWindow();
 	void VertWindow();
-//	void ShowNetWindow();
-	//void NetSqware(int mode);
 	void StepXChanged(void);
 	void StepYChanged(void);
 	void NetCancelClick(void);
@@ -239,248 +214,219 @@ public:
 	void InfoOKClick(void);
 	void LoadFromFileActivated();
 
-        void SaveToFileActivated();
+	void SaveToFileActivated();
 
-	 void CloseInst(void)
-        {
-        MV->close();
-        //delete MV;
-        };
+	void CloseInst(void)
+	{
+		MV->close();
+	}
+
 	void SwitchMode(int mode)
-      {
+	{
+		if ((mode == 1) && (curMode != 1)) {
+			Reset();
+		}
+		curMode = mode;
+		emit sync();
+	}
 
-       if((mode==1)&&(curMode!=1))Reset();
-       curMode=mode;
-	emit sync();
-      };
 	void showHideWindow(bool show = true); //Show - true
 
-        void setWindowPos(int x,int y)
-          {
-		MV->move(x,y);
-          };
-
-     void getWindowPos(int* x,int* y)
-      {
-	*x=MV->pos().x();
-	*y=MV->pos().y();
-
-      };
-      QRect getWindowGeometry()
-      {
-      return MV->geometry();
-      };
-      void MoveFwd()
-      {
-	addSled(CurX,Fstep);
-	//qDebug()<<"CurX"<<CurX;
-	GoVector(Fstep*ZOOMMULTIP,0);
-	redrawFlags();
-      };
-      bool canFwd()
+	void setWindowPos(int x, int y)
 	{
-	if(!borderEnable)return true;
-	qDebug()<<"RightB*Z:"<<rightBorder*ZOOMMULTIP<<" CurX"<<CurX<<" StepF*Z"<<Fstep*ZOOMMULTIP;
-	if(CurX+Fstep*ZOOMMULTIP>rightBorder*ZOOMMULTIP)return false;
-	return true;
-	};
-    
-      void MoveBack()
-      {
-	addSled(CurX,-Bstep);
+		MV->move(x, y);
+	}
 
-	GoVector(-Bstep*ZOOMMULTIP,0);
-	qDebug()<<"Move Back";
-	redrawFlags();
-      };
-
-      bool canBack()
+	void getWindowPos(int* x, int* y)
 	{
+		*x = MV->pos().x();
+		*y = MV->pos().y();
 
-	if(!borderEnable)return true;
-	qDebug()<<"LeftB*Z:"<<leftBorder*ZOOMMULTIP<<" CurX"<<CurX<<" StepB*Z"<<Bstep*ZOOMMULTIP;
-	if(CurX-Bstep*ZOOMMULTIP<leftBorder*ZOOMMULTIP)return false;
-	return true;
-	};
+	}
 
-      void createFlags();
-      void redrawFlags()
-       {
-	qDebug()<<"F count"<<flags.count();
-	for(int i=0;i<flags.count();i++)
-           {
-	qDebug()<<"F pos"<<flags[i]->f_pos<<"CurX"<<CurX;
-	if(CurX/ZOOMMULTIP==flags[i]->f_pos)
-		{
-		flags[i]->flagItem->setBrush(QBrush(QColor(100,150,100)));
-		qDebug()<<"FINISH";
-		}
-            };
-       };
-    int colored() //Возвращает номер квадратика в списке
+	QRect getWindowGeometry()
 	{
-	for(int i=0;i<zakr.count();i++)if(zakr[i]->pos==CurX)return i;
-	return -1;
-	};
-     void ColorUncolor();
-     void addSled(int start,int fin);
-     void AutoClose(){autoClose=true;};
-  signals:
-        void sync();
+		return MV->geometry();
+	}
 
+	void MoveFwd();
+	bool canFwd();
+
+	void MoveBack();
+	bool canBack();
+
+	void createFlags();
+	void redrawFlags();
+
+	int colored() //Возвращает номер квадратика в списке
+	{
+		for (int i = 0; i < zakr.count(); i++)
+			if (zakr[i]->pos == CurX) {
+				return i;
+			}
+		return -1;
+	}
+
+	void ColorUncolor();
+	void addSled(int start, int fin);
+
+	void AutoClose()
+	{
+		autoClose = true;
+	}
+
+signals:
+	void sync();
 
 protected:
-        void resizeEvent ( QResizeEvent * event );
+	void resizeEvent(QResizeEvent * event);
+
 private:
-QPointF center()
+	QPointF center()
 	{
-	return QPointF(visibleRect().x () +visibleRect().width()/2
-			,visibleRect().y () +visibleRect().height ()/2 );
-	};
-QRectF visibleRect()//IN SCENE COORD
+		return QPointF(visibleRect().x() + visibleRect().width() / 2
+			, visibleRect().y() + visibleRect().height() / 2);
+	}
+
+	QRectF visibleRect()//IN SCENE COORD
 	{
-        return view->mapToScene(view->viewport()->rect()).boundingRect ();
-	};
-qreal sceneSizeY()//IN SCENE COORD
+		return view->mapToScene(view->viewport()->rect()).boundingRect();
+	}
+
+	qreal sceneSizeY()//IN SCENE COORD
 	{
-	return visibleRect().height ();
+		return visibleRect().height();
+	}
+
+	struct LColor {
+		int Red;
+		int Green;
+		int Blue;
 	};
-	struct LColor
-	{
-	int Red;
-	int Green;
-	int Blue;
+
+	struct KumKuznecText {
+		qreal x;
+		qreal y;
+		QString text;
+		LColor color;
+		qreal Size;
 	};
-	
-	struct KumKuznecText
-{
-	qreal x;
-	qreal y;
-	QString text;
-	LColor color;
-	qreal Size;
-};
 
-int SizeX,SizeY; //размеры окна в пикселах
-QFrame* viewFrame;
-QMainWindow* MV;
-QMenu * menu;
-QMenu * menu1;
-KumScene *scene;
-uint MenuHigth;
-QGraphicsScene *Panel;
-QGraphicsView *view;
-//QGraphicsView *Pview;
-QList<QGraphicsLineItem*> lines;
-QList<QGraphicsLineItem*> Netlines;
-QList<QGraphicsSimpleTextItem*> NetText;
+	int SizeX, SizeY; //размеры окна в пикселах
 
-QList<QGraphicsLineItem*> linesDubl;
-//QList<QGraphicsTextItem*> texts;
-QList<QGraphicsSimpleTextItem*> texts;
-QList<KumKuznecText*> kumtexts;
-QList<KuznSled*> sledi;
-//KuznSled* sled;
-qreal PenXDubl;
-qreal PenYDubl;
-bool PenPositionDubl;
-QGraphicsPolygonItem *mPen;
-QGraphicsPolygonItem *mFlag;
-QList<KuznFlag*> flags;
-QList<KuznZakr*> zakr;
+	QFrame *viewFrame;
+	QMainWindow *MV;
+	QMenu *menu;
+	QMenu *menu1;
+	KumScene *scene;
+	uint MenuHigth;
+	QGraphicsScene *Panel;
+	QGraphicsView *view;
+	QList<QGraphicsLineItem *> lines;
+	QList<QGraphicsLineItem *> Netlines;
+	QList<QGraphicsSimpleTextItem *> NetText;
 
-QList<int> flags_pos;
-QGraphicsLineItem  *mFlagLine; 
-double WindowX0;
-double WindowY0;
-double WindowZoom;
+	QList<QGraphicsLineItem *> linesDubl;
+	QList<QGraphicsSimpleTextItem *> texts;
+	QList<KumKuznecText *> kumtexts;
+	QList<KuznSled *> sledi;
 
-QLineEdit *eX0;
-QLineEdit *eY0;
-QLineEdit *eStepX;
-QLineEdit *eStepY;
-QCheckBox *BoxNet;
-QLabel *lX0, *lY0,*lX1,*lY1, *lXCen,*lYCen, *lXNetX0,*lYNetY0,*lXNetDX,*lYNetDY, *lXCur,*lYCur, *lColor, *lPen ;
-// *lZ0;
+	qreal PenXDubl;
+	qreal PenYDubl;
+	bool PenPositionDubl;
+	QGraphicsPolygonItem *mPen;
+	QGraphicsPolygonItem *mFlag;
+	QList<KuznFlag *> flags;
+	QList<KuznZakr *> zakr;
 
-qreal StepX; //шаг сетки
-qreal StepY;
-bool SqwareNetFlag;
-qreal SdwigNetX; //сдвиг сетки
-qreal SdwigNetY;
-bool NetShowFlag;
-bool TmpNetShowFlag;
+	QList<int> flags_pos;
+	QGraphicsLineItem  *mFlagLine;
+	double WindowX0;
+	double WindowY0;
+	double WindowZoom;
 
-int NLastVec;
-LColor CurColor;
-QString CurColorName;
-double CurX; // 
-double CurY;
-double CurZ;
-bool PenPosition;
-bool isEditor;
-bool ready;
+	QLineEdit *eX0;
+	QLineEdit *eY0;
+	QLineEdit *eStepX;
+	QLineEdit *eStepY;
+	QCheckBox *BoxNet;
+	QLabel *lX0, *lY0, *lX1, *lY1, *lXCen, *lYCen, *lXNetX0, *lYNetY0, *lXNetDX, *lYNetDY, *lXCur, *lYCur, *lColor, *lPen ;
 
-qreal MinInfinityX;
-qreal MaxInfinityX;
-qreal MinInfinityY;
-qreal MaxInfinityY;
-qreal MaxZoom;
-qreal MinZoom;
-qreal ButtonSdwig;
-int WindowSizeX;
-int WindowSizeY;
-int MVxmin,MVxmax,MVymin,MVymax;
-QMainWindow* NetWindow;
-QMainWindow* InfoWindow;
-QCheckBox *BoxSqware;
+	qreal StepX; //шаг сетки
+	qreal StepY;
+	bool SqwareNetFlag;
+	qreal SdwigNetX; //сдвиг сетки
+	qreal SdwigNetY;
+	bool NetShowFlag;
+	bool TmpNetShowFlag;
 
+	int NLastVec;
+	LColor CurColor;
+	QString CurColorName;
+	double CurX; //
+	double CurY;
+	double CurZ;
+	bool PenPosition;
+	bool isEditor;
+	bool ready;
 
-QToolButton *btn11;
-QToolButton *btn12;
-QToolButton *btn13;
+	qreal MinInfinityX;
+	qreal MaxInfinityX;
+	qreal MinInfinityY;
+	qreal MaxInfinityY;
+	qreal MaxZoom;
+	qreal MinZoom;
+	qreal ButtonSdwig;
+	int WindowSizeX;
+	int WindowSizeY;
+	int MVxmin, MVxmax, MVymin, MVymax;
+	QMainWindow *NetWindow;
+	QMainWindow *InfoWindow;
+	QCheckBox *BoxSqware;
 
+	QToolButton *btn11;
+	QToolButton *btn12;
+	QToolButton *btn13;
 
-QString curDir;
-qreal OldX,OldY;
+	QString curDir;
+	qreal OldX, OldY;
+	bool moving;
 
-bool LeftMousePressFlag;
-bool RightMousePressFlag;
-void Createbtn11();
-void Createbtn12();
-void Createbtn13();
+	bool LeftMousePressFlag;
+	bool RightMousePressFlag;
+	void Createbtn11();
+	void Createbtn12();
+	void Createbtn13();
 
-void CreateXYLabel();
-void ShowCoord(qreal xScene,qreal yScene);
-void HideCoord();
-void WindowRedraw();
-void DrawNet();
-		float GetMinX(void);
-		float GetMinY(void);
-		float GetMaxX(void);
-		float GetMaxY(void);
+	void CreateXYLabel();
+	void ShowCoord(qreal xScene, qreal yScene);
+	void HideCoord();
+	void WindowRedraw();
+	void DrawNet();
+	float GetMinX(void);
+	float GetMinY(void);
+	float GetMaxX(void);
+	float GetMaxY(void);
 
 
-//void WriteLine(QFile *p_File, QString p_String);
-void SetLineColor(int LRed, int LGreen, int LBlue);
-bool SetColorString(QString Color);
-		//void ShowInfo();
-;
-void CreatePen(void);
-bool moving;
-//void DestroyPen(void);
-int LoadFromFile(QString p_FileName);
-int SaveToFile(QString p_FileName);
-void CreateMenu(void);
-void CreateNetWindow(void);
-void CreateInfoWindow(void);
-int curMode;
-int startPos;
-int leftBorder,rightBorder;//Ограничения поля Кузнечика
-bool borderEnable; //Ограничения поля Кузнечика
-QString fileName;
-bool advancedTask;//Наличие в задание чегонить крпме длины прыжка
-bool autoClose;
+	void SetLineColor(int LRed, int LGreen, int LBlue);
+	bool SetColorString(QString Color);
+	void CreatePen(void);
+
+
+	int LoadFromFile(QString p_FileName);
+	int SaveToFile(QString p_FileName);
+	void CreateMenu(void);
+	void CreateNetWindow(void);
+	void CreateInfoWindow(void);
+
+	int curMode;
+	int startPos;
+	int leftBorder, rightBorder; //Ограничения поля Кузнечика
+	bool borderEnable; //Ограничения поля Кузнечика
+	QString fileName;
+	bool advancedTask; //Наличие в задание чегонить крпме длины прыжка
+	bool autoClose;
 
 };
 
