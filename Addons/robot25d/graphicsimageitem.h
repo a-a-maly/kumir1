@@ -1,8 +1,7 @@
 #ifndef GRAPHICSIMAGEITEM_H
 #define GRAPHICSIMAGEITEM_H
 
-#include <QtCore>
-#include <QtGui>
+#include <QGraphicsItem>
 
 namespace Robot25D {
 

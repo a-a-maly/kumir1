@@ -4,7 +4,7 @@
 #include "sch_environment.h"
 #include "sch_program.h"
 
-#include <QImage>
+class QScriptValue;
 
 namespace Schema {
 

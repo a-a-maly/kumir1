@@ -1,7 +1,7 @@
 #ifndef FP_H
 #define FP_H
 
-#include <QtCore>
+#include <QList>
 
 template<typename T, typename R> extern inline QList<R> MAP( R (*function)(const T&), const QList<T> &iterable)
 {

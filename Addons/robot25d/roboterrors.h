@@ -1,12 +1,13 @@
 #ifndef ROBOTERRORS_H
 #define ROBOTERRORS_H
 
-namespace Robot25D {
+namespace Robot25D
+{
 
-    enum RuntimeError {
-        NoRuntimeError,
-        WallCollisionError
-    };
+enum RuntimeError {
+	NoRuntimeError,
+	WallCollisionError
+};
 
 
 }

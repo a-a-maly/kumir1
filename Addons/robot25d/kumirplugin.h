@@ -2,79 +2,78 @@
 #define KUMIRPLUGIN_H
 
 #include "../plugin_interface.h"
-#include "robot25dwindow.h"
-#include "robotview.h"
 
-class Robot25DPlugin
-        : public QObject
-        , public kumirPluginInterface
+class Robot25DWindow;
+
+class Robot25DPlugin : public QObject, public kumirPluginInterface
 {
-    Q_OBJECT
-    Q_INTERFACES(kumirPluginInterface)
+	Q_OBJECT
+	Q_INTERFACES(kumirPluginInterface)
+	Q_PLUGIN_METADATA(IID "kumir1.Robot25D")
 public:
-    Robot25DPlugin();
+	Robot25DPlugin();
 
-    void start(); //Запуск исполнителя
-    QList<Alg> algList(); //Список алгоритмов исполнителя
-    QString name();
-    QList<QVariant> algOptResults(); //резы
-    QVariant     result();//возвращаемое значение
-    void	      runAlg(QString alg,QList<QVariant> params); //Запуск алгоритма
-    void        showField(); //Показать поле
-    void        showPult();//Показать пульт
-    void        hidePult();
-    void        hideField();
-    void        showOpt();
-    bool        hasPult(); //Есть ли пульт
-    bool        hasOpt(); //Есть ли дополнительное окно
-    QString     optText();//Текст для дополнительного окна
-    void 	      setMode(int mode); //Установить режим
-    void reset();
-    QString errorText() const; //Текст ошибки
-
-
-    /** Выполняет проверку задания
-      * @param script опциональный ECMAScript-скрипт проверки
-      * @returns оценка в диапазоне [1:10] */
-    quint8 check(const QString &script = QString());
+	void start(); //Запуск исполнителя
+	QList<Alg> algList(); //Список алгоритмов исполнителя
+	QString name();
+	QList<QVariant> algOptResults(); //резы
+	QVariant     result();//возвращаемое значение
+	void          runAlg(QString alg, QList<QVariant> params); //Запуск алгоритма
+	void        showField(); //Показать поле
+	void        showPult();//Показать пульт
+	void        hidePult();
+	void        hideField();
+	void        showOpt();
+	bool        hasPult(); //Есть ли пульт
+	bool        hasOpt(); //Есть ли дополнительное окно
+	QString     optText();//Текст для дополнительного окна
+	void          setMode(int mode); //Установить режим
+	void reset();
+	QString errorText() const; //Текст ошибки
 
 
-    /**
-     Установка дополнительных параметров исполнителя.
-     Например: setParameter("environment", QVariant("test.vod"));
-     Установка обстановки test.vod в водолее.
-      */
-    void setParameter(const QString &paramName, const QVariant &paramValue);
+	/** Выполняет проверку задания
+	  * @param script опциональный ECMAScript-скрипт проверки
+	  * @returns оценка в диапазоне [1:10] */
+	quint8 check(const QString &script = QString());
 
 
-    /**
-      Присоединяет слот @param method объекта @param obj к сигналу "Отправить текст"
-      Пример использования:
-        plugin->connectSignalSendText(kumir, SLOT(slotName(QString))
-      */
-    void connectSignalSendText( const QObject *obj, const char *method );
+	/**
+	 Установка дополнительных параметров исполнителя.
+	 Например: setParameter("environment", QVariant("test.vod"));
+	 Установка обстановки test.vod в водолее.
+	  */
+	void setParameter(const QString &paramName, const QVariant &paramValue);
 
 
-    /**
-      Присоединяет слот @param method объекта @param obj к сигналу "Выполнение команды завершено"
-      Пример использования:
-        plugin->connectSignalSendSync(kumir, SLOT(slotName(bool))
-      */
-    void connectSignalSync( const QObject *obj, const char *method);
+	/**
+	  Присоединяет слот @param method объекта @param obj к сигналу "Отправить текст"
+	  Пример использования:
+	    plugin->connectSignalSendText(kumir, SLOT(slotName(QString))
+	  */
+	void connectSignalSendText(const QObject *obj, const char *method);
 
-    QUrl     pdfUrl() const ; //Помощь
-    QUrl     infoXmlUrl() const; // Ссылка на информацию об исполнителе
-    QWidget* mainWidget();//Главный виджет исполнителя
-    QWidget* pultWidget();//Пульт исполнителя
+
+	/**
+	  Присоединяет слот @param method объекта @param obj к сигналу "Выполнение команды завершено"
+	  Пример использования:
+	    plugin->connectSignalSendSync(kumir, SLOT(slotName(bool))
+	  */
+	void connectSignalSync(const QObject *obj, const char *method);
+
+	QUrl     pdfUrl() const ; //Помощь
+	QUrl     infoXmlUrl() const; // Ссылка на информацию об исполнителе
+	QWidget *mainWidget();//Главный виджет исполнителя
+	QWidget *pultWidget();//Пульт исполнителя
 private slots:
-    void handleEvaluationFinished();
+	void handleEvaluationFinished();
 signals:
-    void sync();
-    void error(const QString &);
+	void sync();
+	void error(const QString &);
 private:
-    QVariant v_result;
-    QString s_error;
-    Robot25DWindow * m_window;
+	QVariant v_result;
+	QString s_error;
+	Robot25DWindow *m_window;
 };
 
 #endif // KUMIRPLUGIN_H

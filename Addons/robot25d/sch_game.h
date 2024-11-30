@@ -4,20 +4,21 @@
 #include "sch_task.h"
 #include "fp.h"
 
-namespace Schema {
+namespace Schema
+{
 
 struct Game {
-    /* title */
-    QString title;
-    /* legal */
-    QStringList authors;
-    QString copyright;
-    QString license;
-    QString homepage;
-    /* content */
-    QList<Task> tasks;
-    /* entry point */
-    int index;
+	/* title */
+	QString title;
+	/* legal */
+	QStringList authors;
+	QString copyright;
+	QString license;
+	QString homepage;
+	/* content */
+	QList<Task> tasks;
+	/* entry point */
+	int index;
 };
 
 

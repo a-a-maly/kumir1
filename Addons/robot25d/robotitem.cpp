@@ -4,6 +4,12 @@
 #include "robot25d/graphicsimageitem.h"
 #include "robot25d/cellgraphicsitem.h"
 
+#include <qmath.h>
+#include <QDebug>
+#include <QApplication>
+#include <QFile>
+#include <QGraphicsScene>
+
 
 namespace Robot25D {
 
