@@ -263,6 +263,7 @@ bool PTFile::checkSymb(QChar symb)
 //� азбор лексем
 QString PTFile::getStrLexem(int *err, int *pos)
 {
+	Q_UNUSED(pos);
 	//qDebug()<<"Symb"<<cur_symb;
 	QString toret;
 	if (fileData.atEnd()) {

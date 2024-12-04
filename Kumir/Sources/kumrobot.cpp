@@ -599,8 +599,6 @@ bool KumRobot::RepaintRobot()
 	double XNew = m_FieldSize * m_x + 3;
 	double YNew = m_FieldSize * m_y + 0;
 
-	QPointF old_p = m_Robot->pos();
-
 	if (isEditor) {
 		m_Robot->setBrush(QBrush(QColor("lightgray")));
 	} else {

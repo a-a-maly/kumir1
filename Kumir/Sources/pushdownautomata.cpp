@@ -21,7 +21,6 @@
 #endif
 
 #include "pushdownautomata.h"
-//#include "strtypes.h"
 #include "kum_tables.h"
 #include "error.h"
 #include "const.h"

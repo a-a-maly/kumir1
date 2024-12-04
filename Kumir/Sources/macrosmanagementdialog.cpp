@@ -48,9 +48,10 @@ MacrosManagementDialog::~MacrosManagementDialog()
 
 void MacrosManagementDialog::selectMacro(QListWidgetItem *item)
 {
+	Q_UNUSED(item);
 }
 
-void MacrosManagementDialog::deleteMacro(QListWidgetItem * item)
+void MacrosManagementDialog::deleteMacro(QListWidgetItem *item)
 {
 	qDebug("deleteMacro");
 	if ( item==NULL )

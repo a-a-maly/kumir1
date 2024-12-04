@@ -92,7 +92,7 @@ PeremType testConst(QString name, int *err)
 		name = name.mid(1);
 	}
 	QString debug = name;
-	bool ok;
+	bool ok = false;
 	int base = 10;
 	*err = 0;
 	if (KumTools::instance()->isBooleanConstant(name)) {
