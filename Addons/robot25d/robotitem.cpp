@@ -9,6 +9,7 @@
 #include <QApplication>
 #include <QFile>
 #include <QGraphicsScene>
+#include <QMutex>
 
 
 namespace Robot25D {

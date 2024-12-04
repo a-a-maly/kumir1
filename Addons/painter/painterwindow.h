@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 class QLabel;
+class QMutex;
 
 namespace Ui
 {

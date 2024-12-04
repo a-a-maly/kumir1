@@ -9,6 +9,7 @@
 #include <QSettings>
 #include <QDir>
 #include <QStack>
+#include <QMutex>
 
 struct PainterPluginPrivate
 {

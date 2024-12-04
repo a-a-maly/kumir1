@@ -3,6 +3,7 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QMouseEvent>
+#include <QMutex>
 
 PainterView::PainterView(QWidget *parent)
 	: QWidget(parent)

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QMap>
+class QMutex;
 
 namespace Robot25D
 {

@@ -10,6 +10,8 @@
 #include <QApplication>
 #include <QGraphicsScene>
 
+#include <math.h>
+
 
 #define DEBUG_Z_ORDER false
 

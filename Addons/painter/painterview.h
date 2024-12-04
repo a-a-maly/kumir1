@@ -2,6 +2,7 @@
 #define PAINTERVIEW_H
 
 #include <QWidget>
+class QMutex;
 
 class PainterView : public QWidget
 {

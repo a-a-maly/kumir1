@@ -2,6 +2,8 @@
 #include <QPainter>
 #include <QSvgRenderer>
 
+#include <math.h>
+
 #define DEG2RAD(x) (PI * (x) / 180)
 
 namespace Robot25D

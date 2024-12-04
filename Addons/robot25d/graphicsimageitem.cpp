@@ -1,5 +1,6 @@
 #include "graphicsimageitem.h"
 #include <QPainter>
+#include <QMutex>
 
 
 namespace Robot25D

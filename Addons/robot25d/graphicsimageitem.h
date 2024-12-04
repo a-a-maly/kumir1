@@ -2,6 +2,7 @@
 #define GRAPHICSIMAGEITEM_H
 
 #include <QGraphicsItem>
+class QMutex;
 
 namespace Robot25D {
 
