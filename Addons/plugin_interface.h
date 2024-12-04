@@ -17,6 +17,7 @@
 #define PLUGIN_INTERFACE_H
 
 #include <QtPlugin>
+#include <QUrl>
 
 
 struct Alg {

@@ -4,6 +4,7 @@
 #include "sch_command.h"
 #include <QStringList>
 #include <QSize>
+#include <QVector>
 
 
 namespace Schema

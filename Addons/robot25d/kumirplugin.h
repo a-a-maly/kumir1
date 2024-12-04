@@ -2,6 +2,7 @@
 #define KUMIRPLUGIN_H
 
 #include "../plugin_interface.h"
+#include <QVariant>
 
 class Robot25DWindow;
 
@@ -9,7 +10,9 @@ class Robot25DPlugin : public QObject, public kumirPluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(kumirPluginInterface)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 	Q_PLUGIN_METADATA(IID "kumir1.Robot25D")
+#endif
 public:
 	Robot25DPlugin();
 
@@ -17,8 +20,8 @@ public:
 	QList<Alg> algList(); //Список алгоритмов исполнителя
 	QString name();
 	QList<QVariant> algOptResults(); //резы
-	QVariant     result();//возвращаемое значение
-	void          runAlg(QString alg, QList<QVariant> params); //Запуск алгоритма
+	QVariant result();//возвращаемое значение
+	void        runAlg(QString alg, QList<QVariant> params); //Запуск алгоритма
 	void        showField(); //Показать поле
 	void        showPult();//Показать пульт
 	void        hidePult();

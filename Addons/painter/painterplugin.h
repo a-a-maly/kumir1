@@ -8,7 +8,9 @@ class PainterPlugin : public QObject, public kumirPluginInterface
 {
 	Q_OBJECT;
 	Q_INTERFACES(kumirPluginInterface);
+	#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 	Q_PLUGIN_METADATA(IID "kumir1.Painter")
+	#endif
 public:
 	PainterPlugin(QObject *parent = 0);
 	void start() { }

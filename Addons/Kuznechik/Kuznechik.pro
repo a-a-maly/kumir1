@@ -16,8 +16,8 @@ HEADERS += \
     src/pult.h \
     src/dialog.h \
     kumfiledialog.h \
-    interface.h
-    ../plugin_interface.h \
+    interface.h \
+    ../plugin_interface.h
 
 SOURCES += \
     src/kuznec.cpp \

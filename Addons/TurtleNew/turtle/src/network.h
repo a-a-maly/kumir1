@@ -36,6 +36,7 @@
 #define ERROR            100
 #define PARCE_ERROR      101
 
+#include <QStringList>
 #include <QEvent>
 #include <QTcpSocket>
 #include <QTcpServer>

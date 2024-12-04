@@ -2,7 +2,9 @@
 #define ROBOTITEM_H
 
 #include <QObject>
+#include <QImage>
 #include <QMap>
+#include <QMetaType>
 class QMutex;
 
 namespace Robot25D

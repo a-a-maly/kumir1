@@ -4,6 +4,7 @@
 #include <QTransform>
 #include <QPointF>
 #include <QImage>
+#include <QPair>
 
 #define PI 3.14159265358979
 

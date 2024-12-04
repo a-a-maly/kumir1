@@ -1,6 +1,7 @@
 #include "sch_environment.h"
 
 #include <QDebug>
+#include <QStringList>
 #include <QDataStream>
 #include <QIODevice>
 #include <QScriptValue>
