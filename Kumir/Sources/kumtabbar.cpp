@@ -30,7 +30,7 @@ void KumTabBar::mousePressEvent(QMouseEvent *event)
 		clickedNo = tabAt(event->pos());
 		if (clickedNo > 0) {
 			QMenu *menu = new QMenu(this);
-			*menu->addAction(tr("Close"), this, SLOT(closeTab()));
+			menu->addAction(tr("Close"), this, SLOT(closeTab()));
 			menu->exec(event->globalPos());
 		}
 	} else {

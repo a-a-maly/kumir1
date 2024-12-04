@@ -1406,7 +1406,6 @@ void KumIOArea::finishInput()
 	setTextCursor(c);
 	textCursor().insertText("\n");
 	QStringList ret;
-	int debug = ret.count();
 	foreach (InputTerm word, words) {
 		if (word.pType == kumString) {
 			if (word.text.startsWith("\"") && word.text.endsWith("\"")) {
@@ -1456,12 +1455,11 @@ void KumIOArea::finishInput()
 		} else {
 			ret << word.text.trimmed();
 		}
-		debug = ret.count();
 	}
-//  sendMessage(tr("Input finished."),3000);
 	sendMessage("", 0);
 	emit inputFinished(ret);
 }
+
 void KumIOArea::insertFromMimeData(const QMimeData *source)
 {
 	if (waitForInput) {

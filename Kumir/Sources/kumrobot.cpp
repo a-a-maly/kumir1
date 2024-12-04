@@ -2750,7 +2750,7 @@ void KumRobot::CreatePult(QWidget *parent)
 	int TopMargin = 180;
 	int PanelInterval = 3;
 	//int BottomMargin = 3;
-	int HStart0, HStart1, HStart2;
+	int HStart0, HStart1;
 	//MR-02 End
 
 	QRect rrr = QRect(0, 0, 0, 0);
@@ -2783,7 +2783,7 @@ void KumRobot::CreatePult(QWidget *parent)
 	Separator1->setFrameRect(rrr);
 	//  Separator1->setGeometry(5,2,PWWidth-10,200);
 	Separator1->setGeometry(5, HStart1, PWWidth - 10, Height1); //MR-07
-	HStart2 = HStart1 + Height1 + PanelInterval; //MR-08
+	//HStart2 = HStart1 + Height1 + PanelInterval; //MR-08
 	Separator1->setFrameShape(QFrame::Panel) ;
 	Separator1->setFrameShadow(QFrame::Raised);
 	Separator1->show();

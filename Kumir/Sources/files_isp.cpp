@@ -155,29 +155,16 @@ int STFile::prepareFile()
 {
 	file->reset();
 
-	bool fileEnd = file->atEnd();
-	bool dataEnd = fileData.atEnd();
 	fileData.setCodec(codec);
 	fileData.setDevice(file);
 	fileData.setCodec(codec);
-	fileEnd = file->atEnd();
-	dataEnd = fileData.atEnd();
-	fileData.setCodec(codec);
-	fileEnd = file->atEnd();
-	dataEnd = fileData.atEnd();
 	fileData.seek(0);
-
 	fileData >> cur_symb;
 
-	fileEnd = file->atEnd();
-	dataEnd = fileData.atEnd();
 	SkipSpaces();
 	ready = true;
 	return 0;
-
-
-};
-
+}
 
 
 bool STFile::SkipSpaces()

@@ -32,11 +32,8 @@ int PTFile::OpenFile(QString fileName, bool Write, bool append)
 		if (!Write) {
 			return RT_ERR_FILE_NO_EXISTS;
 		}
+	}
 
-
-
-
-	};
 	if (!Write) {
 
 		if (file->open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -76,9 +73,9 @@ int PTFile::OpenFile(QString fileName, bool Write, bool append)
 		} else {
 			return RT_ERR_FILE_NOT_OPENED;
 		}
-	};
+	}
 	return 0;
-};
+}
 
 
 int PTFile::OpenByteFile(QString fileName, bool Write)
@@ -88,7 +85,7 @@ int PTFile::OpenByteFile(QString fileName, bool Write)
 	if (!file->exists()) {
 		qDebug() << fileName;
 		return RT_ERR_FILE_NO_EXISTS;
-	};
+	}
 	if (!Write) {
 
 		if (file->open(QIODevice::ReadOnly)) {
@@ -120,11 +117,13 @@ int PTFile::OpenByteFile(QString fileName, bool Write)
 		}
 	};
 	return 0;
-};
+}
+
 void  PTFile::setTextCodec(QString codecName)
 {
 	codec = QTextCodec::codecForName(codecName.toLatin1());
-};
+}
+
 void PTFile::CloseFile()
 {
 	if (!ready) {
@@ -144,8 +143,8 @@ void PTFile::CloseFile()
 		file->close();
 		releaseHandle();
 		fileError = 0;
-	};
-};
+	}
+}
 
 
 void PTFile::generateHandle()
@@ -176,30 +175,17 @@ int PTFile::prepareFile()
 {
 	file->reset();
 
-	bool fileEnd = file->atEnd();
-	bool dataEnd = fileData.atEnd();
 	fileData.setCodec(codec);
 	fileData.setDevice(file);
 	fileData.setCodec(codec);
-	fileEnd = file->atEnd();
-	dataEnd = fileData.atEnd();
 	fileData.setCodec(codec);
-	fileEnd = file->atEnd();
-	dataEnd = fileData.atEnd();
 	fileData.seek(0);
 
 	fileData >> cur_symb;
 
-	fileEnd = file->atEnd();
-	dataEnd = fileData.atEnd();
-	// SkipSpaces();
 	ready = true;
 	return 0;
-
-
-};
-
-
+}
 
 bool PTFile::SkipSpaces()
 {
@@ -207,6 +193,7 @@ bool PTFile::SkipSpaces()
 	if (!checkSymb(cur_symb)) {
 		return false;
 	}
+
 	while (((in_comment) || (cur_symb.isSpace()) || (cur_symb.unicode() == 10)) && (!atEnd())) {
 		//TODO Check!!!!
 		fileData >> cur_symb;
@@ -217,15 +204,16 @@ bool PTFile::SkipSpaces()
 			in_comment = false;
 		}
 
-	};
+	}
+
 	if (atEnd() && (in_kavichka || in_skobka)) {
 		//  fileError=RT_INTERNAL_FILE_ERROR;
 		return false;
-	};
+	}
 
 	return true;
+}
 
-};
 bool PTFile::checkSymb(QChar symb)
 {
 	if (symb.isSpace()) {
@@ -280,13 +268,12 @@ QString PTFile::getStrLexem(int *err, int *pos)
 	if (fileData.atEnd()) {
 		*err = RT_ERR_READ_AT_EOF;
 		return "";
-	};
+	}
 	while ((cur_symb != QChar(10)) && (cur_symb != QChar(13)) && (!fileData.atEnd())) {
 		toret += cur_symb;
 		cur_symb = fileData.read(1)[0];
-		// cur_symb;
 		qDebug() << "CurStrToRet" << toret << fileData.pos();
-	};
+	}
 	if ((cur_symb != QChar(10)) && (cur_symb != QChar(13))) {
 		toret += cur_symb;
 	}
@@ -296,9 +283,9 @@ QString PTFile::getStrLexem(int *err, int *pos)
 		fileData >> cur_symb;
 	}
 
-
 	return toret;
-};
+}
+
 QString PTFile::getIntLexem(int *err, int *pos)
 {
 	Q_UNUSED(pos);

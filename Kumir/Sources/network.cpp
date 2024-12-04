@@ -261,19 +261,20 @@ void KNPConnection::analizeRequest(QString line)
 		HSOK = false;
 		tcpSocket->disconnectFromHost();
 		return;
-	};
+	}
+
 	if (command.type == HS_OK) {
-		sendCmd("list");// getFunctionList()
+		sendCmd("list");
 		name = command.arguments.first().asString();
 		HSOK = true;
 		oldType = HS_OK;
 		return;
-	};
-	if (!command.type != HS_OK && !HSOK) {
+	}
 
+	if (command.type == HS_OK && !HSOK) {
 		sendCmd(QString::fromUtf8("handshake,Кумир,0.2,1.0,eee\n"));
 		return;
-	};
+	}
 
 	if (command.type == ALG_DESC) {
 		if (alg_desc.indexOf(line) == -1) {
@@ -281,7 +282,7 @@ void KNPConnection::analizeRequest(QString line)
 		}
 		qDebug() << "Alg_desc:" << alg_desc;
 		oldType = ALG_DESC;
-	};
+	}
 
 	if (command.type == OK_RPL) {
 		if (oldType == ALG_DESC) {

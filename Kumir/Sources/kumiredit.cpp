@@ -789,7 +789,6 @@ void KumirEdit::createTeacherActions(QMenu *menu)
 {
 	if (textCursor().hasSelection()) {
 		bool hasProtectedLines = false;
-		bool allLinesAreProtected = false;
 		bool hasUnprotectedLines = false;
 		bool hasVisibleLines = false;
 		bool hasHiddenLines = false;
@@ -809,7 +808,7 @@ void KumirEdit::createTeacherActions(QMenu *menu)
 			}
 			block = block.next();
 		} while (block != end);
-		allLinesAreProtected = hasProtectedLines && !hasUnprotectedLines;
+
 		if (hasProtectedLines) {
 			menu->addAction(tr("Unprotect selected lines"), this, SLOT(unprotectLines()));
 		}
@@ -3062,12 +3061,10 @@ void KumirEdit::doComment(int from, int to)
 	K_ASSERT(from >= 0);
 	K_ASSERT(to >= 0);
 	QTextCursor c(document());
-	bool hasProtected = false;
 	int i = from;
 	c.movePosition(QTextCursor::NextBlock, QTextCursor::MoveAnchor, from);
 	while (i <= to) {
 		if (c.block().userState() == PROTECTED && !teacherMode) {
-			hasProtected = true;
 			return;
 		}
 		c.movePosition(QTextCursor::NextBlock, QTextCursor::MoveAnchor);
@@ -3097,12 +3094,10 @@ void KumirEdit::doUncomment(int from, int to)
 	K_ASSERT(from >= 0);
 	K_ASSERT(to >= 0);
 	QTextCursor c(document());
-	bool hasProtected = false;
 	int i = from;
 	c.movePosition(QTextCursor::NextBlock, QTextCursor::MoveAnchor, from);
 	while (i <= to) {
 		if (c.block().userState() == PROTECTED && !teacherMode) {
-			hasProtected = true;
 			return;
 		}
 		c.movePosition(QTextCursor::NextBlock, QTextCursor::MoveAnchor);
@@ -3271,13 +3266,9 @@ void KumirEdit::updateDummyCursor()
 		cur.movePosition(QTextCursor::NextBlock, QTextCursor::MoveAnchor, dummyCursor->line);
 		QRect curRect = cursorRect(cur);
 
-
-		//x_offset = y_offset = 0;
-		int x1, x2, y1, y2;
-		x1 = x_offset + (int)(baseWidth * dummyCursor->indent) + 2;
-		y1 = y_offset + curRect.top();
-		x2 = x1;
-		y2 = y_offset + curRect.bottom();
+		int x1 = x_offset + (int)(baseWidth * dummyCursor->indent) + 2;
+		int y1 = y_offset + curRect.top();
+		int y2 = y_offset + curRect.bottom();
 
 		QRect cursorRect(x1, y1, 2, y2 - y1);
 		update(cursorRect);
@@ -3313,13 +3304,10 @@ void KumirEdit::paintCursor(QPainter *painter, const QRect &region)
 	cur.movePosition(QTextCursor::NextBlock, QTextCursor::MoveAnchor, dummyCursor->line);
 	QRect curRect = cursorRect(cur);
 
-
-	//x_offset = y_offset = 0;
-	int x1, x2, y1, y2;
-	x1 = x_offset + (int)(baseWidth * dummyCursor->indent) + 2;
-	y1 = y_offset + curRect.top();
-	x2 = x1;
-	y2 = y_offset + curRect.bottom();
+	int x1 = x_offset + (int)(baseWidth * dummyCursor->indent) + 2;
+	int y1 = y_offset + curRect.top();
+	int x2 = x1;
+	int y2 = y_offset + curRect.bottom();
 
 	QRect cursorRect(x1, y1, 2, y2 - y1);
 

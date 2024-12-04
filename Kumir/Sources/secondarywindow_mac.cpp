@@ -1,4 +1,3 @@
-#include <QtCore>
 #include "secondarywindow_mac.h"
 #include "application.h"
 

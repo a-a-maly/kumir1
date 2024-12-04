@@ -15,7 +15,6 @@
 #include "kummodules.h"
 #include "kumsinglemodule.h"
 #include <QTcpSocket>
-#include <QtNetwork>
 
 const quint16 HttpDaemon::defaultPort = 4243;
 

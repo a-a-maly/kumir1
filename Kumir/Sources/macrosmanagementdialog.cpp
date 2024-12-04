@@ -48,30 +48,6 @@ MacrosManagementDialog::~MacrosManagementDialog()
 
 void MacrosManagementDialog::selectMacro(QListWidgetItem *item)
 {
-	if ( item==NULL )
-	{
-		item = list->currentItem();
-		if ( item==NULL )
-			return;
-	}
-	Macro *m = NULL;
-	foreach ( Macro *mm, app()->macros )
-	{
-		if ( mm->name() == item->text() )
-		{
-			m = mm;
-		}
-	}
-	/*if ( m != NULL ) {
-		//btnRemove->setEnabled(m->isEditable());
-		//btnEdit->setEnabled(m->isEditable());
-		//label->setText(m->fileName());
-	}
-	else {
-		//btnRemove->setEnabled(false);
-		btnEdit->setEnabled(false);
-		//label->setText("");
-	}*/
 }
 
 void MacrosManagementDialog::deleteMacro(QListWidgetItem * item)

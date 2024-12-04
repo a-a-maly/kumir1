@@ -18,7 +18,6 @@
 #include "int_proga.h"
 #include "files_isp.h"
 #include "files_p_isp.h"
-//#include "strtypes.h"
 #include "kassert.h"
 #include "config.h"
 #include "compiler.h"
@@ -893,10 +892,8 @@ int Kumir_Run::setArguments(symbol_table *arguments, int func_id)
 
 int Kumir_Run::runForFunc(int func_id, symbol_table *arguments)
 {
-
 	status = 0;
 	if (ready) {
-		// qDebug("Run4Func");
 		freeStack();
 		if (setup.isPoShagam()) {
 			setup.func_mode = debug;
@@ -904,8 +901,8 @@ int Kumir_Run::runForFunc(int func_id, symbol_table *arguments)
 			setup.func_mode = neprerivno;
 		}
 		run_stack.push_back(start_str);
-		int rsc = run_stack.count();
 		running = true;
+
 		int err = setArguments(arguments, func_id);
 		if (err) {
 			return err;
@@ -913,13 +910,9 @@ int Kumir_Run::runForFunc(int func_id, symbol_table *arguments)
 
 		while (run_stack.count() > 0) {
 			int cur_str = pop();
-			rsc = run_stack.count();
-			// run_mutex.lock();
 			if ((setup.isPoShagam())) {
 				Pause(cur_str, curModule);
-			};
-
-
+			}
 
 			int err = 0;
 			QString errSource;
@@ -931,14 +924,8 @@ int Kumir_Run::runForFunc(int func_id, symbol_table *arguments)
 			} else {
 				usleep(20);
 				return status;
-			};
+			}
 
-			// BuffOut();
-			// qDebug("FuncBuffOut_OK.");
-
-			// run_mutex.unlock();
-
-			rsc = run_stack.count();
 			if ((err != 0) || (ispErrorCode != 0)) {
 				if (ispErrorCode != 0) {
 					err = ispErrorCode;
@@ -946,19 +933,16 @@ int Kumir_Run::runForFunc(int func_id, symbol_table *arguments)
 				if ((Cur_Line(cur_str).real_line.tab) && (err != -2)) { //Строка отображена пользователю
 					sendError(err, cur_str, curModule, errSource);
 					return -2;
-				};
+				}
+
 				status = err;
-
 				return status;
-			};
-		};
-
-
+			}
+		}
 
 		Modules->module(curModule)->Values()->resetInitFlag(Modules->module(curModule)->Functions()->nameById(func_id));
 
-
-	};
+	}
 	return status;
 }
 
@@ -5314,27 +5298,24 @@ QPair<int, QString> Kumir_Run::runFromTo(int module_id, int from, int to)
 {
 	int err = 0;
 	QString errSource;
-	// if((from<0)||(from>Proga_Value.count())||(to<0)||(to>Proga_Value.count())||(from>to))return 2;//TODO raskoment
 	curModule = module_id;
-	if (ready) {
 
+	if (ready) {
 		if (child) {
 			child = NULL;
 		}
 		freeStack();
 
 		run_stack.push_back(from);
-		int rsc = run_stack.count();
 		running = true;
 		while (run_stack.count() > 0) {
 			int cur_str = pop();
-			rsc = run_stack.count();
 			if (cur_str == to) {
 				break;
 			}
 			if ((setup.isPoShagam())) {
 				//             if(Proga_Value[cur_str].real_line.tab)Pause(cur_str);//TODO raskoment
-			};
+			}
 			if (!stoped) {
 				QPair<int, QString> p = do_line(cur_str);
 				err = p.first;
@@ -5343,16 +5324,15 @@ QPair<int, QString> Kumir_Run::runFromTo(int module_id, int from, int to)
 				usleep(300);
 				emit finished();
 				exit();
-			};
+			}
 			if (err != 0) {
 				return QPair<int, QString> (err, errSource);
-			};
-		};
-	};
-
+			}
+		}
+	}
 
 	return QPair<int, QString> (err, errSource);;
-};
+}
 
 uint Kumir_Run::getKeyCode()
 {
@@ -5363,7 +5343,7 @@ uint Kumir_Run::getKeyCode()
 		if (stoped) {
 			return 0;
 		}
-	};
+	}
 	uint result = keyInputCode;
 
 	return result;

@@ -95,7 +95,6 @@ PeremType testConst(QString name, int *err)
 	bool ok;
 	int base = 10;
 	*err = 0;
-	int iResult = 0;
 	if (KumTools::instance()->isBooleanConstant(name)) {
 		return kumBoolean;
 	}
@@ -132,15 +131,7 @@ PeremType testConst(QString name, int *err)
 				*err = GNVR_BIG_INT_CONST;
 				return none;
 			}
-			iResult = name.toInt(&ok, base);
 
-			//          if ( ok &&
-			//                          ( ( iResult < -1073741824 ) || ( iResult > 1073741824 ) )
-			//               )
-			//          {
-			//              *err = GNVR_BIG_INT_CONST;
-			//          }
-			//
 			if (ok) {
 				return integer;
 			} else {
@@ -180,15 +171,6 @@ PeremType testConst(QString name, int *err)
 				return integer;
 			}
 		}
-		//      iResult = name.toInt ( &ok,base );
-		//
-		//      if ( ok &&
-		//                  ( ( iResult < -1073741824 ) || ( iResult > 1073741824 ) )
-		//          )
-		//      {
-		//          *err = GNVR_BIG_INT_CONST;
-		//      }
-
 
 		bool possible_double = true;
 		bool dot_found = false;
@@ -2397,7 +2379,6 @@ QString text_analiz::dropSpace(QString viraj, QList<int> &P, QList<int> &L)//,QL
 	QList<int> rP, rL;
 	QString to_ret;
 	bool inLit = false;
-	bool space = false;
 	bool first = true;
 	for (int i = 0; i < viraj.length(); i++) {
 		QChar next;
@@ -2415,17 +2396,10 @@ QString text_analiz::dropSpace(QString viraj, QList<int> &P, QList<int> &L)//,QL
 				rP << P[i];
 				rL << L[i];
 			}
-			//                  if (inLit||!space) {
-			//                      to_ret=to_ret+viraj[i];
-			//                      rP << P[i];
-			//                      rL << L[i];
-			//                  }
-			//                  space = true;
 		} else {
 			to_ret = to_ret + viraj[i];
 			rP << P[i];
 			rL << L[i];
-			space = false;
 			first = false;
 		}
 		if (viraj[i] == '"') {
@@ -6135,7 +6109,6 @@ int text_analiz::parceInput(proga &pv, function_table *functions, symbol_table *
 	}
 
 	terms.last().end = instr.length();
-	bool hasSim = false;
 
 	if ((terms.count() > 1) && (app()->isExamMode())) {
 		return VVOD_MANY;
@@ -6203,10 +6176,6 @@ int text_analiz::parceInput(proga &pv, function_table *functions, symbol_table *
 			pv.VirajList.append(parsedViraj);
 			pv.VirajTypes.append(perem_type);
 			pv.line += "^" + QString::number(p_id);
-
-			if (perem_type == charect) {
-				hasSim = true;
-			}
 
 			if (symbols->isConst(p_id)) {
 				Err_start = terms[t].start + 2;
@@ -6288,15 +6257,6 @@ int text_analiz::parceInput(proga &pv, function_table *functions, symbol_table *
 				Err_start = instr.indexOf('[') + 2;
 				Err_length = instr.indexOf(']') - Err_start + 2;
 				return err;
-			}
-			/*
-			                    if ( hasSim )
-			                    {
-
-			                            return VVOD_MANY_SYMBOLS;
-			                    }*/
-			if (intType == charect) {
-				hasSim = true;
 			}
 
 			QString line = "^" + QString::number(p_id);
@@ -6401,7 +6361,6 @@ int text_analiz::parceFileInput(proga &pv, function_table *functions, symbol_tab
 	}
 
 	terms.last().end = instr.length();
-	bool hasSim = false;
 	if (terms.count() < 2) {
 		Err_start = 0;
 		Err_length = 1;
@@ -6487,9 +6446,9 @@ int text_analiz::parceFileInput(proga &pv, function_table *functions, symbol_tab
 			pv.line += "^" + QString::number(p_id);
 
 			if (perem_type == charect) {
-				hasSim = true;
 			}
-		};
+		}
+
 		if (op_sk >= 1) {
 			int close_skobk = uslovie.indexOf("]");
 			int lastSymb = uslovie.length() - 1;
@@ -6555,15 +6514,6 @@ int text_analiz::parceFileInput(proga &pv, function_table *functions, symbol_tab
 				Err_start = 1;
 				Err_length = instr.length() - 1;
 				return err;
-			}
-
-			if (hasSim) {
-				Err_start = 1;
-				Err_length = instr.length() - 1;
-				return VVOD_MANY_SYMBOLS;
-			}
-			if (intType == charect) {
-				hasSim = true;
 			}
 
 			QString line = "^" + QString::number(p_id);
@@ -8946,7 +8896,6 @@ int text_analiz::parceAlgorhitmHeader(proga &pv, int str, symbol_table *symbols,
 		QList<ArgModifer> mods;
 		QList<int> shifts;
 		ArgModifer mod = arg;
-		bool hasArraysInArgs = false;
 		QString group;
 		int specifierPos = -1;
 		for (int i = 0; i < argLine.length(); i++) {
@@ -9041,7 +8990,6 @@ int text_analiz::parceAlgorhitmHeader(proga &pv, int str, symbol_table *symbols,
 			if ((type == integer) || (type == real) || (type == kumBoolean) || (type == kumString) || (type == charect)) {
 				argNormLine += "^" + QString::number(ids[i]);
 			} else {
-				hasArraysInArgs = true;
 				argNormLine += "^" + QString::number(ids[i]);
 				int dim = symbols->symb_table[ids[i]].razm;
 				for (int j = 0; j < dim * 2; j++) {

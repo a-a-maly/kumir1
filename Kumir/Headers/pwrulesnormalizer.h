@@ -22,6 +22,7 @@
 #define PWRULESNORMALIZER_H
 
 #include <QStringList>
+class QIODevice;
 
 class PWRulesNormalizer
 {

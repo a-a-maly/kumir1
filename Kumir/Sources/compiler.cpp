@@ -871,7 +871,6 @@ QList<Compiler::RawModule> Compiler::extractModulesFromFile(const QUrl &url, con
 
 void Compiler::run()
 {
-
 //    userModIds.clear();
 
 	// Инициализируем анализатор
@@ -917,44 +916,12 @@ void Compiler::run()
 
 	currentEditor->setErrorsAndRanks(pdAutomata->text());
 
-//    int zdvig=0;
-
-//    if ( oldTabNo<1 )
-//    {
-//        if ( main->Proga_Text()->count() >0 ) zdvig=scanIsps (  );
-//        if(zdvig==-1){
-//            main->Clean();
-//            zdvig=scanIsps (  );};
-
-//    }
 	// Построение таблиц
 	QList< QList< proga> > rawModules = pdAutomata->modules();
 	compileUserModules(rawModules);
-//    main = Modules.module(Modules.idByName("main"));
-//    main->setProgaValue(pdAutomata->mainModule());
-//    analizer->buildTablesForModule(&Modules,main_id);
-//    analizer->USER_BASE_ALG_ID=0;
-
-
-//    Modules.Debug();
-
-//    analizer->analizeModule(main_id);
-//    analizer->USER_BASE_ALG_ID=0;
-
-//    main->removeDummyLines();
-
-//    currentEditor->setErrorsForModules(QList<int>() << main_id);
 
 	QApplication::restoreOverrideCursor();
-
 }
-
-
-
-//void Compiler::updateMainId()
-//{
-//    main_id = Modules.idByName("main");
-//}
 
 Compiler::~Compiler()
 {
@@ -1244,14 +1211,9 @@ int Compiler::loadModulesInfo()
 	suffix = ".dll";
 #endif
 
-//    qDebug()<<"Modules info path:"<<modulesInfoPath;
 	QDir infoDir = QDir(modulesInfoPath);
-
-//    qDebug()<<"From load mdules info"<<modules()->lastModuleId();
 	int plugin_count = modules()->scanPlugins(infoDir, "*" + suffix);
-//    qDebug()<<"Plugin count:"<<plugin_count;
-
-	//app()->mainWindow->createFriendMenu();
+    qDebug() << "Plugin count:" << plugin_count;
 
 	return 0;
 }
@@ -1261,7 +1223,6 @@ int Compiler::parceModulesInfoFile(QIODevice *source)
 	QTextStream ts(source);
 	ts.setCodec("UTF-8");
 	QStringList lines = ts.readAll().split("\n");
-//    qDebug()<<"Lines Count:"<<lines.count();
 	int pos = 0;
 
 	//Выделяем имя
@@ -1271,12 +1232,14 @@ int Compiler::parceModulesInfoFile(QIODevice *source)
 	if (lines[pos].indexOf("[NAME]") < 0) {
 		qDebug() << "No name section in isp file!";
 		return -1;
-	};
+	}
+
 	QString name = "";
 	while ((pos < lines.count()) && (lines[pos].indexOf("[/NAME]") < 0)) {
 		name += lines[pos];
 		pos++;
-	};
+	}
+
 	name += lines[pos];
 	pos++;
 	name.replace("[/NAME]", "");
@@ -1286,7 +1249,8 @@ int Compiler::parceModulesInfoFile(QIODevice *source)
 	if (KumTools::instance()->test_name(name, tn_start, tn_len) > 0) {
 		qDebug() << "Bad ISP name!";
 		return -2;
-	};
+	}
+
 //    qDebug()<<"Isp name "<<name;
 
 	//Выделяем имя бинарник
@@ -1296,12 +1260,14 @@ int Compiler::parceModulesInfoFile(QIODevice *source)
 	if (lines[pos].indexOf("[BINARY]") < 0) {
 		qDebug() << "No [BINARY] section in isp file!";
 		return -1;
-	};
+	}
+
 	QString binary = "";
 	while ((pos < lines.count()) && (lines[pos].indexOf("[/BINARY]") < 0)) {
 		binary += lines[pos];
 		pos++;
-	};
+	}
+
 	binary += lines[pos];
 	pos++;
 	binary.replace("[/BINARY]", "");
@@ -1311,9 +1277,7 @@ int Compiler::parceModulesInfoFile(QIODevice *source)
 	if (!binFile.exists()) {
 		qDebug() << "Module " << name << " binary not found!";
 		return -2;
-	};
-
-
+	}
 
 	//Выделяем URL
 	while ((pos < lines.count()) && (lines[pos].isEmpty() || lines[pos].isNull())) {

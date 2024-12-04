@@ -132,29 +132,27 @@ QString DebugDialog::unserializeArray(const QVariant &data)
 	QString result;
 	QList<QVariant> l = data.toList();
 	int dim = l[0].toInt();
-	int start_x = 0;
+
 	int size_x = 0;
-	int start_y = 0;
 	int size_y = 0;
-	int start_z = 0;
 	int size_z = 0;
 	int offset = 0;
+
 	if (dim>=1) {
-		start_x = l[1].toInt();
 		size_x = l[2].toInt();
 		offset = 3;
 	}
+
 	if (dim>=2) {
-		start_y = l[3].toInt();
 		size_y = l[4].toInt();
 		offset = 5;
 	}
+
 	if (dim>=3) {
-		start_z = l[5].toInt();
 		size_z = l[6].toInt();
 		offset = 7;
 	}
-//	K_ASSERT(size_x * size_y * size_z == l.size()-offset);
+
 	int index = offset;
 	QVariant val;
 	if (dim == 1) {

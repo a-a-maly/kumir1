@@ -75,7 +75,7 @@ TextWindow::TextWindow(QWidget *parent, Qt::WindowFlags fl)
 		++n;
 		for (int i = 0; i < app()->secondaryWindows.count(); ++i) {
 			QString s(app()->secondaryWindows[i]->windowTitle());
-			if ((s.startsWith(label) || "*" + s.startsWith(label)) && s.endsWith(" " + QString::number(n))) {
+			if ((s.startsWith(label) || s.startsWith("*" + label)) && s.endsWith(" " + QString::number(n))) {
 				flag = true;
 			}
 		}
